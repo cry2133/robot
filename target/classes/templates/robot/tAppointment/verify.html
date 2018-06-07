@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html><head>
+    <title>业务预约</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!--标准mui.css-->
+    <link href="/css/plugins/app/mui.min.css" rel="stylesheet">
+	<link href="/css/plugins/app/feedback-page.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/plugins/app/app.css">
+    <link rel="stylesheet" type="text/css" href="/css/plugins/app/mui.picker.min.css">
+
+    <style>
+
+        .dynamic_images {
+            width: 100%;
+        }
+
+        .dynamic_images ul {
+            margin: 0;
+            padding: 10px;
+        }
+
+        .dynamic_images ul li {
+            float: left;
+            list-style: none;
+            width: 75px;
+        }
+
+        .dynamic_images ul li img {
+            width: 98%;
+            height: 75px;
+        }
+
+        .mui-input-group .mui-input-row {
+            height: 40px;
+        }
+        .mui-input-row {
+            position: relative;
+            word-break:keep-all;
+        }
+
+        mui.min.css:5
+        .mui-input-row {
+            clear: left;
+            overflow: hidden;
+        }
+        h5 {
+            margin: 5px 7px;
+        }
+
+        .mui-page-content {
+
+            width: 100%;
+            height: 100%;
+            background-color: #efeff4;
+        }
+        .feedback p {
+            padding: 10px 15px 0;
+            font-size: 16px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #000;
+        }
+        .feedback textarea {
+            height: 160px;
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        .mui-bar{
+            background:#3487E0 ;
+        }
+        .mui-title{
+            color: white;
+        }
+        .inputID{
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+        .title{
+            text-indent: 12px;
+        }
+        .ui-alert{
+            margin-top: 10px;
+        }
+        .btn mui-btn mui-btn-block{
+            height:45px;
+        }
+        #companyListDIV{
+            padding-top: 10px;
+            line-height: 15px;
+        }
+        #companyListDIV{
+            font-size: 17px;
+        }
+    </style>
+</head>
+
+<body>
+<header class="mui-bar">
+    <h1 class="mui-title">业务预约</h1>
+</header>
+<div class="mui-content">
+    <div id="verifyDIV">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="mui-input-row">
+            <label>身份证号码:</label>
+            <div class="inputID" > <input type="text" placeholder="请输入身份证号码" value="445564989151951" 	id="identityID">
+            </div>
+        </div>
+<!--         <%--<br>--%> -->
+<!--         <%--<br>--%> -->
+<!--         <%--<br>--%> -->
+        <div class="mui-button-row">
+            <a>注：业务预约前请先进行实名认证!</a>
+        </div>
+        <div class="mui-content-padded">
+            <button type="button" class="mui-btn mui-btn-block mui-btn-primary"  id="verifyButton">下一步</button>&nbsp;&nbsp;
+        </div>
+        <br>
+        <br>
+<!--         <%--<br>--%> -->
+<!--         <%--<br>--%> -->
+<!--         <%--<div class="mui-button-row">--%> -->
+<!--             <%--<a>注：业务预约前请先进行实名认证!</a>--%> -->
+<!--         <%--</div>--%> -->
+<!--         <center> <p>POWERED BY Ⓜ美基沃得</p></center> -->
+    </div>
+    <div id="appoinmentDIV">
+        <br><br><br>
+        <div class="title">个人资料:</div>
+        <form class="mui-input-group">
+<!--             <%--<div class="title">个人资料:</div>--%> -->
+            <div class="mui-input-row">
+                <label>姓名:</label>
+                <input type="text" readonly= "true" id="name">
+            </div>
+            <div class="mui-input-row">
+                <label>性别:</label>
+                <input type="text"  readonly= "true" id="sex">
+            </div>
+            <div class="mui-input-row">
+                <label>身份证号码:</label>
+                <input type="text"  readonly= "true" id="identityID1">
+            </div>
+        </form>
+        <div class="title">公司名称:</div>
+        <div class="mui-card" id="companyListDIV">
+<!--             <%--<form class="mui-input-group">--%> -->
+<!--             <%--</form>--%> -->
+        </div>
+        <div class="title">预约信息:</div>
+        <form class="mui-input-group">
+<!--             <%--<div class="title">预约信息:</div>--%> -->
+            <div class="mui-input-row">
+                <label>业务类型:</label>
+<!--                 <%--<input type="text" value="预约打印" id="businessType">--%> -->
+                <input type="text" class="select_set" id="businessType" placeholder="请点击选择业务类型" data-setmeal="税务登记业务,税务认定业务,发票处理业务,证明处理业务,纳税申报业务,税收优惠业务,预约打印业务" readonly >
+            </div>
+            <div class="mui-input-row">
+                <label>预约时间:</label>
+                <div  class="ui-alert"  id="appointmentTime"></div>
+            </div>
+        </form>
+<!--         <button data-options='{"type":"hour","customData":{"h":[{"text":"09:00-10:00","value":"09:00-10:00"},{"text":"10:00-11:00","value":"10:00-11:00"},{"text":"11:00-12:00","value":"11:00-12:00"},{"text":"13:00-14:00","value":"13:00-14:00"},{"text":"14:00-15:00","value":"14:00-15:00"},{"text":"15:00-16:00","value":"15:00-16:00"},{"text":"16:00-17:00","value":"16:00-17:00"},{"text":"17:00-18:00","value":"17:00-18:00"}]},"labels":["年", "月", "日", "时段", "分"]}' class="btn mui-btn mui-btn-block">选择时段 ...</button> -->
+		<button id='demo' data-options='{"type":"hour","customData":{"h":[{"text":"上午","value":"上午"},{"text":"下午","value":"下午"},{"text":"晚上","value":"晚上"}]},"labels":["年", "月", "日", "时段", "分"]}' class="btn mui-btn mui-btn-block">选择时段 ...</button>
+		<div id='result' class="ui-alert"></div>
+        <div class="title">业务所需资料:</div>
+        <ul class="mui-table-view">
+<!--             <%--<div class="title">业务所需资料:</div>--%> -->
+            <li class="mui-table-view-cell">1.身份证复制件</li>
+            <li class="mui-table-view-cell">2.营业执照复印件</li>
+<!--             <%--<li class="mui-table-view-cell">注：请在预约时间前到达，否则过时失效！</li>--%> -->
+        </ul>
+        <div class="mui-button-row">
+            <a>注：请在预约时间前到达，否则过时失效！</a>
+        </div>
+        <div class="mui-content-padded">
+            <button type="button" class="mui-btn mui-btn-block mui-btn-primary" id="appointmentButton">我要预约</button>
+
+        </div>
+<!--         <center><p>POWERED BY Ⓜ美基沃得</p></center> -->
+    </div>
+</div>
+</body>
+<script src="/js/plugins/app/mui.min.js"></script>
+<script src="/js/plugins/app/feedback.js"></script>
+<script src="/js/plugins/app/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="/js/plugins/app/main.js"></script>
+<script type="text/javascript" src="/js/plugins/app/mui.picker.min.js"></script>
+<script>
+//     (function($) {
+//         $.init();
+//         var appointmentTime = $('#appointmentTime')[0];
+//         var btns = $('.btn');
+//         btns.each(function(i, btn) {
+//             btn.addEventListener('tap', function() {
+//                 var _self = this;
+//                 if(_self.picker) {
+//                     _self.picker.show(function (rs) {
+//                         appointmentTime.innerText =  rs.text;
+//                         _self.picker.dispose();
+//                         _self.picker = null;
+//                     });
+//                 } else {
+//                     var optionsJson = this.getAttribute('data-options') || '{}';
+//                     alert(optionsJson);
+//                     var options = JSON.parse(optionsJson);
+//                     var now=new Date();
+//                     options.beginYear=now.getFullYear();
+//                     options.beginMonth=now.getMonth()+1;
+//                     options.beginDay=now.getDate()+1;
+// //                    options.beginHours=now.getHours()+1;
+//                     //alert(options);
+//                     var id = this.getAttribute('id');
+//                     /*
+//                      * 首次显示时实例化组件
+//                      * 示例为了简洁，将 options 放在了按钮的 dom 上
+//                      * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+//                      */
+//                     _self.picker = new $.DtPicker(options);
+//                     _self.picker.show(function(rs) {
+//                         /*
+//                          * rs.value 拼合后的 value
+//                          * rs.text 拼合后的 text
+//                          * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+//                          * rs.m 月，用法同年
+//                          * rs.d 日，用法同年
+//                          * rs.h 时，用法同年
+//                          * rs.i 分（minutes 的第二个字母），用法同年
+//                          */
+//                         appointmentTime.innerText = rs.text;
+//                         /*
+//                          * 返回 false 可以阻止选择框的关闭
+//                          * return false;
+//                          */
+//                         /*
+//                          * 释放组件资源，释放后将将不能再操作组件
+//                          * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+//                          * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+//                          * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+//                          */
+//                         _self.picker.dispose();
+//                         _self.picker = null;
+//                     });
+//                 }
+
+//             }, false);
+//         });
+//     })(mui);
+    
+    (function($) {
+		$.init();
+		var result = $('#result')[0];
+		var btns = $('.btn');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				alert(optionsJson);
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					result.innerText = '选择结果: ' + rs.text;
+					/* 
+					 * 返回 false 可以阻止选择框的关闭
+					 * return false;
+					 */
+					/*
+					 * 释放组件资源，释放后将将不能再操作组件
+					 * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+					 * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+					 * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+					 */
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+
+    $(".select_set").each(function() {
+        var that = $(this);
+        var that_values = that.attr("data-setmeal");
+        var oldArr = that_values.split(",");
+        var newArr = [];
+        var picker = new mui.PopPicker();
+        for (var i = 0, length = oldArr.length; i < length; i++) {
+            newArr.push({value: oldArr[i], text: oldArr[i]});
+        }
+        picker.setData(newArr);
+        that.on('tap', function () {
+            picker.show(function (items) {
+                that.val(items[0].value);
+            });
+        })
+    })
+</script>
+</html>

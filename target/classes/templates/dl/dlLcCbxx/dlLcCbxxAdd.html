@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">计量点编号：</label>
+								<div class="col-sm-8">
+									<input id="jldbh" name="jldbh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">运行电能表标识：</label>
+								<div class="col-sm-8">
+									<input id="yxdnbbs" name="yxdnbbs" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">示数类型代码(正向有功总、正向有功尖峰等)：</label>
+								<div class="col-sm-8">
+									<input id="sslxdm" name="sslxdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">抄表业务类别代码(0_正常抄表,1_非周期及业扩变更结算抄表,2_补抄,3_政策性退补,4_监抄,5_试算等)：</label>
+								<div class="col-sm-8">
+									<input id="ywlbdm" name="ywlbdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">计量点序号：</label>
+								<div class="col-sm-8">
+									<input id="jldxh" name="jldxh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">时段代码(冗余)：</label>
+								<div class="col-sm-8">
+									<input id="sdlx" name="sdlx" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">抄表计划编号：</label>
+								<div class="col-sm-8">
+									<input id="cbjhbh" name="cbjhbh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">抄表区段编号：</label>
+								<div class="col-sm-8">
+									<input id="cbqdbh" name="cbqdbh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">计量点抄表顺序号：</label>
+								<div class="col-sm-8">
+									<input id="jldcbsxh" name="jldcbsxh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">抄表顺序号：</label>
+								<div class="col-sm-8">
+									<input id="cbsxh" name="cbsxh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">主副表标志(0_副表,1_主表)：</label>
+								<div class="col-sm-8">
+									<input id="zfbbz" name="zfbbz" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">电费年月：</label>
+								<div class="col-sm-8">
+									<input id="dfny" name="dfny" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">本月抄表次数：</label>
+								<div class="col-sm-8">
+									<input id="bqcbcs" name="bqcbcs" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">应抄表次数：</label>
+								<div class="col-sm-8">
+									<input id="ycbcs" name="ycbcs" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">冲正次数：</label>
+								<div class="col-sm-8">
+									<input id="czcs" name="czcs" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">用户编号：</label>
+								<div class="col-sm-8">
+									<input id="yhbh" name="yhbh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">用户名称：</label>
+								<div class="col-sm-8">
+									<input id="yhmc" name="yhmc" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">用电地址：</label>
+								<div class="col-sm-8">
+									<input id="yddz" name="yddz" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">计量点用途代码：</label>
+								<div class="col-sm-8">
+									<input id="jldytdm" name="jldytdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">资产编号：</label>
+								<div class="col-sm-8">
+									<input id="zcbh" name="zcbh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">出厂编号：</label>
+								<div class="col-sm-8">
+									<input id="ccbh" name="ccbh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">设备类型代码：</label>
+								<div class="col-sm-8">
+									<input id="sblxdm" name="sblxdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">上次表示数：</label>
+								<div class="col-sm-8">
+									<input id="scbss" name="scbss" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">本次表示数：</label>
+								<div class="col-sm-8">
+									<input id="bcbss" name="bcbss" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">表示数差额：</label>
+								<div class="col-sm-8">
+									<input id="bssce" name="bssce" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">表码位数：</label>
+								<div class="col-sm-8">
+									<input id="bmws" name="bmws" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">相位：</label>
+								<div class="col-sm-8">
+									<input id="xw" name="xw" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">综合倍率：</label>
+								<div class="col-sm-8">
+									<input id="zhbl" name="zhbl" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">旧表电量：</label>
+								<div class="col-sm-8">
+									<input id="jbdl" name="jbdl" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">加减电量：</label>
+								<div class="col-sm-8">
+									<input id="jjdl" name="jjdl" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">预收电量：</label>
+								<div class="col-sm-8">
+									<input id="ysdl" name="ysdl" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">退补电量：</label>
+								<div class="col-sm-8">
+									<input id="tbdl" name="tbdl" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">上次预收电量：</label>
+								<div class="col-sm-8">
+									<input id="scysdl" name="scysdl" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">表计电量：</label>
+								<div class="col-sm-8">
+									<input id="bjdl" name="bjdl" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">上次抄表日期：</label>
+								<div class="col-sm-8">
+									<input id="sccbrq" name="sccbrq" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">上次表计电量：</label>
+								<div class="col-sm-8">
+									<input id="scbjdl" name="scbjdl" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">上上次表计电量：</label>
+								<div class="col-sm-8">
+									<input id="pjbjdl" name="pjbjdl" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">抄表标志代码(0_未抄,1_已抄)：</label>
+								<div class="col-sm-8">
+									<input id="cbbzdm" name="cbbzdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">用户类别代码(用户一种常用的分类方式且方便用户的管理:1_公变用户,2_专变客户,3_线损考核,4_台区考核,5_购电)：</label>
+								<div class="col-sm-8">
+									<input id="yhlbdm" name="yhlbdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">实际抄表方式代码(10_现场单户,11_手工(抄表卡),12_普通抄表器,13_远红外抄表器,20_现场集抄,21_普通抄表器集抄,22_远红外抄表器集抄,23_无线抄表器集抄,24_低压载波集抄,30_遥抄,31_负控遥抄,32_低压遥抄,33_配变遥抄,34_厂站遥抄,99_其它)：</label>
+								<div class="col-sm-8">
+									<input id="sjcbfsdm" name="sjcbfsdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">抄表状态代码(0_正常,1_翻转,2_倒走等)：</label>
+								<div class="col-sm-8">
+									<input id="cbztdm" name="cbztdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">抄表异常代码(0_无,10_示数不平,11_箱烂,12_违约,13_无表,14_电表烧表,15_电表故障,16_电表编号不符,18_变比不符,19_估抄,20_漏抄)：</label>
+								<div class="col-sm-8">
+									<input id="cbycdm" name="cbycdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">供电单位编码：</label>
+								<div class="col-sm-8">
+									<input id="gddwbm" name="gddwbm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">抄表人标识：</label>
+								<div class="col-sm-8">
+									<input id="cbrbs" name="cbrbs" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">抄表时间：</label>
+								<div class="col-sm-8">
+									<input id="cbsj" name="cbsj" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">冻结时间：</label>
+								<div class="col-sm-8">
+									<input id="djsj" name="djsj" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">上次工作单编号：</label>
+								<div class="col-sm-8">
+									<input id="scgzdbh" name="scgzdbh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">单位编码：</label>
+								<div class="col-sm-8">
+									<input id="dwbm" name="dwbm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">地区编码：</label>
+								<div class="col-sm-8">
+									<input id="dqbm" name="dqbm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">数据创建时间：</label>
+								<div class="col-sm-8">
+									<input id="cjsj" name="cjsj" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">数据最近一次变更时间：</label>
+								<div class="col-sm-8">
+									<input id="czsj" name="czsj" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">冲正年月：</label>
+								<div class="col-sm-8">
+									<input id="czny" name="czny" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">数据类型：</label>
+								<div class="col-sm-8">
+									<input id="sjlx" name="sjlx" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">有效标志：</label>
+								<div class="col-sm-8">
+									<input id="yxbz" name="yxbz" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">下载PDA标志：</label>
+								<div class="col-sm-8">
+									<input id="xzpdabz" name="xzpdabz" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">原抄表号,用于记录电能表上的抄表号：</label>
+								<div class="col-sm-8">
+									<input id="ycbh" name="ycbh" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">转外委抄表标志：</label>
+								<div class="col-sm-8">
+									<input id="zwwcbbz" name="zwwcbbz" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">相线，包括：单相、三相三线、三相四线：</label>
+								<div class="col-sm-8">
+									<input id="xxdm" name="xxdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">计量点抄表方式代码：</label>
+								<div class="col-sm-8">
+									<input id="jldcbfsdm" name="jldcbfsdm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">自动抄表更新时间：</label>
+								<div class="col-sm-8">
+									<input id="zdcbgxsj" name="zdcbgxsj" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">远程抄表标识：</label>
+								<div class="col-sm-8">
+									<input id="yccbbz" name="yccbbz" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">计量前日0点表码：</label>
+								<div class="col-sm-8">
+									<input id="jlqrldbm" name="jlqrldbm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">计量当日0点表码：</label>
+								<div class="col-sm-8">
+									<input id="jldrldbm" name="jldrldbm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">计量当日24点表码：</label>
+								<div class="col-sm-8">
+									<input id="jldresdbm" name="jldresdbm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">计量次日24点表码：</label>
+								<div class="col-sm-8">
+									<input id="jlcresdbm" name="jlcresdbm" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">实际抄表日期：</label>
+								<div class="col-sm-8">
+									<input id="sjcbrq" name="sjcbrq" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">远程自动化抄表存在补抄的情况，此字段标识获取的数据是否为计量系统补抄数据：</label>
+								<div class="col-sm-8">
+									<input id="ycbcbz" name="ycbcbz" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/robot/dlLcCbxx/dlLcCbxxAdd.js">
+	</script>
+</body>
+</html>

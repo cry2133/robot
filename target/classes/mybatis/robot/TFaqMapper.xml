@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.robot.robot.dao.TFaqDao">
+
+	<select id="get" resultType="com.robot.robot.domain.TFaqDO">
+		select faq.`faq_id`,faq.`repository_id`, tr.`name` as repositoryName,`question`,`answer`,faq.`major_id`,tm.`name` as majorName,faq.`creater`,faq.`createtime`,`amount`,`parentId`,tkm.keygroup,tkm.keygroup_name from t_faq faq
+			LEFT JOIN t_major tm ON tm.major_id=faq.major_id
+			LEFT JOIN t_repository tr on tr.repository_id=faq.repository_id
+			left JOIN t_keyword_middle tkm on tkm.faq_id=faq.faq_id
+		 where faq.faq_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.robot.robot.domain.TFaqDO">
+		select faq.`faq_id`,faq.`repository_id`, tr.`name` as repositoryName,`question`,`answer`,faq.`major_id`,tm.`name` as majorName,faq.`creater`,faq.`createtime`,`amount`,`parentId`,tkm.keygroup,tkm.keygroup_name from t_faq faq
+			LEFT JOIN t_major tm ON tm.major_id=faq.major_id
+			LEFT JOIN t_repository tr on tr.repository_id=faq.repository_id
+			left JOIN t_keyword_middle tkm on tkm.faq_id=faq.faq_id      
+			 	<where>  
+		  		  <if test="faqId != null and faqId != ''"> and faq_id = #{faqId} </if>
+		  		  <if test="repositoryId != null and repositoryId != ''"> and faq.repository_id = #{repositoryId} </if>
+		  		  <if test="question != null and question != ''"> and question like #{question} </if>
+		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
+		  		  <if test="majorId != null and majorId != ''"> and faq.major_id = #{majorId} </if>
+		  		  <if test="creater != null and creater != ''"> and faq.creater = #{creater} </if>
+		  		  <if test="createtime != null and createtime != ''"> and faq.createtime = #{createtime} </if>
+		  		  <if test="amount != null and amount != ''"> and amount = #{amount} </if>
+		  		  <if test="parentId != null and parentId != ''"> and parentId = #{parentId} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by faq_id asc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_faq
+		 <where>  
+		  		  <if test="faqId != null and faqId != ''"> and faq_id = #{faqId} </if>
+		  		  <if test="repositoryId != null and repositoryId != ''"> and repository_id = #{repositoryId} </if>
+		  		  <if test="question != null and question != ''"> and question like #{question} </if>
+		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
+		  		  <if test="majorId != null and majorId != ''"> and major_id = #{majorId} </if>
+		  		  <if test="creater != null and creater != ''"> and creater = #{creater} </if>
+		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+		  		  <if test="amount != null and amount != ''"> and amount = #{amount} </if>
+		  		  <if test="parentId != null and parentId != ''"> and parentId = #{parentId} </if>
+		  		</where>
+	</select>
+	 
+ 	<select id="countParent" resultType="int">
+		select count(*) from t_faq where parentId = #{parentId}
+	</select>
+	 
+	<insert id="save" parameterType="com.robot.robot.domain.TFaqDO" useGeneratedKeys="true" keyProperty="faqId">
+		insert into t_faq
+		(
+			`repository_id`, 
+			`question`, 
+			`answer`, 
+			`major_id`, 
+			`creater`, 
+			`createtime`,
+			`amount`,
+			`parentId`
+		)
+		values
+		(
+			#{repositoryId}, 
+			#{question}, 
+			#{answer}, 
+			#{majorId}, 
+			#{creater}, 
+			#{createtime},
+			#{amount},
+			#{parentId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.robot.robot.domain.TFaqDO">
+		update t_faq 
+		<set>
+			<if test="repositoryId != null">`repository_id` = #{repositoryId}, </if>
+			<if test="question != null">`question` = #{question}, </if>
+			<if test="answer != null">`answer` = #{answer}, </if>
+			<if test="majorId != null">`major_id` = #{majorId}, </if>
+			<if test="creater != null">`creater` = #{creater}, </if>
+			<if test="createtime != null">`createtime` = #{createtime}</if>
+			<if test="amount != null">`amount` = #{amount}</if>
+			<if test="parentId != null">`parentId` = #{parentId}</if>
+		</set>
+		where faq_id = #{faqId}
+	</update>
+	
+	<delete id="remove">
+		delete from t_faq where faq_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_faq where faq_id in 
+		<foreach item="faqId" collection="array" open="(" separator="," close=")">
+			#{faqId}
+		</foreach>
+	</delete>
+
+	<select id="getByQuestion" resultType="com.robot.robot.domain.TFaqDO">
+		SELECT `faq_id`, `repository_id`, `question`, `answer`, `major_id`,`creater`, `createtime`, `amount`,`parentId` FROM t_faq 
+		 where question = #{question}
+	</select>
+	
+	<select id="getLikeByQuestion" resultType="com.robot.robot.domain.TFaqDO">
+		SELECT `faq_id`, `repository_id`, `question`, `answer`, `major_id`,`creater`, `createtime`, `amount`,`parentId` FROM t_faq 
+		 where match(question) AGAINST ( #{question} IN BOOLEAN MODE)
+	</select>
+	
+	<select id="getLikeByQuestionForParent" resultType="com.robot.robot.domain.TFaqDO">
+		SELECT `faq_id`, `repository_id`, `question`, `answer`, `major_id`,`creater`, `createtime`, `amount`,`parentId` FROM t_faq 
+		 where match(question) AGAINST ( #{question} IN BOOLEAN MODE) and  parentid =#{parentId}
+	</select>
+</mapper>

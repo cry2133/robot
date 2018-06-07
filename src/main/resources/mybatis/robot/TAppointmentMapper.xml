@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.robot.robot.dao.TAppointmentDao">
+
+	<select id="get" resultType="com.robot.robot.domain.TAppointmentDO">
+		select `id`,`identityID`,`appointmentTime`,`type` from t_appointment where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.robot.robot.domain.TAppointmentDO">
+		select `id`,`identityID`,`appointmentTime`,`type` from t_appointment
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="identityID != null and identityID != ''"> and identityID = #{identityID} </if>
+		  		  <if test="appointmentTime != null and appointmentTime != ''"> and appointmentTime = #{appointmentTime} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_appointment
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="identityID != null and identityID != ''"> and identityID = #{identityID} </if>
+		  		  <if test="appointmentTime != null and appointmentTime != ''"> and appointmentTime = #{appointmentTime} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.robot.robot.domain.TAppointmentDO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_appointment
+		(
+			`identityID`, 
+			`appointmentTime`, 
+			`type`
+		)
+		values
+		(
+			#{identityID}, 
+			#{appointmentTime}, 
+			#{type}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.robot.robot.domain.TAppointmentDO">
+		update t_appointment 
+		<set>
+			<if test="identityID != null">`identityID` = #{identityID}, </if>
+			<if test="appointmentTime != null">`appointmentTime` = #{appointmentTime}, </if>
+			<if test="type != null">`type` = #{type}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from t_appointment where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_appointment where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteAppointmentTime" parameterType="java.util.Map">
+		delete from t_appointment 
+		 <where>  
+		  		  <if test="identityID != null and identityID != ''"> and identityID = #{identityID} </if>
+		  		  <if test="appointmentTime != null and appointmentTime != ''"> and appointmentTime = #{appointmentTime} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+  		</where>
+	</delete>
+
+
+</mapper>

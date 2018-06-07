@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.robot.robot.dao.TTaxInfoDao">
+
+	<select id="get" resultType="com.robot.robot.domain.TTaxInfoDO">
+		select `id`,`taxType`,`createtime` from t_tax_info where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.robot.robot.domain.TTaxInfoDO">
+		select `id`,`taxType`,`createtime` from t_tax_info
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="taxType != null and taxType != ''"> and taxType = #{taxType} </if>
+		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_tax_info
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="taxType != null and taxType != ''"> and taxType = #{taxType} </if>
+		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.robot.robot.domain.TTaxInfoDO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_tax_info
+		(
+			`taxType`, 
+			`createtime`
+		)
+		values
+		(
+			#{taxType}, 
+			#{createtime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.robot.robot.domain.TTaxInfoDO">
+		update t_tax_info 
+		<set>
+			<if test="taxType != null">`taxType` = #{taxType}, </if>
+			<if test="createtime != null">`createtime` = #{createtime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from t_tax_info where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_tax_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

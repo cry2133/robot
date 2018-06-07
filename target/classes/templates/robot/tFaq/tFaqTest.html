@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+      <div class="ibox-content">
+		<div class="search-form">
+				<div class="input-group">
+					<input type="text" placeholder="知识库问题" name="question" id="question"
+						class="form-control input-lg">
+					<div class="input-group-btn">
+						<button class="btn btn-lg btn-primary" onclick="seachQuestion()">搜索</button>
+					</div>
+				</div>
+
+		</div>
+
+		<div class="hr-line-dashed"></div>
+		<div class="search-result">
+		<h2>答案：</h2>
+			<h3 id="answer" style="color: inherit;margin-left: 10px;">
+				请输入问题。
+			</h3>
+		</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/robot/tFaq/tFaqTest.js"></script>
+
+</body>
+</html>

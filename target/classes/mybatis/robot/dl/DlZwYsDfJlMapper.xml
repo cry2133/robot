@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.robot.robot.dldao.DlZwYsDfJlDao">
+
+    <sql id="Base_Column_List">
+        `YSZWLSH`,
+		`JLDBH`,
+		`JLDXH`,
+		`GZDBH`,
+		`CBQDBH`,
+		`YHBH`,
+		`JSHH`,
+		`CBJHBH`,
+		`DFNY`,
+		`BQCBCS`,
+		`YCBCS`,
+		`JSLXDM`,
+		`CZCS`,
+		`CZNY`,
+		`YXXBZ`,
+		`YHMC`,
+		`YDDZ`,
+		`WYJRQ`,
+		`HYFLDM`,
+		`YHLBDM`,
+		`PJLXDM`,
+		`CXDM`,
+		`YDLBDM`,
+		`DJDM`,
+		`DJ`,
+		`FSJFBZ`,
+		`CCTBDL`,
+		`JFDL`,
+		`DDDF`,
+		`JBDF`,
+		`LTDF`,
+		`YSDF`,
+		`FJFHJ`,
+		`CCTBDF`,
+		`ZCTBDF`,
+		`JFYXJ`,
+		`PJDYXXBS`,
+		`SFSCZDBZ`,
+		`ZDSCSJ`,
+		`YWLBDM`,
+		`SJLX`,
+		`CDZXLDF`,
+		`JTLX`,
+		`JBDFJSFSDM`,
+		`MFDL`,
+		`FGZS`,
+		`FXRBS`,
+		`FXSJ`,
+		`GDDWBM`,
+		`DWBM`,
+		`DQBM`,
+		`CJSJ`,
+		`CZSJ`,
+		`DJBBBH`,
+		`JSHMC`,
+		`JSHDZ`,
+		`FPDYFS`,
+		`FPHQFS`,
+		`XLXDBS`,
+		`TQBS`,
+		`NLJDL`,
+		`JHZDPSRQ`,
+		`JHHKRQ`
+    </sql>
+    
+
+
+	<select id="list" resultType="com.robot.robot.domain.DlZwYsDfJlDO">
+		select 
+		<include refid="Base_Column_List" /> 
+		from dl_zw_ysdfjl
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	 
+	<select id="count" resultType="int">
+		select count(*) from dl_zw_ysdfjl
+	</select>
+
+</mapper>

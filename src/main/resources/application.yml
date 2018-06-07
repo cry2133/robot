@@ -1,0 +1,39 @@
+server:
+  port: 8686
+  tomcat:
+    uri-encoding: utf-8
+    
+#启用shutdown 禁用密码验证
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+#关闭项目path
+management:
+  context-path: /
+spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles: 
+  #  本地数据库和阿里云数据库切换
+     active: dev
+    #active: pro
+  http:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 100Mb
+  messages:
+    basename: i18n/messages
+    cache-seconds: 3600
+  devtools:
+    restart:
+      enabled: true    
+mybatis: 
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mybatis/**/*Mapper.xml
+  typeAliasesPackage: com.robot.**.domain

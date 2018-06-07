@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>上传文件</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<!--标准mui.css-->
+<link href="/css/plugins/app/mui.min.css" rel="stylesheet">
+<link href="/css/plugins/app/feedback-page.css" rel="stylesheet">
+
+<style>
+body {
+	background: #ffffff;
+}
+
+.dynamic_images {
+	width: 100%;
+}
+
+.dynamic_images ul {
+	margin: 0;
+	padding: 10px;
+}
+
+.dynamic_images ul li {
+	float: left;
+	list-style: none;
+	width: 75px;
+}
+
+.dynamic_images ul li img {
+	width: 98%;
+	height: 75px;
+}
+
+.mui-input-group .mui-input-row {
+	height: 40px;
+}
+
+.mui-input-row {
+	position: relative;
+}
+
+mui.min.css: 5
+        .mui-input-row {
+	clear: left;
+	overflow: hidden;
+}
+
+h5 {
+	margin: 5px 7px;
+}
+
+.mui-page-content {
+	width: 100%;
+	height: 100%;
+	background-color: #efeff4;
+}
+
+.feedback p {
+	padding: 10px 15px 0;
+	font-size: 16px;
+	margin-top: 0;
+	margin-bottom: 10px;
+	color: #000;
+}
+
+.feedback textarea {
+	height: 160px;
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+.title {
+	margin-left: -15px;
+	font-weight: bold;
+}
+
+.mui-bar {
+	background: #3487E0;
+}
+
+.muititle {
+	font-size: 20px;
+	font-family: 微软雅黑;
+	text-align: center;
+	margin-top: 10px;
+	color: white;
+}
+
+.mui-content-padded button {
+	width: 215px;
+	height: 63px;
+}
+
+.buttonsubmit img {
+	width: 200px;
+	height: 50px;
+	background: #3487E0;
+	border-radius: 30px;
+}
+
+.buttonsubmit input {
+	width: 200px;
+	height: 50px;
+	font-size: 30px;
+	/*margin-top: 10px;*/
+	color: white;
+	font-family: 微软雅黑;
+	text-align: center;
+	background: #3487E0;
+	border-radius: 40px;
+}
+
+#info {
+	width: 200px;
+	height: 35px;
+}
+
+.a-upload {
+	padding: 4px 10px;
+	padding-top: 10px;
+	height: 45px;
+	width: 100px;
+	/*line-height: 20px;*/
+	position: relative;
+	cursor: pointer;
+	color: #888;
+	background: #3487E0;
+	border: 1px solid #ddd;
+	border-radius: 30px;
+	overflow: hidden;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1
+}
+
+.a-upload  input {
+	position: absolute;
+	font-size: 100px;
+	right: 0;
+	top: 0;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	cursor: pointer;
+}
+
+.muirow font {
+	text-align: center;
+	font-size: 30px;
+	font-family: 黑体;
+}
+</style>
+</head>
+
+<body>
+	<header class="mui-bar">
+		<h1 class="muititle">上传文件</h1>
+	</header>
+	<br>
+	<br>
+	<br>
+	<div class="">
+		<div id="uploadDIV">
+			<div class="" style="margin: 10px;">
+				<ul class="" style="list-style-type: decimal">
+					<div class="title">操作步骤:</div>
+					<br>
+					<li class="">请先用手机下载电子发票文件</li>
+					<li class="">点击下面"添加"按钮添加电子发票文件</li>
+					<li class="">添加完成后，点击"提交打印"按钮</li>
+					<li class="">在机器人端继续完成打印工作</li>
+				</ul>
+				<br> <br>
+				<form id="myForm" class="" 	th:action=${actionURL}
+					method="post" enctype="multipart/form-data">
+					<div class="mui-input-row" hidden="">
+						<label>robotid</label> <input name="robotid" type="text"
+							class="mui-input-clear mui-input" th:value=${robotid}
+							data-input-clear="1">
+					</div>
+					<div class="middles">
+						<center>
+							<div class="muirow">
+								<a href="javascript:;" class="a-upload"> <input type="file"
+									name="file" id="file"><font color="white">添加</font>
+								</a>
+								<div>
+									<p id="info"></p>
+								</div>
+							</div>
+							<div class="buttonsubmit">
+								<input type="button" class="btn" type="submit" value="提交打印"
+									onclick="UpladFile()"></input>
+							</div>
+							<br />
+							<div>
+<!-- 								<p>POWERED BY **</p> -->
+							</div>
+						</center>
+					</div>
+				</form>
+			</div>
+			<div id="uploading"></div>
+		</div>
+		<div id="resultDIV">
+			<div class="mui-input-row" id="uploadResult"></div>
+		</div>
+
+		<script src="/js/plugins/app/mui.min.js"></script>
+		<script src="/js/plugins/app/feedback.js"></script>
+		<script src="/js/plugins/app/jquery-1.12.0.min.js"></script>
+	</div>
+</body>
+<script type="text/javascript">
+	$('#resultDIV').hide();
+	$('#uploadDIV').show();
+	/**
+	 * 通过随机数模拟业务进度，真实业务中需根据实际进度修改
+	 * @param {Object} container
+	 * @param {Object} progress
+	 */
+	function simulateLoading(container, progress) {
+
+		mui(container).progressbar().setProgress(progress);
+	}
+	$(':file')
+			.change(
+					function() {
+						var file = $("#file").get(0).files[0];
+						var totalsize = 0;
+						name = file.name;
+						size = file.size;
+						totalsize = totalsize + size;
+						$("#info").html(
+								"文件大小：" + totalsize + "bytes" + "<br>" + "文件名："
+										+ name);
+						//        $(this).next().html("文件名：" + name  + " 文件大小：" + size);
+					});
+
+	function UpladFile() {
+		var fileObj = document.getElementById("file").files[0]; // js 获取文件对象
+		var FileController = document.getElementById("myForm").action; // 接收上传文件的后台地址
+
+		// FormData 对象
+		var form = new FormData($("#myForm")[0]);
+
+		// XMLHttpRequest 对象
+		var xhr = new XMLHttpRequest();
+		xhr.open("post", FileController, true);
+		xhr.onload = function() {
+			// alert("上传完成!");
+		};
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				textDoc = xhr.responseText;
+				document.getElementById("uploadResult").innerHTML = textDoc;
+			}
+		}
+
+		xhr.upload.addEventListener("progress", progressFunction, false);
+		xhr.send(form);
+
+		var container = mui("#uploading");
+		if (container.progressbar({
+			progress : 0
+		}).show()) {
+			simulateLoading(container, 0);
+		}
+	}
+
+	function progressFunction(evt) {
+		var progress;
+		var container = mui("#uploading");
+		if (evt.lengthComputable) {
+			progress = Math.round(evt.loaded / evt.total * 100);
+			simulateLoading(container, progress)
+			if (evt.loaded == evt.total) {
+				$('#uploadDIV').hide();
+				$('#resultDIV').show();
+			}
+		}
+	}
+</script>
+</html>

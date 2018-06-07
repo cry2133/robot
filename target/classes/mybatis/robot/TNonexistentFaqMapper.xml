@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.robot.robot.dao.TNonexistentFaqDao">
+
+	<select id="get" resultType="com.robot.robot.domain.TNonexistentFaqDO">
+		select `id`,`question`,`answer`,`createtime` from t_nonexistent_faq where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.robot.robot.domain.TNonexistentFaqDO">
+		select `id`,`question`,`answer`,`createtime` from t_nonexistent_faq
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="question != null and question != ''"> and question like #{question} </if>
+		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
+		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_nonexistent_faq
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="question != null and question != ''"> and question like #{question} </if>
+		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
+		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.robot.robot.domain.TNonexistentFaqDO"  useGeneratedKeys="true" keyProperty="faqId">
+		insert into t_nonexistent_faq
+		(
+			`id`, 
+			`question`, 
+			`answer`, 
+			`createtime`
+		)
+		values
+		(
+			#{id}, 
+			#{question}, 
+			#{answer}, 
+			#{createtime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.robot.robot.domain.TNonexistentFaqDO">
+		update t_nonexistent_faq 
+		<set>
+			<if test="question != null">`question` = #{question}, </if>
+			<if test="answer != null">`answer` = #{answer}, </if>
+			<if test="createtime != null">`createtime` = #{createtime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from t_nonexistent_faq where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_nonexistent_faq where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="existQuestion" resultType="com.robot.robot.domain.TNonexistentFaqDO">
+		select `id`,`question`,`answer`,`createtime` from t_nonexistent_faq where question = #{question} 
+	</select>
+</mapper>

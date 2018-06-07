@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.robot.robot.dao.TKeywordDao">
+
+	<select id="get" resultType="com.robot.robot.domain.TKeywordDO">
+		select `keyword_id`,`name`,`amount`,`creater`,`createtime` from t_keyword where keyword_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.robot.robot.domain.TKeywordDO">
+		select `keyword_id`,`name`,`amount`,`creater`,`createtime` from t_keyword
+        <where>  
+		  		  <if test="keywordId != null and keywordId != ''"> and keyword_id = #{keywordId} </if>
+		  		  <if test="name != null and name != ''"> and name like #{name} </if>
+		  		  <if test="creater != null and creater != ''"> and creater = #{creater} </if>
+		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by keyword_id asc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_keyword
+		 <where>  
+		  		  <if test="keywordId != null and keywordId != ''"> and keyword_id = #{keywordId} </if>
+		  		  <if test="name != null and name != ''"> and name like #{name} </if>
+		  		  <if test="creater != null and creater != ''"> and creater = #{creater} </if>
+		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.robot.robot.domain.TKeywordDO" useGeneratedKeys="true" keyProperty="keywordId">
+		insert into t_keyword
+		(
+			`name`, 
+			`creater`, 
+			`createtime`,
+			`amount`
+		)
+		values
+		(
+			#{name}, 
+			#{creater}, 
+			#{createtime},
+			#{amount}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.robot.robot.domain.TKeywordDO">
+		update t_keyword 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="creater != null">`creater` = #{creater}, </if>
+			<if test="createtime != null">`createtime` = #{createtime}</if>
+			<if test="amount != null">`amount` = #{amount}</if>
+		</set>
+		where keyword_id = #{keywordId}
+	</update>
+	
+	<delete id="remove">
+		delete from t_keyword where keyword_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_keyword where keyword_id in 
+		<foreach item="keywordId" collection="array" open="(" separator="," close=")">
+			#{keywordId}
+		</foreach>
+	</delete>
+
+	<select id="existKeyword" resultType="com.robot.robot.domain.TKeywordDO"> 
+		select `keyword_id`,`name`,`amount`,`creater`,`createtime` from t_keyword where name = #{keyword}
+	</select>
+	
+ 	<select id="getMaxId" resultType="int">
+		select  max(keyword_id) from t_keyword
+	</select>
+	
+	<select id="getByName" resultType="com.robot.robot.domain.TKeywordDO">
+		select `keyword_id`,`name`,`amount`,`creater`,`createtime` from t_keyword where name = #{value}
+	</select>
+</mapper>

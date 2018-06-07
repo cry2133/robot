@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.robot.robot.dldao.DlKhYdkhDao">
+
+        <sql id="Base_Column_List">
+        `YHBH`,`KHBH`,`YHMC`,`YDDZ`,`XYDJDM`,`XYFZ`,`JZDJDM`,`FXDJDM`,`YDLBDM`,`DYDJDM`,`HYFLDM`,`JLFSDM`,`YHLBDM`,`GDDWBM`,
+        `CBQDBH`,`ZDYCXH`,`YYHBH`,`HTRL`,`YXRL`,`SCBCDM`,`FHXZDM`,`GHNHYLBDM`,`CXR`,`LHRQ`,`SDRQ`,`XHRQ`,`LSYDDQRQ`,`LSYDBZ`,
+        `YHZTDM`,`YDJCZQ`,`SCJCRQ`,`JCQDBS`,`TDBZ`,`ZGLXDM`,`DQBM`,`DYLXDM`,`DYLSFSDM`,`DYQHFSDM`,`DYLSZZWZ`,`ZBDYBZ`,`ZBDYBSFSDM`,
+        `ZBDYRL`,`XBYHBZ`,`CJFHYHBZ`,`GKKXBZ`,`XZQYDM`,`CXDM`,`SZLC`,`YFFLXDM`,`LSJFGXH`,`JCRYBS`,`CBSXH`,`DWTYDZ`,`YZBM`,`CZHM`,`KHSFDM`,
+        `KHFQBZ`,`KHJLBS`,`SFYZBDC`,`ZBDCRL`,`BZFBZ`,`BZFZHS`,`BZFZMJ`,`BZFZRL`,`CJSJ`,`CZSJ`,`CBZQ`,`JTLX`,`CDM`,`SZXMBZ`,`SJZYBGSJ`,`YDJCSCZXJCRQ`,
+        `GHRL`,`BSZDSJ`,`ZTQMSJ`,`FKMSDM`,`FFMSDM`,`SFYXTDBZ`,`TDLXDM`,`FDFSDM`,`JD`,`WD`,`SFLDHBZ`,`SCJYYHBZ`,`YHBZSXDM` 
+    </sql>
+    
+	<select id="get" resultType="com.robot.robot.domain.DlKhYdkhDO">
+		select 
+		<include refid="Base_Column_List" /> 
+		from dl_kh_ydkh 
+		where YHBH = #{value}
+	</select>
+
+	<select id="list" resultType="com.robot.robot.domain.DlKhYdkhDO">
+		select 
+		<include refid="Base_Column_List" /> 
+		from dl_kh_ydkh
+        <where>  
+		  		  <if test="yhbh != null and yhbh != ''"> and YHBH = #{yhbh} </if>
+		  		  <if test="khbh != null and khbh != ''"> and KHBH = #{khbh} </if>
+		  		  <if test="yhmc != null and yhmc != ''"> and YHMC = #{yhmc} </if>
+		  		  <if test="yddz != null and yddz != ''"> and YDDZ = #{yddz} </if>
+		  		  <if test="xydjdm != null and xydjdm != ''"> and XYDJDM = #{xydjdm} </if>
+		  		  <if test="xyfz != null and xyfz != ''"> and XYFZ = #{xyfz} </if>
+		  		  <if test="jzdjdm != null and jzdjdm != ''"> and JZDJDM = #{jzdjdm} </if>
+		  		  <if test="fxdjdm != null and fxdjdm != ''"> and FXDJDM = #{fxdjdm} </if>
+		  		  <if test="ydlbdm != null and ydlbdm != ''"> and YDLBDM = #{ydlbdm} </if>
+		  		  <if test="dydjdm != null and dydjdm != ''"> and DYDJDM = #{dydjdm} </if>
+		  		  <if test="hyfldm != null and hyfldm != ''"> and HYFLDM = #{hyfldm} </if>
+		  		  <if test="jlfsdm != null and jlfsdm != ''"> and JLFSDM = #{jlfsdm} </if>
+		  		  <if test="yhlbdm != null and yhlbdm != ''"> and YHLBDM = #{yhlbdm} </if>
+		  		  <if test="gddwbm != null and gddwbm != ''"> and GDDWBM = #{gddwbm} </if>
+		  		  <if test="cbqdbh != null and cbqdbh != ''"> and CBQDBH = #{cbqdbh} </if>
+		  		  <if test="zdycxh != null and zdycxh != ''"> and ZDYCXH = #{zdycxh} </if>
+		  		  <if test="yyhbh != null and yyhbh != ''"> and YYHBH = #{yyhbh} </if>
+		  		  <if test="htrl != null and htrl != ''"> and HTRL = #{htrl} </if>
+		  		  <if test="yxrl != null and yxrl != ''"> and YXRL = #{yxrl} </if>
+		  		  <if test="scbcdm != null and scbcdm != ''"> and SCBCDM = #{scbcdm} </if>
+		  		  <if test="fhxzdm != null and fhxzdm != ''"> and FHXZDM = #{fhxzdm} </if>
+		  		  <if test="ghnhylbdm != null and ghnhylbdm != ''"> and GHNHYLBDM = #{ghnhylbdm} </if>
+		  		  <if test="cxr != null and cxr != ''"> and CXR = #{cxr} </if>
+		  		  <if test="lhrq != null and lhrq != ''"> and LHRQ = #{lhrq} </if>
+		  		  <if test="sdrq != null and sdrq != ''"> and SDRQ = #{sdrq} </if>
+		  		  <if test="xhrq != null and xhrq != ''"> and XHRQ = #{xhrq} </if>
+		  		  <if test="lsyddqrq != null and lsyddqrq != ''"> and LSYDDQRQ = #{lsyddqrq} </if>
+		  		  <if test="lsydbz != null and lsydbz != ''"> and LSYDBZ = #{lsydbz} </if>
+		  		  <if test="yhztdm != null and yhztdm != ''"> and YHZTDM = #{yhztdm} </if>
+		  		  <if test="ydjczq != null and ydjczq != ''"> and YDJCZQ = #{ydjczq} </if>
+		  		  <if test="scjcrq != null and scjcrq != ''"> and SCJCRQ = #{scjcrq} </if>
+		  		  <if test="jcqdbs != null and jcqdbs != ''"> and JCQDBS = #{jcqdbs} </if>
+		  		  <if test="tdbz != null and tdbz != ''"> and TDBZ = #{tdbz} </if>
+		  		  <if test="zglxdm != null and zglxdm != ''"> and ZGLXDM = #{zglxdm} </if>
+		  		  <if test="dqbm != null and dqbm != ''"> and DQBM = #{dqbm} </if>
+		  		  <if test="dylxdm != null and dylxdm != ''"> and DYLXDM = #{dylxdm} </if>
+		  		  <if test="dylsfsdm != null and dylsfsdm != ''"> and DYLSFSDM = #{dylsfsdm} </if>
+		  		  <if test="dyqhfsdm != null and dyqhfsdm != ''"> and DYQHFSDM = #{dyqhfsdm} </if>
+		  		  <if test="dylszzwz != null and dylszzwz != ''"> and DYLSZZWZ = #{dylszzwz} </if>
+		  		  <if test="zbdybz != null and zbdybz != ''"> and ZBDYBZ = #{zbdybz} </if>
+		  		  <if test="zbdybsfsdm != null and zbdybsfsdm != ''"> and ZBDYBSFSDM = #{zbdybsfsdm} </if>
+		  		  <if test="zbdyrl != null and zbdyrl != ''"> and ZBDYRL = #{zbdyrl} </if>
+		  		  <if test="xbyhbz != null and xbyhbz != ''"> and XBYHBZ = #{xbyhbz} </if>
+		  		  <if test="cjfhyhbz != null and cjfhyhbz != ''"> and CJFHYHBZ = #{cjfhyhbz} </if>
+		  		  <if test="gkkxbz != null and gkkxbz != ''"> and GKKXBZ = #{gkkxbz} </if>
+		  		  <if test="xzqydm != null and xzqydm != ''"> and XZQYDM = #{xzqydm} </if>
+		  		  <if test="cxdm != null and cxdm != ''"> and CXDM = #{cxdm} </if>
+		  		  <if test="szlc != null and szlc != ''"> and SZLC = #{szlc} </if>
+		  		  <if test="yfflxdm != null and yfflxdm != ''"> and YFFLXDM = #{yfflxdm} </if>
+		  		  <if test="lsjfgxh != null and lsjfgxh != ''"> and LSJFGXH = #{lsjfgxh} </if>
+		  		  <if test="jcrybs != null and jcrybs != ''"> and JCRYBS = #{jcrybs} </if>
+		  		  <if test="cbsxh != null and cbsxh != ''"> and CBSXH = #{cbsxh} </if>
+		  		  <if test="dwtydz != null and dwtydz != ''"> and DWTYDZ = #{dwtydz} </if>
+		  		  <if test="yzbm != null and yzbm != ''"> and YZBM = #{yzbm} </if>
+		  		  <if test="czhm != null and czhm != ''"> and CZHM = #{czhm} </if>
+		  		  <if test="khsfdm != null and khsfdm != ''"> and KHSFDM = #{khsfdm} </if>
+		  		  <if test="khfqbz != null and khfqbz != ''"> and KHFQBZ = #{khfqbz} </if>
+		  		  <if test="khjlbs != null and khjlbs != ''"> and KHJLBS = #{khjlbs} </if>
+		  		  <if test="sfyzbdc != null and sfyzbdc != ''"> and SFYZBDC = #{sfyzbdc} </if>
+		  		  <if test="zbdcrl != null and zbdcrl != ''"> and ZBDCRL = #{zbdcrl} </if>
+		  		  <if test="bzfbz != null and bzfbz != ''"> and BZFBZ = #{bzfbz} </if>
+		  		  <if test="bzfzhs != null and bzfzhs != ''"> and BZFZHS = #{bzfzhs} </if>
+		  		  <if test="bzfzmj != null and bzfzmj != ''"> and BZFZMJ = #{bzfzmj} </if>
+		  		  <if test="bzfzrl != null and bzfzrl != ''"> and BZFZRL = #{bzfzrl} </if>
+		  		  <if test="cjsj != null and cjsj != ''"> and CJSJ = #{cjsj} </if>
+		  		  <if test="czsj != null and czsj != ''"> and CZSJ = #{czsj} </if>
+		  		  <if test="cbzq != null and cbzq != ''"> and CBZQ = #{cbzq} </if>
+		  		  <if test="jtlx != null and jtlx != ''"> and JTLX = #{jtlx} </if>
+		  		  <if test="cdm != null and cdm != ''"> and CDM = #{cdm} </if>
+		  		  <if test="szxmbz != null and szxmbz != ''"> and SZXMBZ = #{szxmbz} </if>
+		  		  <if test="sjzybgsj != null and sjzybgsj != ''"> and SJZYBGSJ = #{sjzybgsj} </if>
+		  		  <if test="ydjcsczxjcrq != null and ydjcsczxjcrq != ''"> and YDJCSCZXJCRQ = #{ydjcsczxjcrq} </if>
+		  		  <if test="ghrl != null and ghrl != ''"> and GHRL = #{ghrl} </if>
+		  		  <if test="bszdsj != null and bszdsj != ''"> and BSZDSJ = #{bszdsj} </if>
+		  		  <if test="ztqmsj != null and ztqmsj != ''"> and ZTQMSJ = #{ztqmsj} </if>
+		  		  <if test="fkmsdm != null and fkmsdm != ''"> and FKMSDM = #{fkmsdm} </if>
+		  		  <if test="ffmsdm != null and ffmsdm != ''"> and FFMSDM = #{ffmsdm} </if>
+		  		  <if test="sfyxtdbz != null and sfyxtdbz != ''"> and SFYXTDBZ = #{sfyxtdbz} </if>
+		  		  <if test="tdlxdm != null and tdlxdm != ''"> and TDLXDM = #{tdlxdm} </if>
+		  		  <if test="fdfsdm != null and fdfsdm != ''"> and FDFSDM = #{fdfsdm} </if>
+		  		  <if test="jd != null and jd != ''"> and JD = #{jd} </if>
+		  		  <if test="wd != null and wd != ''"> and WD = #{wd} </if>
+		  		  <if test="sfldhbz != null and sfldhbz != ''"> and SFLDHBZ = #{sfldhbz} </if>
+		  		  <if test="scjyyhbz != null and scjyyhbz != ''"> and SCJYYHBZ = #{scjyyhbz} </if>
+		  		  <if test="yhbzsxdm != null and yhbzsxdm != ''"> and YHBZSXDM = #{yhbzsxdm} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by YHBH desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	
+	<select id="getForZjhm" resultType="com.robot.robot.domain.DhKhxxDO">
+			select distinct k.yhbh,
+		  b.zjhm,
+		  k.yhmc,
+		  k.yddz
+		  from dl_kh_ydkh   k,
+		       dl_kh_khzj   b     
+		  where k.khbh = b.khbh
+		  and b.zjlxdm ='01'  
+		  and b.zjhm=#{zjhm}
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from dl_kh_ydkh
+		 <where>  
+		  		  <if test="yhbh != null and yhbh != ''"> and YHBH = #{yhbh} </if>
+		  		  <if test="khbh != null and khbh != ''"> and KHBH = #{khbh} </if>
+		  		  <if test="yhmc != null and yhmc != ''"> and YHMC = #{yhmc} </if>
+		  		  <if test="yddz != null and yddz != ''"> and YDDZ = #{yddz} </if>
+		  		  <if test="xydjdm != null and xydjdm != ''"> and XYDJDM = #{xydjdm} </if>
+		  		  <if test="xyfz != null and xyfz != ''"> and XYFZ = #{xyfz} </if>
+		  		  <if test="jzdjdm != null and jzdjdm != ''"> and JZDJDM = #{jzdjdm} </if>
+		  		  <if test="fxdjdm != null and fxdjdm != ''"> and FXDJDM = #{fxdjdm} </if>
+		  		  <if test="ydlbdm != null and ydlbdm != ''"> and YDLBDM = #{ydlbdm} </if>
+		  		  <if test="dydjdm != null and dydjdm != ''"> and DYDJDM = #{dydjdm} </if>
+		  		  <if test="hyfldm != null and hyfldm != ''"> and HYFLDM = #{hyfldm} </if>
+		  		  <if test="jlfsdm != null and jlfsdm != ''"> and JLFSDM = #{jlfsdm} </if>
+		  		  <if test="yhlbdm != null and yhlbdm != ''"> and YHLBDM = #{yhlbdm} </if>
+		  		  <if test="gddwbm != null and gddwbm != ''"> and GDDWBM = #{gddwbm} </if>
+		  		  <if test="cbqdbh != null and cbqdbh != ''"> and CBQDBH = #{cbqdbh} </if>
+		  		  <if test="zdycxh != null and zdycxh != ''"> and ZDYCXH = #{zdycxh} </if>
+		  		  <if test="yyhbh != null and yyhbh != ''"> and YYHBH = #{yyhbh} </if>
+		  		  <if test="htrl != null and htrl != ''"> and HTRL = #{htrl} </if>
+		  		  <if test="yxrl != null and yxrl != ''"> and YXRL = #{yxrl} </if>
+		  		  <if test="scbcdm != null and scbcdm != ''"> and SCBCDM = #{scbcdm} </if>
+		  		  <if test="fhxzdm != null and fhxzdm != ''"> and FHXZDM = #{fhxzdm} </if>
+		  		  <if test="ghnhylbdm != null and ghnhylbdm != ''"> and GHNHYLBDM = #{ghnhylbdm} </if>
+		  		  <if test="cxr != null and cxr != ''"> and CXR = #{cxr} </if>
+		  		  <if test="lhrq != null and lhrq != ''"> and LHRQ = #{lhrq} </if>
+		  		  <if test="sdrq != null and sdrq != ''"> and SDRQ = #{sdrq} </if>
+		  		  <if test="xhrq != null and xhrq != ''"> and XHRQ = #{xhrq} </if>
+		  		  <if test="lsyddqrq != null and lsyddqrq != ''"> and LSYDDQRQ = #{lsyddqrq} </if>
+		  		  <if test="lsydbz != null and lsydbz != ''"> and LSYDBZ = #{lsydbz} </if>
+		  		  <if test="yhztdm != null and yhztdm != ''"> and YHZTDM = #{yhztdm} </if>
+		  		  <if test="ydjczq != null and ydjczq != ''"> and YDJCZQ = #{ydjczq} </if>
+		  		  <if test="scjcrq != null and scjcrq != ''"> and SCJCRQ = #{scjcrq} </if>
+		  		  <if test="jcqdbs != null and jcqdbs != ''"> and JCQDBS = #{jcqdbs} </if>
+		  		  <if test="tdbz != null and tdbz != ''"> and TDBZ = #{tdbz} </if>
+		  		  <if test="zglxdm != null and zglxdm != ''"> and ZGLXDM = #{zglxdm} </if>
+		  		  <if test="dqbm != null and dqbm != ''"> and DQBM = #{dqbm} </if>
+		  		  <if test="dylxdm != null and dylxdm != ''"> and DYLXDM = #{dylxdm} </if>
+		  		  <if test="dylsfsdm != null and dylsfsdm != ''"> and DYLSFSDM = #{dylsfsdm} </if>
+		  		  <if test="dyqhfsdm != null and dyqhfsdm != ''"> and DYQHFSDM = #{dyqhfsdm} </if>
+		  		  <if test="dylszzwz != null and dylszzwz != ''"> and DYLSZZWZ = #{dylszzwz} </if>
+		  		  <if test="zbdybz != null and zbdybz != ''"> and ZBDYBZ = #{zbdybz} </if>
+		  		  <if test="zbdybsfsdm != null and zbdybsfsdm != ''"> and ZBDYBSFSDM = #{zbdybsfsdm} </if>
+		  		  <if test="zbdyrl != null and zbdyrl != ''"> and ZBDYRL = #{zbdyrl} </if>
+		  		  <if test="xbyhbz != null and xbyhbz != ''"> and XBYHBZ = #{xbyhbz} </if>
+		  		  <if test="cjfhyhbz != null and cjfhyhbz != ''"> and CJFHYHBZ = #{cjfhyhbz} </if>
+		  		  <if test="gkkxbz != null and gkkxbz != ''"> and GKKXBZ = #{gkkxbz} </if>
+		  		  <if test="xzqydm != null and xzqydm != ''"> and XZQYDM = #{xzqydm} </if>
+		  		  <if test="cxdm != null and cxdm != ''"> and CXDM = #{cxdm} </if>
+		  		  <if test="szlc != null and szlc != ''"> and SZLC = #{szlc} </if>
+		  		  <if test="yfflxdm != null and yfflxdm != ''"> and YFFLXDM = #{yfflxdm} </if>
+		  		  <if test="lsjfgxh != null and lsjfgxh != ''"> and LSJFGXH = #{lsjfgxh} </if>
+		  		  <if test="jcrybs != null and jcrybs != ''"> and JCRYBS = #{jcrybs} </if>
+		  		  <if test="cbsxh != null and cbsxh != ''"> and CBSXH = #{cbsxh} </if>
+		  		  <if test="dwtydz != null and dwtydz != ''"> and DWTYDZ = #{dwtydz} </if>
+		  		  <if test="yzbm != null and yzbm != ''"> and YZBM = #{yzbm} </if>
+		  		  <if test="czhm != null and czhm != ''"> and CZHM = #{czhm} </if>
+		  		  <if test="khsfdm != null and khsfdm != ''"> and KHSFDM = #{khsfdm} </if>
+		  		  <if test="khfqbz != null and khfqbz != ''"> and KHFQBZ = #{khfqbz} </if>
+		  		  <if test="khjlbs != null and khjlbs != ''"> and KHJLBS = #{khjlbs} </if>
+		  		  <if test="sfyzbdc != null and sfyzbdc != ''"> and SFYZBDC = #{sfyzbdc} </if>
+		  		  <if test="zbdcrl != null and zbdcrl != ''"> and ZBDCRL = #{zbdcrl} </if>
+		  		  <if test="bzfbz != null and bzfbz != ''"> and BZFBZ = #{bzfbz} </if>
+		  		  <if test="bzfzhs != null and bzfzhs != ''"> and BZFZHS = #{bzfzhs} </if>
+		  		  <if test="bzfzmj != null and bzfzmj != ''"> and BZFZMJ = #{bzfzmj} </if>
+		  		  <if test="bzfzrl != null and bzfzrl != ''"> and BZFZRL = #{bzfzrl} </if>
+		  		  <if test="cjsj != null and cjsj != ''"> and CJSJ = #{cjsj} </if>
+		  		  <if test="czsj != null and czsj != ''"> and CZSJ = #{czsj} </if>
+		  		  <if test="cbzq != null and cbzq != ''"> and CBZQ = #{cbzq} </if>
+		  		  <if test="jtlx != null and jtlx != ''"> and JTLX = #{jtlx} </if>
+		  		  <if test="cdm != null and cdm != ''"> and CDM = #{cdm} </if>
+		  		  <if test="szxmbz != null and szxmbz != ''"> and SZXMBZ = #{szxmbz} </if>
+		  		  <if test="sjzybgsj != null and sjzybgsj != ''"> and SJZYBGSJ = #{sjzybgsj} </if>
+		  		  <if test="ydjcsczxjcrq != null and ydjcsczxjcrq != ''"> and YDJCSCZXJCRQ = #{ydjcsczxjcrq} </if>
+		  		  <if test="ghrl != null and ghrl != ''"> and GHRL = #{ghrl} </if>
+		  		  <if test="bszdsj != null and bszdsj != ''"> and BSZDSJ = #{bszdsj} </if>
+		  		  <if test="ztqmsj != null and ztqmsj != ''"> and ZTQMSJ = #{ztqmsj} </if>
+		  		  <if test="fkmsdm != null and fkmsdm != ''"> and FKMSDM = #{fkmsdm} </if>
+		  		  <if test="ffmsdm != null and ffmsdm != ''"> and FFMSDM = #{ffmsdm} </if>
+		  		  <if test="sfyxtdbz != null and sfyxtdbz != ''"> and SFYXTDBZ = #{sfyxtdbz} </if>
+		  		  <if test="tdlxdm != null and tdlxdm != ''"> and TDLXDM = #{tdlxdm} </if>
+		  		  <if test="fdfsdm != null and fdfsdm != ''"> and FDFSDM = #{fdfsdm} </if>
+		  		  <if test="jd != null and jd != ''"> and JD = #{jd} </if>
+		  		  <if test="wd != null and wd != ''"> and WD = #{wd} </if>
+		  		  <if test="sfldhbz != null and sfldhbz != ''"> and SFLDHBZ = #{sfldhbz} </if>
+		  		  <if test="scjyyhbz != null and scjyyhbz != ''"> and SCJYYHBZ = #{scjyyhbz} </if>
+		  		  <if test="yhbzsxdm != null and yhbzsxdm != ''"> and YHBZSXDM = #{yhbzsxdm} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.robot.robot.domain.DlKhYdkhDO">
+		insert into dl_kh_ydkh
+		(
+			`YHBH`, 
+			`KHBH`, 
+			`YHMC`, 
+			`YDDZ`, 
+			`XYDJDM`, 
+			`XYFZ`, 
+			`JZDJDM`, 
+			`FXDJDM`, 
+			`YDLBDM`, 
+			`DYDJDM`, 
+			`HYFLDM`, 
+			`JLFSDM`, 
+			`YHLBDM`, 
+			`GDDWBM`, 
+			`CBQDBH`, 
+			`ZDYCXH`, 
+			`YYHBH`, 
+			`HTRL`, 
+			`YXRL`, 
+			`SCBCDM`, 
+			`FHXZDM`, 
+			`GHNHYLBDM`, 
+			`CXR`, 
+			`LHRQ`, 
+			`SDRQ`, 
+			`XHRQ`, 
+			`LSYDDQRQ`, 
+			`LSYDBZ`, 
+			`YHZTDM`, 
+			`YDJCZQ`, 
+			`SCJCRQ`, 
+			`JCQDBS`, 
+			`TDBZ`, 
+			`ZGLXDM`, 
+			`DQBM`, 
+			`DYLXDM`, 
+			`DYLSFSDM`, 
+			`DYQHFSDM`, 
+			`DYLSZZWZ`, 
+			`ZBDYBZ`, 
+			`ZBDYBSFSDM`, 
+			`ZBDYRL`, 
+			`XBYHBZ`, 
+			`CJFHYHBZ`, 
+			`GKKXBZ`, 
+			`XZQYDM`, 
+			`CXDM`, 
+			`SZLC`, 
+			`YFFLXDM`, 
+			`LSJFGXH`, 
+			`JCRYBS`, 
+			`CBSXH`, 
+			`DWTYDZ`, 
+			`YZBM`, 
+			`CZHM`, 
+			`KHSFDM`, 
+			`KHFQBZ`, 
+			`KHJLBS`, 
+			`SFYZBDC`, 
+			`ZBDCRL`, 
+			`BZFBZ`, 
+			`BZFZHS`, 
+			`BZFZMJ`, 
+			`BZFZRL`, 
+			`CJSJ`, 
+			`CZSJ`, 
+			`CBZQ`, 
+			`JTLX`, 
+			`CDM`, 
+			`SZXMBZ`, 
+			`SJZYBGSJ`, 
+			`YDJCSCZXJCRQ`, 
+			`GHRL`, 
+			`BSZDSJ`, 
+			`ZTQMSJ`, 
+			`FKMSDM`, 
+			`FFMSDM`, 
+			`SFYXTDBZ`, 
+			`TDLXDM`, 
+			`FDFSDM`, 
+			`JD`, 
+			`WD`, 
+			`SFLDHBZ`, 
+			`SCJYYHBZ`, 
+			`YHBZSXDM`
+		)
+		values
+		(
+			#{yhbh}, 
+			#{khbh}, 
+			#{yhmc}, 
+			#{yddz}, 
+			#{xydjdm}, 
+			#{xyfz}, 
+			#{jzdjdm}, 
+			#{fxdjdm}, 
+			#{ydlbdm}, 
+			#{dydjdm}, 
+			#{hyfldm}, 
+			#{jlfsdm}, 
+			#{yhlbdm}, 
+			#{gddwbm}, 
+			#{cbqdbh}, 
+			#{zdycxh}, 
+			#{yyhbh}, 
+			#{htrl}, 
+			#{yxrl}, 
+			#{scbcdm}, 
+			#{fhxzdm}, 
+			#{ghnhylbdm}, 
+			#{cxr}, 
+			#{lhrq}, 
+			#{sdrq}, 
+			#{xhrq}, 
+			#{lsyddqrq}, 
+			#{lsydbz}, 
+			#{yhztdm}, 
+			#{ydjczq}, 
+			#{scjcrq}, 
+			#{jcqdbs}, 
+			#{tdbz}, 
+			#{zglxdm}, 
+			#{dqbm}, 
+			#{dylxdm}, 
+			#{dylsfsdm}, 
+			#{dyqhfsdm}, 
+			#{dylszzwz}, 
+			#{zbdybz}, 
+			#{zbdybsfsdm}, 
+			#{zbdyrl}, 
+			#{xbyhbz}, 
+			#{cjfhyhbz}, 
+			#{gkkxbz}, 
+			#{xzqydm}, 
+			#{cxdm}, 
+			#{szlc}, 
+			#{yfflxdm}, 
+			#{lsjfgxh}, 
+			#{jcrybs}, 
+			#{cbsxh}, 
+			#{dwtydz}, 
+			#{yzbm}, 
+			#{czhm}, 
+			#{khsfdm}, 
+			#{khfqbz}, 
+			#{khjlbs}, 
+			#{sfyzbdc}, 
+			#{zbdcrl}, 
+			#{bzfbz}, 
+			#{bzfzhs}, 
+			#{bzfzmj}, 
+			#{bzfzrl}, 
+			#{cjsj}, 
+			#{czsj}, 
+			#{cbzq}, 
+			#{jtlx}, 
+			#{cdm}, 
+			#{szxmbz}, 
+			#{sjzybgsj}, 
+			#{ydjcsczxjcrq}, 
+			#{ghrl}, 
+			#{bszdsj}, 
+			#{ztqmsj}, 
+			#{fkmsdm}, 
+			#{ffmsdm}, 
+			#{sfyxtdbz}, 
+			#{tdlxdm}, 
+			#{fdfsdm}, 
+			#{jd}, 
+			#{wd}, 
+			#{sfldhbz}, 
+			#{scjyyhbz}, 
+			#{yhbzsxdm}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.robot.robot.domain.DlKhYdkhDO">
+		update dl_kh_ydkh 
+		<set>
+			<if test="khbh != null">`KHBH` = #{khbh}, </if>
+			<if test="yhmc != null">`YHMC` = #{yhmc}, </if>
+			<if test="yddz != null">`YDDZ` = #{yddz}, </if>
+			<if test="xydjdm != null">`XYDJDM` = #{xydjdm}, </if>
+			<if test="xyfz != null">`XYFZ` = #{xyfz}, </if>
+			<if test="jzdjdm != null">`JZDJDM` = #{jzdjdm}, </if>
+			<if test="fxdjdm != null">`FXDJDM` = #{fxdjdm}, </if>
+			<if test="ydlbdm != null">`YDLBDM` = #{ydlbdm}, </if>
+			<if test="dydjdm != null">`DYDJDM` = #{dydjdm}, </if>
+			<if test="hyfldm != null">`HYFLDM` = #{hyfldm}, </if>
+			<if test="jlfsdm != null">`JLFSDM` = #{jlfsdm}, </if>
+			<if test="yhlbdm != null">`YHLBDM` = #{yhlbdm}, </if>
+			<if test="gddwbm != null">`GDDWBM` = #{gddwbm}, </if>
+			<if test="cbqdbh != null">`CBQDBH` = #{cbqdbh}, </if>
+			<if test="zdycxh != null">`ZDYCXH` = #{zdycxh}, </if>
+			<if test="yyhbh != null">`YYHBH` = #{yyhbh}, </if>
+			<if test="htrl != null">`HTRL` = #{htrl}, </if>
+			<if test="yxrl != null">`YXRL` = #{yxrl}, </if>
+			<if test="scbcdm != null">`SCBCDM` = #{scbcdm}, </if>
+			<if test="fhxzdm != null">`FHXZDM` = #{fhxzdm}, </if>
+			<if test="ghnhylbdm != null">`GHNHYLBDM` = #{ghnhylbdm}, </if>
+			<if test="cxr != null">`CXR` = #{cxr}, </if>
+			<if test="lhrq != null">`LHRQ` = #{lhrq}, </if>
+			<if test="sdrq != null">`SDRQ` = #{sdrq}, </if>
+			<if test="xhrq != null">`XHRQ` = #{xhrq}, </if>
+			<if test="lsyddqrq != null">`LSYDDQRQ` = #{lsyddqrq}, </if>
+			<if test="lsydbz != null">`LSYDBZ` = #{lsydbz}, </if>
+			<if test="yhztdm != null">`YHZTDM` = #{yhztdm}, </if>
+			<if test="ydjczq != null">`YDJCZQ` = #{ydjczq}, </if>
+			<if test="scjcrq != null">`SCJCRQ` = #{scjcrq}, </if>
+			<if test="jcqdbs != null">`JCQDBS` = #{jcqdbs}, </if>
+			<if test="tdbz != null">`TDBZ` = #{tdbz}, </if>
+			<if test="zglxdm != null">`ZGLXDM` = #{zglxdm}, </if>
+			<if test="dqbm != null">`DQBM` = #{dqbm}, </if>
+			<if test="dylxdm != null">`DYLXDM` = #{dylxdm}, </if>
+			<if test="dylsfsdm != null">`DYLSFSDM` = #{dylsfsdm}, </if>
+			<if test="dyqhfsdm != null">`DYQHFSDM` = #{dyqhfsdm}, </if>
+			<if test="dylszzwz != null">`DYLSZZWZ` = #{dylszzwz}, </if>
+			<if test="zbdybz != null">`ZBDYBZ` = #{zbdybz}, </if>
+			<if test="zbdybsfsdm != null">`ZBDYBSFSDM` = #{zbdybsfsdm}, </if>
+			<if test="zbdyrl != null">`ZBDYRL` = #{zbdyrl}, </if>
+			<if test="xbyhbz != null">`XBYHBZ` = #{xbyhbz}, </if>
+			<if test="cjfhyhbz != null">`CJFHYHBZ` = #{cjfhyhbz}, </if>
+			<if test="gkkxbz != null">`GKKXBZ` = #{gkkxbz}, </if>
+			<if test="xzqydm != null">`XZQYDM` = #{xzqydm}, </if>
+			<if test="cxdm != null">`CXDM` = #{cxdm}, </if>
+			<if test="szlc != null">`SZLC` = #{szlc}, </if>
+			<if test="yfflxdm != null">`YFFLXDM` = #{yfflxdm}, </if>
+			<if test="lsjfgxh != null">`LSJFGXH` = #{lsjfgxh}, </if>
+			<if test="jcrybs != null">`JCRYBS` = #{jcrybs}, </if>
+			<if test="cbsxh != null">`CBSXH` = #{cbsxh}, </if>
+			<if test="dwtydz != null">`DWTYDZ` = #{dwtydz}, </if>
+			<if test="yzbm != null">`YZBM` = #{yzbm}, </if>
+			<if test="czhm != null">`CZHM` = #{czhm}, </if>
+			<if test="khsfdm != null">`KHSFDM` = #{khsfdm}, </if>
+			<if test="khfqbz != null">`KHFQBZ` = #{khfqbz}, </if>
+			<if test="khjlbs != null">`KHJLBS` = #{khjlbs}, </if>
+			<if test="sfyzbdc != null">`SFYZBDC` = #{sfyzbdc}, </if>
+			<if test="zbdcrl != null">`ZBDCRL` = #{zbdcrl}, </if>
+			<if test="bzfbz != null">`BZFBZ` = #{bzfbz}, </if>
+			<if test="bzfzhs != null">`BZFZHS` = #{bzfzhs}, </if>
+			<if test="bzfzmj != null">`BZFZMJ` = #{bzfzmj}, </if>
+			<if test="bzfzrl != null">`BZFZRL` = #{bzfzrl}, </if>
+			<if test="cjsj != null">`CJSJ` = #{cjsj}, </if>
+			<if test="czsj != null">`CZSJ` = #{czsj}, </if>
+			<if test="cbzq != null">`CBZQ` = #{cbzq}, </if>
+			<if test="jtlx != null">`JTLX` = #{jtlx}, </if>
+			<if test="cdm != null">`CDM` = #{cdm}, </if>
+			<if test="szxmbz != null">`SZXMBZ` = #{szxmbz}, </if>
+			<if test="sjzybgsj != null">`SJZYBGSJ` = #{sjzybgsj}, </if>
+			<if test="ydjcsczxjcrq != null">`YDJCSCZXJCRQ` = #{ydjcsczxjcrq}, </if>
+			<if test="ghrl != null">`GHRL` = #{ghrl}, </if>
+			<if test="bszdsj != null">`BSZDSJ` = #{bszdsj}, </if>
+			<if test="ztqmsj != null">`ZTQMSJ` = #{ztqmsj}, </if>
+			<if test="fkmsdm != null">`FKMSDM` = #{fkmsdm}, </if>
+			<if test="ffmsdm != null">`FFMSDM` = #{ffmsdm}, </if>
+			<if test="sfyxtdbz != null">`SFYXTDBZ` = #{sfyxtdbz}, </if>
+			<if test="tdlxdm != null">`TDLXDM` = #{tdlxdm}, </if>
+			<if test="fdfsdm != null">`FDFSDM` = #{fdfsdm}, </if>
+			<if test="jd != null">`JD` = #{jd}, </if>
+			<if test="wd != null">`WD` = #{wd}, </if>
+			<if test="sfldhbz != null">`SFLDHBZ` = #{sfldhbz}, </if>
+			<if test="scjyyhbz != null">`SCJYYHBZ` = #{scjyyhbz}, </if>
+			<if test="yhbzsxdm != null">`YHBZSXDM` = #{yhbzsxdm}</if>
+		</set>
+		where YHBH = #{yhbh}
+	</update>
+	
+	<delete id="remove">
+		delete from dl_kh_ydkh where YHBH = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from dl_kh_ydkh where YHBH in 
+		<foreach item="yhbh" collection="array" open="(" separator="," close=")">
+			#{yhbh}
+		</foreach>
+	</delete>
+
+</mapper>

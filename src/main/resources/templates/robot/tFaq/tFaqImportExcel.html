@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head >
+	<meta charset="utf-8">
+	<title>导入问答</title>	
+	<link rel="shortcut icon" href="favicon.ico">
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/layui.css" rel="stylesheet">
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="layui-upload">
+					  <button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
+					</div>
+					<div class="layui-upload" style="padding-top:10px">
+					  <button type="button" class="layui-btn" id="test9">开始上传</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/js/bootstrap-paginator.min.js"></script>
+
+<script src="/js/content.js?v=1.0.0"></script>
+<script src="/js/layui.js"></script>
+<script src="/js/plugins/clipboard/clipboard.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<script type="text/javascript">
+
+	 layui.use('upload', function () {
+	        var upload = layui.upload;
+	        //执行实例
+	        var uploadInst = upload.render({
+	            elem: '#test8', //绑定元素
+	            url: '/robot/tFaq/importFaqsExcelSources', //上传接口
+	            size: 100000,
+	            auto: false,
+	            bindAction: '#test9',
+	            accept: 'file',
+	            exts:	'xls|xlsx',
+	            before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+	                layer.load(); //上传loading
+              	},
+	            done: function (r) {
+	                parent.layer.msg(r.msg,{
+	                    time: 20000, 
+	                    btn: ['好的']
+	                  });
+	                layer.closeAll('loading');
+					parent.reLoad();
+					parent.reLoadTree();
+					var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+					parent.layer.close(index);
+	            },
+	            error: function (r) {
+	                layer.msg(r.msg);
+	            }
+	        });
+	    });
+		
+</script>
+
+</body>
+</html>

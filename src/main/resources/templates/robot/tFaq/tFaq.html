@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+
+<style>
+	#jstree a{
+		    width: 90%;  
+            overflow: hidden;  
+            /*文本不换行*/  
+            white-space: nowrap;  
+            /*文字超出用省略号*/  
+            text-overflow:ellipsis;
+	}
+</style>
+
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-3">
+				<div class="ibox ibox-body">
+					<div class="ibox-title">
+						<h5>选择专业</h5>
+					</div>
+					<div class="ibox-content">
+						<div id="jstree"></div>
+					</div>
+				</div>
+		</div>
+	
+		<div class="col-sm-9">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+						<input type="hidden" th:value="${repositoryId}" id="s_RepositoryId">
+						<input type="hidden" th:value="${majorId}" id="s_MajorId">
+<!-- 						<a th:if="${repositoryId}" class="offer" href="/robot/tRepository">返回词库</a> -->
+						<button th:if="${repositoryId}" type="button" class="btn btn-outline btn-info" onclick="window.location.href='/robot/tRepository'">
+								<i class="fa fa-chevron-left" aria-hidden="true"></i>返回词库
+						</button>
+						<button th:if="${majorId}" type="button" class="btn btn-outline btn-info" onclick="window.location.href='/robot/tMajor'">
+								<i class="fa fa-chevron-left" aria-hidden="true"></i>返回词库
+						</button>
+						
+						
+							<button shiro:hasPermission="robot:tFaq:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="robot:tFaq:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+							<button type="button" class="btn btn-success " onclick="window.location.href='/robot/tFaq/expFaqList'">
+								<i class="fa fa-download" aria-hidden="true"></i>导出
+							</button>
+							
+							<button type="button" class="btn btn-info " onclick="importExcelSource()">
+								<i class="fa fa-upload" aria-hidden="true"></i>导入
+							</button>
+							
+							<button type="button" class="btn btn-warning " onclick="window.location.href='/excel/知识库问题信息.xls'">
+								<i class="fa fa-file-excel-o" aria-hidden="true"></i>模板
+							</button>
+						</div>
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchQuestion" type="text" class="form-control"
+								placeholder="问题">
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自robot的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="robot:tFaq:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="robot:tFaq:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="robot:tFaq:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/robot/tFaq/tFaq.js"></script>
+	
+	<script type="text/javascript">
+		function importExcelSource(){
+			layer.open({
+				type : 2,
+				title : '导入数据',
+				maxmin : true,
+				shadeClose : false, // 点击遮罩关闭层
+				area : [ '450px', '220px' ],
+				content : '/robot/tFaq/toImport' // iframe的url
+			});
+		}	
+	</script>
+</body>
+</html>

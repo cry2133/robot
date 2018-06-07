@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="middle_id" name="middle_id" th:value="${tKeywordMiddle.middle_id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">关键字id组：</label>
+								<div class="col-sm-8">
+									<input id="keygroup" name="keygroup" th:value="${tKeywordMiddle.keygroup}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">关键字组合名称：</label>
+								<div class="col-sm-8">
+									<input id="keygroupName" name="keygroupName" th:value="${tKeywordMiddle.keygroupName}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">问答主键id：</label>
+								<div class="col-sm-8">
+									<input id="faqId" name="faqId" th:value="${tKeywordMiddle.faqId}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/robot/tKeywordMiddle/tKeywordMiddleEdit.js">
+	</script>
+</body>
+</html>

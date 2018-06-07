@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${tIdentityInfo.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">性别：</label>
+								<div class="col-sm-8">
+									<input id="sex" name="sex" th:value="${tIdentityInfo.sex}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">姓名：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" th:value="${tIdentityInfo.name}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">身份证ID：</label>
+								<div class="col-sm-8">
+									<input id="identityID" name="identityID" th:value="${tIdentityInfo.identityID}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">民族：</label>
+								<div class="col-sm-8">
+									<input id="nation" name="nation" th:value="${tIdentityInfo.nation}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">地址：</label>
+								<div class="col-sm-8">
+									<input id="address" name="address" th:value="${tIdentityInfo.address}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">出生日期：</label>
+								<div class="col-sm-8">
+									<input id="birth" name="birth" th:value="${tIdentityInfo.birth}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">电话号码：</label>
+								<div class="col-sm-8">
+									<input id="phoneNumber" name="phoneNumber" th:value="${tIdentityInfo.phoneNumber}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">公司信息：</label>
+								<div class="col-sm-8">
+									<input id="companyInfo" name="companyInfo" th:value="${tIdentityInfo.companyInfo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">公司名称：</label>
+								<div class="col-sm-8">
+									<input id="companyName" name="companyName" th:value="${tIdentityInfo.companyName}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">职位：</label>
+								<div class="col-sm-8">
+									<input id="position" name="position" th:value="${tIdentityInfo.position}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/robot/tIdentityInfo/tIdentityInfoEdit.js">
+	</script>
+</body>
+</html>
