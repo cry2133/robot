@@ -1,7 +1,9 @@
 package com.robot.robot.controller.app;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.robot.robot.bean.UserModel;
 import com.robot.robot.common.UrlManagement;
 import com.robot.robot.controller.app.bean.ResponseBean;
 import com.robot.robot.domain.TAppointmentDO;
@@ -18,7 +19,6 @@ import com.robot.robot.service.TAppointmentService;
 import com.robot.robot.service.TIdentityInfoService;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -62,17 +62,17 @@ public class AppointmentForAppController {
     @RequestMapping(value = "/verifyID",method= RequestMethod.GET)
     @ResponseBody
     public ResponseBean verifyID(String identityID) {
-        List<TIdentityInfoDO> userList = null;
+        TIdentityInfoDO user = null;
         try {
-            userList =  tIdentityInfoService.selectByIdentityID(identityID);
-            if(userList.isEmpty())
+            user =  tIdentityInfoService.selectByIdentityID(identityID);
+            if(user.getName().isEmpty())
             {
                 return ResponseBean.success("请先进行实名认证！");
             }
         }catch (Exception e) {
             logger.error("verifyID异常", e);
         }
-        return ResponseBean.success(userList);
+        return ResponseBean.success(user);
     }
 	 
     /**
@@ -87,31 +87,44 @@ public class AppointmentForAppController {
      */
 	@RequestMapping(value = "/appointment",method= RequestMethod.GET)
 	@ResponseBody
-    public ResponseBean appointment(String identityID,String appointmentTime,String type) {
-        List<TAppointmentDO> appointmentList=null;
+    public ResponseBean appointment(String identityID,String appointmentTime,int taxID) {
         try {
         	TAppointmentDO data=new TAppointmentDO();
-//            if(StringUtils.isNotEmpty(appointmentTime)){
-//            	Date at=new Date(appointmentTime);
-//            	data.setAppointmenttime(at);
-//            }
+        	Map<String, Object> map=new HashMap<String, Object>();
         	data.setIdentityID(identityID);
         	//appointmentTime=2017-08-30 15:00-16:00
             data.setAppointmentTime(appointmentTime);
-            data.setType(type);
-            appointmentList=tAppointmentService.selectByAppointmentTime(data.getAppointmentTime());
-            if (appointmentList.size()<2)
-            {
+            data.setTaxID(taxID);
+            
+            map.put("identityID", identityID);
+            map.put("taxID", taxID);
+            //先查用户是否已经预约了
+            int getCount = tAppointmentService.list(map).size();
+            if(getCount>0){
+            	return ResponseBean.fail("对不起！你已预约了其他业务！");
+            }
+            
+            map.put("appointmentTime", appointmentTime);
+            map.remove("identityID");
+            map.remove("taxID");
+            //再查询该时间是否有多人预约
+            int count = tAppointmentService.list(map).size();
+            switch(count){
+            case 0:
             	tAppointmentService.save(data);
                 return ResponseBean.success("恭喜您，预约成功！");
-            }
-            else {
-                return ResponseBean.success("预约失败，当前时段预约人数已满<br>请预约其它时段！");
+			case 1:
+				tAppointmentService.save(data);
+                return ResponseBean.success("恭喜您，预约成功！");
+            case 2:
+                return ResponseBean.success("预约失败！当前时段预约人数已满<br>请预约其它时段！");
+            default:
+                return ResponseBean.fail("对不起！预约失败！");
             }
         }catch (Exception e) {
             logger.error("appointment异常", e);
         }
-        return ResponseBean.success();
+        return ResponseBean.fail("对不起！预约失败！");
     }
 	
 	/**
@@ -124,10 +137,12 @@ public class AppointmentForAppController {
 	 */
 	 @RequestMapping(value = "/searchAppointmentInfo", method = POST)
 	 @ResponseBody
-	    public ResponseBean searchAppointmentInfo(@RequestBody UserModel userModel) {
-	        List<TAppointmentDO> appointmentList = null;
+	    public ResponseBean searchAppointmentInfo(String identityID) {
 	        try {
-	            appointmentList = tAppointmentService.selectByIdentityID(userModel.getIdentityID());
+	        	Map<String, Object> map=new HashMap<String, Object>();
+	        	 List<TAppointmentDO> appointmentList = null;
+	        	map.put("identityID", identityID);
+	            appointmentList = tAppointmentService.list(map);
 	            if (appointmentList.isEmpty()) {
 	                return ResponseBean.fail("没有相关用户预约信息！");
 	            }
@@ -150,18 +165,20 @@ public class AppointmentForAppController {
 	  */
 	 @RequestMapping(value = "/appointmentDelete",method= RequestMethod.GET)
 	 @ResponseBody
-	    public ResponseBean appointmentDelete(String identityID,String appointmentTime,String type) {
+	    public ResponseBean appointmentDelete(String identityID,String appointmentTime,int taxID) {
 	        try{
-	        	TAppointmentDO appointment = new TAppointmentDO();
-	            appointment.setIdentityID(identityID);
-	            appointment.setAppointmentTime(appointmentTime);
-	            appointment.setType(type);
-	            if (appointment.getIdentityID().equals(identityID) && appointment.getAppointmentTime().equals(appointmentTime) && appointment.getType().equals(type)) {
-	            	tAppointmentService.deleteAppointmentTime(appointment.getIdentityID(), appointment.getAppointmentTime(), appointment.getType());
-	                return ResponseBean.success();
+	        	Map<String, Object> map = new HashMap<String, Object>();
+	        	map.put("identityID", identityID);
+	        	//map.put("appointmentTime", appointmentTime);
+	        	map.put("taxID", taxID);
+	            int del = tAppointmentService.deleteAppointmentTime(map);
+	            if(del==1){
+	            	 return ResponseBean.success();
+	            }else{
+	            	 return ResponseBean.fail();
 	            }
 	    }catch (Exception e){
-	        logger.error("appointmentDelete异常",e);
+	        logger.error("删除预约异常",e);
 	        }
 	        return ResponseBean.fail();
 	    }

@@ -28,5 +28,5 @@ public interface TIdentityInfoService {
 	
 	int batchRemove(Long[] ids);
 	
-	List<TIdentityInfoDO> selectByIdentityID(String identityID);
+	TIdentityInfoDO selectByIdentityID(String identityID);
 }

@@ -52,12 +52,16 @@ function load() {
 									title : '电力业务id' 
 								},
 																{
-									field : 'taxType', 
+									field : 'taxtype', 
 									title : '电力业务类型' 
 								},
 																{
+									field : 'taxmaterials', 
+									title : '业务所需资料' 
+								},
+																{
 									field : 'createtime', 
-									title : '创建时间' 
+									title : '' 
 								},
 																{
 									title : '操作',

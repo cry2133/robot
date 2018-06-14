@@ -4,11 +4,11 @@
 <mapper namespace="com.robot.robot.dao.TIdentityInfoDao">
 
 	<select id="get" resultType="com.robot.robot.domain.TIdentityInfoDO">
-		select `id`,`sex`,`name`,`identityID`,`nation`,`address`,`birth`,`phoneNumber`,`companyInfo`,`companyName`,`position` from t_identity_info where id = #{value}
+		select `id`,`sex`,`name`,`identityID`,`nation`,`address`,`birth`,`phoneNumber`,`email` from t_identity_info where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.robot.robot.domain.TIdentityInfoDO">
-		select `id`,`sex`,`name`,`identityID`,`nation`,`address`,`birth`,`phoneNumber`,`companyInfo`,`companyName`,`position` from t_identity_info
+		select `id`,`sex`,`name`,`identityID`,`nation`,`address`,`birth`,`phoneNumber`,`email` from t_identity_info
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="sex != null and sex != ''"> and sex = #{sex} </if>
@@ -18,9 +18,7 @@
 		  		  <if test="address != null and address != ''"> and address = #{address} </if>
 		  		  <if test="birth != null and birth != ''"> and birth = #{birth} </if>
 		  		  <if test="phoneNumber != null and phoneNumber != ''"> and phoneNumber = #{phoneNumber} </if>
-		  		  <if test="companyInfo != null and companyInfo != ''"> and companyInfo = #{companyInfo} </if>
-		  		  <if test="companyName != null and companyName != ''"> and companyName = #{companyName} </if>
-		  		  <if test="position != null and position != ''"> and position = #{position} </if>
+		  		  <if test="email != null and email != ''"> and email = #{email} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -46,9 +44,7 @@
 		  		  <if test="address != null and address != ''"> and address = #{address} </if>
 		  		  <if test="birth != null and birth != ''"> and birth = #{birth} </if>
 		  		  <if test="phoneNumber != null and phoneNumber != ''"> and phoneNumber = #{phoneNumber} </if>
-		  		  <if test="companyInfo != null and companyInfo != ''"> and companyInfo = #{companyInfo} </if>
-		  		  <if test="companyName != null and companyName != ''"> and companyName = #{companyName} </if>
-		  		  <if test="position != null and position != ''"> and position = #{position} </if>
+		  		  <if test="email != null and email != ''"> and email = #{email} </if>
 		  		</where>
 	</select>
 	 
@@ -62,9 +58,7 @@
 			`address`, 
 			`birth`, 
 			`phoneNumber`, 
-			`companyInfo`, 
-			`companyName`, 
-			`position`
+			`email`
 		)
 		values
 		(
@@ -75,9 +69,7 @@
 			#{address}, 
 			#{birth}, 
 			#{phoneNumber}, 
-			#{companyInfo}, 
-			#{companyName}, 
-			#{position}
+			#{email}
 		)
 	</insert>
 	 
@@ -91,9 +83,7 @@
 			<if test="address != null">`address` = #{address}, </if>
 			<if test="birth != null">`birth` = #{birth}, </if>
 			<if test="phoneNumber != null">`phoneNumber` = #{phoneNumber}, </if>
-			<if test="companyInfo != null">`companyInfo` = #{companyInfo}, </if>
-			<if test="companyName != null">`companyName` = #{companyName}, </if>
-			<if test="position != null">`position` = #{position}</if>
+			<if test="email != null">`email` = #{email}</if>
 		</set>
 		where id = #{id}
 	</update>
@@ -109,7 +99,7 @@
 		</foreach>
 	</delete>
 
-	<select id="selectByIdentityID" resultType="com.robot.robot.domain.TIdentityInfoDO">
-		select `id`,`sex`,`name`,`identityID`,`nation`,`address`,`birth`,`phoneNumber`,`companyInfo`,`companyName`,`position` from t_identity_info where identityID = #{identityID}
+	<select id="selectByIdentityID" resultType="com.robot.robot.domain.TIdentityInfoDO"  parameterType="String">
+		select `id`,`sex`,`name`,`identityID`,`nation`,`address`,`birth`,`phoneNumber`,`email` from t_identity_info where identityID = #{identityID}
 	</select>
 </mapper>

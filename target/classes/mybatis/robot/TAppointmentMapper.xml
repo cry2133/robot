@@ -4,16 +4,16 @@
 <mapper namespace="com.robot.robot.dao.TAppointmentDao">
 
 	<select id="get" resultType="com.robot.robot.domain.TAppointmentDO">
-		select `id`,`identityID`,`appointmentTime`,`type` from t_appointment where id = #{value}
+		select `id`,`identityID`,`appointmentTime`,`taxID` from t_appointment where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.robot.robot.domain.TAppointmentDO">
-		select `id`,`identityID`,`appointmentTime`,`type` from t_appointment
+		select `id`,`identityID`,`appointmentTime`,`taxID` from t_appointment
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="identityID != null and identityID != ''"> and identityID = #{identityID} </if>
 		  		  <if test="appointmentTime != null and appointmentTime != ''"> and appointmentTime = #{appointmentTime} </if>
-		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="taxID != null and taxID != ''"> and taxID = #{taxID} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -34,7 +34,7 @@
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="identityID != null and identityID != ''"> and identityID = #{identityID} </if>
 		  		  <if test="appointmentTime != null and appointmentTime != ''"> and appointmentTime = #{appointmentTime} </if>
-		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="taxID != null and taxID != ''"> and taxID = #{taxID} </if>
 		  		</where>
 	</select>
 	 
@@ -43,13 +43,13 @@
 		(
 			`identityID`, 
 			`appointmentTime`, 
-			`type`
+			`taxID`
 		)
 		values
 		(
 			#{identityID}, 
 			#{appointmentTime}, 
-			#{type}
+			#{taxID}
 		)
 	</insert>
 	 
@@ -58,7 +58,7 @@
 		<set>
 			<if test="identityID != null">`identityID` = #{identityID}, </if>
 			<if test="appointmentTime != null">`appointmentTime` = #{appointmentTime}, </if>
-			<if test="type != null">`type` = #{type}</if>
+			<if test="taxID != null">`taxID` = #{taxID}</if>
 		</set>
 		where id = #{id}
 	</update>
@@ -79,7 +79,7 @@
 		 <where>  
 		  		  <if test="identityID != null and identityID != ''"> and identityID = #{identityID} </if>
 		  		  <if test="appointmentTime != null and appointmentTime != ''"> and appointmentTime = #{appointmentTime} </if>
-		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="taxID != null and taxID != ''"> and taxID = #{taxID} </if>
   		</where>
 	</delete>
 

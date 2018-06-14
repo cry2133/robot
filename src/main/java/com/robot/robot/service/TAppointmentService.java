@@ -18,10 +18,6 @@ public interface TAppointmentService {
 	
 	List<TAppointmentDO> list(Map<String, Object> map);
 	
-	List<TAppointmentDO> selectByAppointmentTime(String appointmentTime);
-	
-	List<TAppointmentDO> selectByIdentityID(String identityid);
-	
 	int count(Map<String, Object> map);
 	
 	int save(TAppointmentDO tAppointment);
@@ -30,7 +26,7 @@ public interface TAppointmentService {
 	
 	int remove(Long id);
 
-	int deleteAppointmentTime(String identityID,String appointmentTime,String type);
+	int deleteAppointmentTime(Map<String, Object> map);
 	
 	int batchRemove(Long[] ids);
 }

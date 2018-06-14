@@ -9,7 +9,10 @@ import java.io.InputStream;
 import java.io.OutputStream;  
 import java.io.PrintWriter;  
 import java.net.SocketException;  
-import java.net.URLEncoder;  
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.net.PrintCommandListener;  
@@ -394,6 +397,67 @@ public class OLDFashionedFTP  {
         }  
         return success;  
     }  
+    
+    /** 
+     * 下载FTP所有文件 
+     *  
+     * @param url 
+     *            FPT地址 
+     * @param port 
+     *            FTP端口 
+     * @param username 
+     *            用户名 
+     * @param password 
+     *            密 码 
+     * @param remoteremoteAdr 
+     *            远程路径 
+     * @param localAdr 
+     *            文件名称 
+     * @param outputStream文件输出流 
+     * @param response 
+     *            Http响应 
+     * @return true/false 成功/失败 
+     */  
+    public boolean downAllFile(String url, int port, String username, String password, String remoteremoteAdr, HttpServletResponse response)  
+    {  
+        boolean success = false;  
+        try  
+        {  
+            success = login(url, port, username, password);  
+           logger.info("FTP用户登录：" + (success ? "成功!" : "失败!"));  
+            if (!success)  
+            {  
+                return success;  
+            }  
+            // 转移到FTP服务器目录  
+            ftp.changeWorkingDirectory(remoteremoteAdr);  
+            // 得到目录的相应文件列表  
+            FTPFile[] fs = ftp.listFiles();  
+              
+            for (FTPFile ftpFile : fs)  
+            {  
+               String fileName = ftpFile.getName();
+                    // 这个就是弹出下载对话框的关键代码  
+                    //response.setHeader("Content-disposition", "attachment;localAdr=" + URLEncoder.encode(fileName, "UTF-8"));  
+                    // 将文件保存到输出流outputStream中  
+                    File f=new File(fileName);  
+                    OutputStream os=new FileOutputStream(f);  
+                    ftp.retrieveFile(new String(ftpFile.getName().getBytes("UTF-8"), "ISO-8859-1"), os);  
+                    os.flush();  
+                    os.close();  
+             }  
+              
+            success = true;  
+        } catch (IOException e)  
+        {  
+            e.printStackTrace();  
+        } finally  
+        {  
+            this.disconnect();  
+        }  
+        return success;  
+    }  
+    
   
     /** 
      * 读取FTP文件内容 
@@ -514,10 +578,43 @@ public class OLDFashionedFTP  {
         return localAdr_.toString();  
     }  
   
-    public static void main(String[] args)  
+    /**
+     * 
+    * 获取该目录所有文件
+    * @param path
+     */
+    public List<String> getFileNames(String path) throws IOException{
+    	/*
+    	try {   
+            String[] fileNames = ftp.listNames();   
+            for (int i = 0; i < fileNames.length; i++) {   
+                System.out.println(fileNames[i]);   
+            }   
+        } catch (Exception e) {   
+            e.printStackTrace();   
+        }
+    	*/
+    	FTPFile[] ftpFiles= ftp.listFiles(path); 
+
+    	List<String> retList = new ArrayList<String>(); 
+    	if (ftpFiles == null || ftpFiles.length == 0) { 
+    		return retList; 
+    	} 
+    	for (FTPFile ftpFile : ftpFiles) { 
+	    	if (ftpFile.isFile()) { 
+	    		retList.add(ftpFile.getName()); 
+	    	} 
+    	} 
+    	return retList; 
+    }
+    
+    public static void main(String[] args) throws SocketException, IOException  
     {  
-        OLDFashionedFTP ftp = new OLDFashionedFTP(); 
-        ftp.downFile("10.130.242.54", 2121, "admin", "123456", "/", "test.txt", null);
+        OLDFashionedFTP ftp = new OLDFashionedFTP();
+        ftp.login("10.130.242.66", 2121, "robot", "robot");  
+        
+        //ftp.downAllFile("10.130.242.66", 2121, "robot", "robot", "/", null);
+   
      /*   try  
         {  
         	

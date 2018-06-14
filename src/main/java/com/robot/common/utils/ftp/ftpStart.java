@@ -48,6 +48,7 @@ public class ftpStart {
 
         FtpServer server = serverFactory.createServer();  
         server.start();
+        //server.stop();
         
     }
 

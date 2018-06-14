@@ -3,7 +3,6 @@ package com.robot.robot.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,26 +51,9 @@ public class TAppointmentServiceImpl implements TAppointmentService {
 		return tAppointmentDao.batchRemove(ids);
 	}
 
-	@Override
-	public List<TAppointmentDO> selectByAppointmentTime(String appointmentTime) {
-		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("appointmenttime", appointmentTime);
-		return tAppointmentDao.list(map);
-	}
 
 	@Override
-	public List<TAppointmentDO> selectByIdentityID(String identityid) {
-		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("identityID", identityid);
-		return tAppointmentDao.list(map);
-	}
-
-	@Override
-	public int deleteAppointmentTime(String identityID, String appointmentTime, String type) {
-		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("identityID", identityID);
-		map.put("appointmentTime", appointmentTime);
-		map.put("type", type);
+	public int deleteAppointmentTime(Map<String, Object> map) {
 		return tAppointmentDao.deleteAppointmentTime(map);
 	}
 	

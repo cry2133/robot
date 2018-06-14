@@ -4,7 +4,6 @@ import com.robot.common.config.RobotConfig;
 import com.robot.common.domain.FileDO;
 import com.robot.common.service.FileService;
 import com.robot.common.utils.*;
-import com.robot.robot.common.UrlManagement;
 import com.robot.robot.domain.TAppSoftwareDO;
 import com.robot.robot.service.TAppSoftwareService;
 
@@ -16,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;

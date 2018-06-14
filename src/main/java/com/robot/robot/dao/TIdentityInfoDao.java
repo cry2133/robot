@@ -30,6 +30,6 @@ public interface TIdentityInfoDao {
 	
 	int batchRemove(Long[] ids);
 
-	List<TIdentityInfoDO> selectByIdentityID(String identityID);
+	TIdentityInfoDO selectByIdentityID(String identityID);
 	
 }

@@ -76,13 +76,13 @@ public class IdentityInfoForAppController {
     @RequestMapping(value = "/searchUserInfo", method = POST)
     @ResponseBody
     public ResponseBean searchUserInfo(@RequestBody UserModel userModel) {
-        List<TIdentityInfoDO> tIdentityInfoList = null;
+        TIdentityInfoDO tIdentityInfo = null;
         try {
-        	tIdentityInfoList = tIdentityInfoService.selectByIdentityID(userModel.getIdentityID());
-                if (tIdentityInfoList.isEmpty()) {
+        	tIdentityInfo = tIdentityInfoService.selectByIdentityID(userModel.getIdentityID());
+                if (tIdentityInfo.getName().isEmpty()) {
                     return ResponseBean.fail("没有相关用户信息！");
                 }
-                return ResponseBean.success(tIdentityInfoList.toArray());
+                return ResponseBean.success(tIdentityInfo);
 
         }catch (Exception e) {
             logger.error("search error", e);

@@ -1,16 +1,19 @@
 package com.robot.common.utils.ftp;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import org.apache.commons.net.ftp.FTPClient;
 
 public class test {
 
 	public static void main(String[] args) throws Exception, IOException {
 		  
 			FtpUtil ftpUtil=new FtpUtil();
-		    ftpUtil.connectServer("10.130.242.100", 2121, "admin", "123456", null);
+		   // ftpUtil.connectServer("10.130.242.100", 2121, "admin", "123456", null);
 		    
-			List<String> fileList = ftpUtil.getFileList();
+			//List<String> fileList = ftpUtil.getFileList();
 			
 		    //获得ftp服务器上目录名称为DF4下的所有文件名称
 		    //List<String> list=ftpUtil.getFileList("/FTPServerPath");
@@ -26,6 +29,19 @@ public class test {
 			while(it.hasNext()){  
 				System.out.println(it.next());  
 			}*/
+			
+			
+			
+		    ftpUtil.connectServer("10.130.242.66", 2121, "robot", "robot", "/");
+		    //获得ftp服务器上目录名称为DF4下的所有文件名称
+		    List<String> list=ftpUtil.getFileList("/");
+		    System.out.println("文件名称列表为:"+list);
+		    //上传本地D盘文件aaa.txt到服务器，服务器上名称为bbb.txt
+		    //ftpUtil.uploadFile("d:" + File.separator + "aaa.txt", "eee.txt");
+		    //从服务器上下载文件bbb.txt到本地d盘名称为ccc.txt
+		   // ftpUtil.download("eee.txt", "d:" + File.separator + "fff.txt");
+			
+			
 	}
 	
 

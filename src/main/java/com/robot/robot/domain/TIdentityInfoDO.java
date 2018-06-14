@@ -30,12 +30,8 @@ public class TIdentityInfoDO implements Serializable {
 	private String birth;
 	//电话号码
 	private String phoneNumber;
-	//公司信息
-	private String companyInfo;
-	//公司名称
-	private String companyName;
-	//职位
-	private String position;
+	//邮箱地址
+	private String email;
 
 	/**
 	 * 设置：
@@ -133,40 +129,17 @@ public class TIdentityInfoDO implements Serializable {
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
+
 	/**
-	 * 设置：公司信息
+	 * 设置：邮箱地址
 	 */
-	public void setCompanyInfo(String companyinfo) {
-		this.companyInfo = companyinfo;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	/**
-	 * 获取：公司信息
+	 * 获取：邮箱地址
 	 */
-	public String getCompanyInfo() {
-		return companyInfo;
-	}
-	/**
-	 * 设置：公司名称
-	 */
-	public void setCompanyName(String companyname) {
-		this.companyName = companyname;
-	}
-	/**
-	 * 获取：公司名称
-	 */
-	public String getCompanyName() {
-		return companyName;
-	}
-	/**
-	 * 设置：职位
-	 */
-	public void setPosition(String position) {
-		this.position = position;
-	}
-	/**
-	 * 获取：职位
-	 */
-	public String getPosition() {
-		return position;
+	public String getEmail() {
+		return email;
 	}
 }

@@ -3,7 +3,9 @@ package com.robot.robot.controller.app;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.print.Doc;
 import javax.print.DocFlavor;
@@ -24,20 +26,38 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.robot.common.config.RobotConfig;
 import com.robot.common.utils.RequestUtil;
+import com.robot.common.utils.ftp.FtpUtil;
 import com.robot.robot.controller.app.bean.ResponseBean;
+import com.robot.robot.domain.TIdentityInfoDO;
 import com.robot.robot.domain.TPrinterSettingDO;
+import com.robot.robot.service.TIdentityInfoService;
 import com.robot.robot.service.TPrinterSettingService;
 
 @Controller
 @RequestMapping("/app/printer")
 public class PrinterForAppController {
+
 	public static Logger logger = Logger.getLogger(IdentityInfoForAppController.class); 
-	private static final String FTP_URL = "ftp://47.97.21.35:2121/print";
+	
+	private static final String FTP_URL = "10.130.242.66";
+	private static final int FTP_PORT = 2121;
+	private static final String FTP_USERNAME = "robot";
+	private static final String FTP_PASSWORD = "robot";
+	private static final String FTP_REMOTEADR = "model";
+	private static final String RETURN_FTP_URL = "ftp://10.130.242.66:2121/model/";
+	
+	@Autowired
+	private RobotConfig robotConfig;
 	
 	@Autowired
 	private TPrinterSettingService tPrinterSettingService;
 	
+	@Autowired
+	private TIdentityInfoService tIdentityInfoService;
+	
+	FtpUtil ftpUtil=new FtpUtil();
 	
 	/**
 	 * 打印功能
@@ -124,6 +144,50 @@ public class PrinterForAppController {
 	}
 	
 	/**
+	 * 返回所有pdf文件名
+	* @param request
+	* @History  v 1.0
+	 */
+	@RequestMapping("/getAllFileNames")
+	@ResponseBody
+	public ResponseBean getAllFileNames(HttpServletRequest request) throws Exception{
+		String identityID=RequestUtil.getString(request, "identityID");
+		TIdentityInfoDO identityInfo = tIdentityInfoService.selectByIdentityID(identityID);
+		
+		String path = identityInfo.getName();
+		if(path.isEmpty()){
+			return  ResponseBean.success("找不到该用户信息！");
+		}
+		
+		// 获得指定文件对象  
+        File file = new File(robotConfig.getUploadPath()+"model/"+path);   
+        // 获得该文件夹内的所有文件   
+        File[] array = file.listFiles();   
+
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		if(array.length==0){
+			return  ResponseBean.success("无打印发票！");
+		}else{
+			for (int i=0; i<array.length; i++){
+			   if(array[i].isFile())//如果是文件
+	            {   
+				   String fileName = array[i].getName();   
+				   map.put("url", "/files/model/"+path+"/"+fileName);
+	            }
+				String date = "2018-0"+(i+1);
+				String accounts = "2"+i+"5.05";
+				
+				map.put("date", date);
+				map.put("accounts", accounts);
+			}
+			return ResponseBean.success(map);
+		}
+		
+	}
+	
+	
+	/**
 	 * 返回需要打印的pdf
 	* @param request
 	* @History  v 1.0
@@ -131,15 +195,23 @@ public class PrinterForAppController {
 	@RequestMapping("/model")
 	@ResponseBody
 	public ResponseBean getPrintModelURL(HttpServletRequest request) throws Exception{
-		String robotNo=RequestUtil.getString(request, "robotNo");
-		String fileName=RequestUtil.getString(request, "fileName");
-		File file = new File(fileName+".pdf");
-		if(file.exists()){
-			return  ResponseBean.success("文件或目录不存在！");
-		}else{
-			return ResponseBean.success(FTP_URL+"/"+robotNo+"/"+file);
-		}
+		String identityID=RequestUtil.getString(request, "identityID");
+		TIdentityInfoDO identityInfo = tIdentityInfoService.selectByIdentityID(identityID);
+		String path = identityInfo.getName();
 		
+		String fileName=RequestUtil.getString(request, "fileName");
+		return ResponseBean.success("/files/model/"+path+"/"+fileName);
+		//ftpUtil.connectServer(FTP_URL, FTP_PORT, FTP_USERNAME, FTP_PASSWORD, FTP_REMOTEADR);
+
+		//下载到本地后返回地址供机器人打印
+		//boolean down = ftpUtil.download(fileName, "d:" + File.separator + fileName);
+		/*
+		if(!down){
+			return  ResponseBean.success("文件不存在！");
+		}else{
+			return ResponseBean.success(RETURN_FTP_URL+fileName);
+		}
+		*/
 	}
 	
 }

@@ -66,6 +66,7 @@ function load(majorId,repositoryId) {
 								},
 																{
 									field : 'question', 
+									width:	'20%',
 									title : '问题' 
 								},
 																{
@@ -78,8 +79,24 @@ function load(majorId,repositoryId) {
 									title : '关键字组合' 
 								},
 																{
+									field : 'keygroupPriority', 
+									title : '关键字优先级' 
+								},
+								{
+									field : 'flowIdentify', 
+									title : '流程标识' 
+								},
+																{
+									field : 'isFlow', 
+									title : '是否流程' 
+								},
+																{
+									field : 'flowLevel', 
+									title : '流程级别' 
+								},
+																{
 									field : 'createtime', 
-									width:	'10%',
+									width:	'6%',
 									title : '创建时间' 
 								},
 								{

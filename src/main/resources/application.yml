@@ -20,8 +20,8 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   profiles: 
   #  本地数据库和阿里云数据库切换
-     active: dev
-    #active: pro
+    #active: dev
+    active: pro
   http:
     multipart:
       max-file-size: 100Mb

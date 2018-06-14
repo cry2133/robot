@@ -21,7 +21,7 @@ public class TAppointmentDO implements Serializable {
 	//预约时间
 	private String appointmentTime;
 	//预约类型
-	private String type;
+	private int taxID;
 
 	/**
 	 * 设置：
@@ -60,15 +60,15 @@ public class TAppointmentDO implements Serializable {
 		return appointmentTime;
 	}
 	/**
-	 * 设置：预约类型
+	 * 设置：预约业务类型ID
 	 */
-	public void setType(String type) {
-		this.type = type;
+	public void setTaxID(int taxID) {
+		this.taxID = taxID;
 	}
 	/**
-	 * 获取：预约类型
+	 * 获取：预约业务类型ID
 	 */
-	public String getType() {
-		return type;
+	public int getTaxID() {
+		return taxID;
 	}
 }

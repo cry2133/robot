@@ -10,7 +10,7 @@ import java.util.Date;
  * 
  * @author yobi
  * @email ***
- * @date 2018-02-05 17:25:38
+ * @date 2018-06-11 10:28:48
  */
 public class TTaxInfoDO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -18,7 +18,9 @@ public class TTaxInfoDO implements Serializable {
 	//电力业务id
 	private Integer id;
 	//电力业务类型
-	private String taxType;
+	private String taxtype;
+	//业务所需资料
+	private String taxmaterials;
 	//
 	private Date createtime;
 
@@ -37,14 +39,26 @@ public class TTaxInfoDO implements Serializable {
 	/**
 	 * 设置：电力业务类型
 	 */
-	public void setTaxType(String taxtype) {
-		this.taxType = taxtype;
+	public void setTaxtype(String taxtype) {
+		this.taxtype = taxtype;
 	}
 	/**
 	 * 获取：电力业务类型
 	 */
-	public String getTaxType() {
-		return taxType;
+	public String getTaxtype() {
+		return taxtype;
+	}
+	/**
+	 * 设置：业务所需资料
+	 */
+	public void setTaxmaterials(String taxmaterials) {
+		this.taxmaterials = taxmaterials;
+	}
+	/**
+	 * 获取：业务所需资料
+	 */
+	public String getTaxmaterials() {
+		return taxmaterials;
 	}
 	/**
 	 * 设置：

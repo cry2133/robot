@@ -35,6 +35,16 @@ public class TFaqDO implements Serializable {
 	private Integer amount;
 	//
 	private Long parentId;
+	//流程标识
+	private String flowIdentify;
+	//是否流程 (0 不是，1 是)
+	private int isFlow;
+	//流程级别
+	private int flowLevel;
+	
+	
+	
+	
 
 	//非持久化字段
 	
@@ -54,10 +64,20 @@ public class TFaqDO implements Serializable {
 	private String keygroup;
 	//关键字组合名称
 	private String keygroupName;
+	//关键字优先级
+	private String keygroupPriority;
 	
+	public String getKeygroupPriority() {
+		return keygroupPriority;
+	}
+
+	public void setKeygroupPriority(String keygroupPriority) {
+		this.keygroupPriority = keygroupPriority;
+	}
+
 	// Constructors
 	public TFaqDO(Long faqId,Long repositoryId,String question,String answer,Long majorId,
-					String creater,Date createtime,Integer amount,Long parentId) {
+					String creater,Date createtime,Integer amount,Long parentId,String flowIdentify,int isFlow,int flowLevel) {
 		super();
 		this.faqId = faqId;
 		this.repositoryId = repositoryId;
@@ -213,5 +233,30 @@ public class TFaqDO implements Serializable {
 	public void setKeygroupName(String keygroupName) {
 		this.keygroupName = keygroupName;
 	}
+
+	public String getFlowIdentify() {
+		return flowIdentify;
+	}
+
+	public void setFlowIdentify(String flowIdentify) {
+		this.flowIdentify = flowIdentify;
+	}
+
+	public int getIsFlow() {
+		return isFlow;
+	}
+
+	public void setIsFlow(int isFlow) {
+		this.isFlow = isFlow;
+	}
+
+	public int getFlowLevel() {
+		return flowLevel;
+	}
+
+	public void setFlowLevel(int flowLevel) {
+		this.flowLevel = flowLevel;
+	}
+	
 	
 }

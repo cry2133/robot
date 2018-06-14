@@ -53,7 +53,7 @@ public class TIdentityInfoServiceImpl implements TIdentityInfoService {
 	}
 
 	@Override
-	public List<TIdentityInfoDO> selectByIdentityID(String identityID) {
+	public TIdentityInfoDO selectByIdentityID(String identityID) {
 		return tIdentityInfoDao.selectByIdentityID(identityID);
 	}
 	

@@ -4,14 +4,15 @@
 <mapper namespace="com.robot.robot.dao.TTaxInfoDao">
 
 	<select id="get" resultType="com.robot.robot.domain.TTaxInfoDO">
-		select `id`,`taxType`,`createtime` from t_tax_info where id = #{value}
+		select `id`,`taxType`,`taxMaterials`,`createtime` from t_tax_info where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.robot.robot.domain.TTaxInfoDO">
-		select `id`,`taxType`,`createtime` from t_tax_info
+		select `id`,`taxType`,`taxMaterials`,`createtime` from t_tax_info
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="taxType != null and taxType != ''"> and taxType = #{taxType} </if>
+		  		  <if test="taxtype != null and taxtype != ''"> and taxType = #{taxtype} </if>
+		  		  <if test="taxmaterials != null and taxmaterials != ''"> and taxMaterials = #{taxmaterials} </if>
 		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
 		  		</where>
         <choose>
@@ -31,7 +32,8 @@
 		select count(*) from t_tax_info
 		 <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="taxType != null and taxType != ''"> and taxType = #{taxType} </if>
+		  		  <if test="taxtype != null and taxtype != ''"> and taxType = #{taxtype} </if>
+		  		  <if test="taxmaterials != null and taxmaterials != ''"> and taxMaterials = #{taxmaterials} </if>
 		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
 		  		</where>
 	</select>
@@ -40,11 +42,13 @@
 		insert into t_tax_info
 		(
 			`taxType`, 
+			`taxMaterials`, 
 			`createtime`
 		)
 		values
 		(
-			#{taxType}, 
+			#{taxtype}, 
+			#{taxmaterials}, 
 			#{createtime}
 		)
 	</insert>
@@ -52,7 +56,8 @@
 	<update id="update" parameterType="com.robot.robot.domain.TTaxInfoDO">
 		update t_tax_info 
 		<set>
-			<if test="taxType != null">`taxType` = #{taxType}, </if>
+			<if test="taxtype != null">`taxType` = #{taxtype}, </if>
+			<if test="taxmaterials != null">`taxMaterials` = #{taxmaterials}, </if>
 			<if test="createtime != null">`createtime` = #{createtime}</if>
 		</set>
 		where id = #{id}
