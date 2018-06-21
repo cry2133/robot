@@ -116,7 +116,7 @@
 			<if test="parentId != null">`parentId` = #{parentId}</if>
 			<if test="flowIdentify != null">`flow_identify` = #{flowIdentify}</if>
 			<if test="isFlow != null">`is_flow` = #{isFlow}</if>
-			<if test="flowLevel != null">`flow_level` = #{flowLevel}</if>
+			<!-- <if test="flowLevel != null">`flow_level` = #{flowLevel}</if> -->
 		</set>
 		where faq_id = #{faqId}
 	</update>

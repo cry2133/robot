@@ -59,7 +59,8 @@ public class IdentityInfoForAppController {
 				return ResponseBean.fail("该身份证号不存在！");
 			}
 			SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日");
-			if(StringUtils.isNotEmpty(tIdentityInfo.getBirth())){
+			String birth = tIdentityInfo.getBirth();
+			if(StringUtils.isNotEmpty(birth)){
 				long lt = new Long(tIdentityInfo.getBirth());
 				Date d = new Date(lt);
 				tIdentityInfo.setBirth(sf.format(d));
@@ -72,6 +73,7 @@ public class IdentityInfoForAppController {
 		
 	}
 	
+
 	//实名认证信息查询
     @RequestMapping(value = "/searchUserInfo", method = POST)
     @ResponseBody
@@ -79,8 +81,9 @@ public class IdentityInfoForAppController {
         TIdentityInfoDO tIdentityInfo = null;
         try {
         	tIdentityInfo = tIdentityInfoService.selectByIdentityID(userModel.getIdentityID());
-                if (tIdentityInfo.getName().isEmpty()) {
-                    return ResponseBean.fail("没有相关用户信息！");
+        	String name = tIdentityInfo.getName();
+                if (name.isEmpty()) {
+                    return ResponseBean.success("没有相关用户信息！");
                 }
                 return ResponseBean.success(tIdentityInfo);
 

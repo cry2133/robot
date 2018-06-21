@@ -16,11 +16,15 @@
 		  		  <if test="level != null and level != ''"> and level = #{level} </if>
 		  		  <if test="message != null and message != ''"> and message = #{message} </if>
 		  		  <if test="tag != null and tag != ''"> and tag = #{tag} </if>
-				  <if test="beginTime!=null and beginTime!=''">
-					    <![CDATA[   and DATE_FORMAT(time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')   ]]>
+				  <if test="beginTime!=null">
+				  <!-- <if test="beginTime!=null and beginTime!=''"> -->
+					    <!-- <![CDATA[   and DATE_FORMAT(time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')   ]]> -->
+					    <![CDATA[  and time >=  #{beginTime, jdbcType=TIMESTAMP}   ]]>
 					</if>
-					<if test="endTime!=null and endTime!=''">
-					    <![CDATA[  and DATE_FORMAT(time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime}, '%Y-%m-%d')    ]]>
+					<if test="endTime!=null">
+					<!-- <if test="endTime!=null and endTime!=''"> -->
+					    <!-- <![CDATA[  and DATE_FORMAT(time, '%Y-%m-%d') <= DATE_FORMAT(#{endTime}, '%Y-%m-%d')    ]]> -->
+					    <![CDATA[  and time <= #{endTime, jdbcType=TIMESTAMP}   ]]>
 					</if>
 		  		 <!--  <if test="time != null and time != ''"> and time = #{time} </if> -->
 		  		</where>

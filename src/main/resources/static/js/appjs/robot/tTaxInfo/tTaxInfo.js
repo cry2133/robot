@@ -49,19 +49,19 @@ function load() {
 								},
 																{
 									field : 'id', 
-									title : '电力业务id' 
+									title : '电力业务ID' 
 								},
 																{
-									field : 'taxtype', 
+									field : 'taxType', 
 									title : '电力业务类型' 
 								},
 																{
-									field : 'taxmaterials', 
+									field : 'taxMaterials', 
 									title : '业务所需资料' 
 								},
 																{
 									field : 'createtime', 
-									title : '' 
+									title : '创建时间' 
 								},
 																{
 									title : '操作',

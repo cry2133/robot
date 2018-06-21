@@ -227,22 +227,20 @@ public class FaqForAppController {
 			String result = xfReturn.getText();
 
 			if(result==null || result==""){
-				//<讯飞>查询不到答案转<图灵>记录问题
-				TuLingReturn tuLingReturn = TuLingUtils.postTalk(content);
-				System.out.println(tuLingReturn.getCode()+"===="+tuLingReturn.getText());
-				//String TLresult = tuLingReturn.getText();
-				String TLresult = "";
-				
-				if(TLresult==null || TLresult==""){  //图灵找不到答案即，按照用户意图给出问题提示
-					TFaqDO jbQustion = jieBaFenCi(content);
-					if(jbQustion!=null){
-						String qustion = jbQustion.getQuestion();
-						faqBean.setQuestion(content);
-						faqBean.setAnswer("你可以这样问："+qustion);
-						return faqBean;
-					}
+				//讯飞找不到答案即，按照用户意图给出问题提示
+				String jbAnswer = jieBaFenCi(content);
+				if(jbAnswer!=null){
+					faqBean.setQuestion(content);
+					faqBean.setAnswer(jbAnswer);
+					return faqBean;
 				}
-				TLresult = tuLingReturn.getText();
+				
+				
+				//<讯飞>+知识库不存在关键字，查询不到答案转<图灵>记录问题
+				TuLingReturn tuLingReturn = TuLingUtils.postTalk(content);
+				//System.out.println(tuLingReturn.getCode()+"===="+tuLingReturn.getText());
+				//String TLresult = tuLingReturn.getText();
+				String TLresult = tuLingReturn.getText();
 				log.info("==========未找到答案,通过<图灵>寻找 question:"+content+",result:"+TLresult);
 				faqBean.setQuestion(content);
 				faqBean.setAnswer(TLresult);
@@ -276,7 +274,7 @@ public class FaqForAppController {
 	/**
 	 * 结巴分词查询答案，没有则返回问题
 	 */
-	public TFaqDO jieBaFenCi(String content){
+	public String jieBaFenCi(String content){
 		TFaqDO tFaqDO = null;
 		//结巴分词提取关键字
 		JiebaSegmenter segmenter = new JiebaSegmenter();
@@ -284,50 +282,83 @@ public class FaqForAppController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		Map<String,Object> map2 = new HashMap<String,Object>();
 		Map<String,Integer> map3 = new HashMap<String,Integer>();
+		List<TKeywordMiddleDO> kwM = tKeywordMiddleService.list(map2);
+		//初始化map3匹配数组
+		for(int k=0; k<kwM.size(); k++){
+			String faqID = kwM.get(k).getFaqId().toString();
+			map3.put(faqID, 0);
+		}
+		
+		double natchCount = 0;//关键字匹配个数
+		
 		for (int s=0; s<segToken.size(); s++ ){
 			String jieBaWord = segToken.get(s).word;
 			map.put("name", jieBaWord);
 			List<TKeywordDO> kwList = tKeywordService.list(map);
 			Long kwID = 0L;
+			//关键字存在则查看关联问题
 			if(kwList.size()>0){
 				for (TKeywordDO kw : kwList){
 					kwID = kw.getKeywordId();
 				}
-				List<TKeywordMiddleDO> kwM = tKeywordMiddleService.list(map2);
-				for(TKeywordMiddleDO kwm : kwM){
-					String []  kwmArray = kwm.getKeygroup().split(",");
-						for (int i=0; i<kwmArray.length; i++){
-							Long kwmID = Long.parseLong(kwmArray[i]);
-							if (kwID==kwmID){
-								String faqID = kwm.getFaqId().toString();
-								//避免分词空值
-								if(faqID!=null && faqID!=""){
-									map3.put(faqID, s);
-								}
-								
+				
+				for(int k=0; k<kwM.size(); k++){
+					String []  kwmArray = kwM.get(k).getKeygroup().split(",");
+					String faqID = kwM.get(k).getFaqId().toString();
+					
+					for (int i=0; i<kwmArray.length; i++){
+						//Long kwmID = Long.parseLong(kwmArray[i]);
+						String kwmID = kwmArray[i];
+						if (kwID.toString().equals(kwmID)){
+							int m = map3.get(faqID);
+							if(m==0 || m>0){
+								map3.put(faqID, m+1);
 							}
 						}
+					}
 				}
 			}
 		}
-		if(map3.size()>0){
-			Long lastFaqID = Long.parseLong(getKeyByMaxValue(map3));
+
+		Map<String,Double> map4 = new HashMap<String,Double>();
+		for (String temp : map3.keySet()) {
+	            double value = map3.get(temp);
+	            //判断分词关键字是否存在，如果存在则存入与关键字组合的占比
+	            if(value>0){
+	            	int kwmc= tFaqService.get(Long.parseLong(temp)).getKeygroup().split(",").length;
+	            	double v = value/kwmc;
+	            	map4.put(temp, v);
+	            }
+	            
+	    }
+
+		if(map4.size()>0){
+			String lastFaqIDstring = getKeyByMaxValue(map4);
+			Long lastFaqID = Long.parseLong(lastFaqIDstring);
 			tFaqDO = tFaqService.get(lastFaqID);
+			natchCount = map4.get(lastFaqIDstring);
 		}
-		return tFaqDO;
-		
+
+		//如果问题中关键字个数与匹配个数一样证明完全匹配问题可以给出答案，否则给出问题提示
+		if(natchCount==1){
+			return tFaqDO.getAnswer();
+		}else if(natchCount==0){
+			return null;
+		}else{
+			return "你可以这样问："+tFaqDO.getQuestion();
+		}
 	}
 	
-	public String getKeyByMaxValue(Map<String,Integer> map){
-	    List<Integer> list = new ArrayList<Integer>();
+	public String getKeyByMaxValue(Map<String,Double> map){
+		List<Double> list = new ArrayList<Double>();
 	    String returnKey = "";
         for (String temp : map.keySet()) {
-            int value = map.get(temp);
+            double value = map.get(temp);
             list.add(value);
         }
-        int max = 0;
+        double max = 0;
         for (int i = 0; i < list.size(); i++) {
-            int size = list.get(i);
+            double size = list.get(i);
             max = (max>size)?max:size;
         }
         for (String key : map.keySet()) {

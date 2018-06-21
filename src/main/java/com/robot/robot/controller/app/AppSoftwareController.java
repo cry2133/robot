@@ -1,6 +1,7 @@
 package com.robot.robot.controller.app;
 
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.robot.common.utils.RequestUtil;
 import com.robot.robot.controller.app.bean.ResponseBean;
 import com.robot.robot.domain.TAppSoftwareDO;
 import com.robot.robot.service.TAppSoftwareService;
@@ -30,12 +32,15 @@ public class AppSoftwareController {
      * 获取最新的apk下载包
      */
     @RequestMapping(value = "/upgrade",method= RequestMethod.GET)
-    public ResponseBean upgrade(String robotNo) {
+    public ResponseBean upgrade(HttpServletRequest request) {
+    	String robotNo=RequestUtil.getString(request, "robotNo");
         TAppSoftwareDO appSoft = null;
         Map<String,Object> map =new HashMap<String,Object>();
         try {
         	appSoft = tAppSoftwareService.getNewAPK(map);
-            if (appSoft.getId() == null && appSoft.getPath().isEmpty()) {
+        	String ID = appSoft.getId().toString();
+        	String path = appSoft.getPath();
+            if (ID.isEmpty() && path.isEmpty()) {
             	/**
             	 * 没有升级版本时返回空
             	 */

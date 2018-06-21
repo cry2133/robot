@@ -132,7 +132,7 @@
 		  from dl_kh_ydkh   k,
 		       dl_kh_khzj   b     
 		  where k.khbh = b.khbh
-		  and b.zjlxdm ='01'  
+		 <!--  and b.zjlxdm ='01'  没必要加这个过滤  -->
 		  and b.zjhm=#{zjhm}
 	</select>
 	

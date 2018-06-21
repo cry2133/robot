@@ -38,9 +38,9 @@ public class TFaqDO implements Serializable {
 	//流程标识
 	private String flowIdentify;
 	//是否流程 (0 不是，1 是)
-	private int isFlow;
+	private Integer isFlow;
 	//流程级别
-	private int flowLevel;
+	private Integer flowLevel;
 	
 	
 	
@@ -88,6 +88,9 @@ public class TFaqDO implements Serializable {
 		this.createtime = createtime;
 		this.amount = amount;
 		this.parentId = parentId;
+		this.flowIdentify = flowIdentify;
+		this.isFlow = isFlow;
+		this.flowLevel = flowLevel;
 	}
 
 	/** default constructor */
@@ -242,19 +245,19 @@ public class TFaqDO implements Serializable {
 		this.flowIdentify = flowIdentify;
 	}
 
-	public int getIsFlow() {
+	public Integer getIsFlow() {
 		return isFlow;
 	}
 
-	public void setIsFlow(int isFlow) {
+	public void setIsFlow(Integer isFlow) {
 		this.isFlow = isFlow;
 	}
 
-	public int getFlowLevel() {
+	public Integer getFlowLevel() {
 		return flowLevel;
 	}
 
-	public void setFlowLevel(int flowLevel) {
+	public void setFlowLevel(Integer flowLevel) {
 		this.flowLevel = flowLevel;
 	}
 	

@@ -15,6 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 
+ * 查询业务类型接口
+ *
+ * @Author 	Laogf
+ * @Version 	1.0 
+ * @Data 	2018年6月19日
+ */
 @RestController
 @RequestMapping("/app/tax")
 public class TaxForAppController {

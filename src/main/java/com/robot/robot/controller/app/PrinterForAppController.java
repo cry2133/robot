@@ -48,6 +48,8 @@ public class PrinterForAppController {
 	private static final String FTP_REMOTEADR = "model";
 	private static final String RETURN_FTP_URL = "ftp://10.130.242.66:2121/model/";
 	
+	public static final String FILE_SEPARATOR = File.separator;
+	
 	@Autowired
 	private RobotConfig robotConfig;
 	
@@ -144,9 +146,8 @@ public class PrinterForAppController {
 	}
 	
 	/**
-	 * 返回所有pdf文件名
+	 * 根据用户身份证号返回pdf发票文件信息
 	* @param request
-	* @History  v 1.0
 	 */
 	@RequestMapping("/getAllFileNames")
 	@ResponseBody
@@ -155,25 +156,30 @@ public class PrinterForAppController {
 		TIdentityInfoDO identityInfo = tIdentityInfoService.selectByIdentityID(identityID);
 		
 		String path = identityInfo.getName();
-		if(path.isEmpty()){
+		if(path==null || path==""){
 			return  ResponseBean.success("找不到该用户信息！");
 		}
-		
+		String filePath = robotConfig.getUploadPath()+"model/"+identityID;
+		//filePath.replace("/", FILE_SEPARATOR).replace("\\", FILE_SEPARATOR);
 		// 获得指定文件对象  
-        File file = new File(robotConfig.getUploadPath()+"model/"+path);   
+        File file = new File(filePath); 
+        //File.separator;
+       // System.getProperty("file.separator");
+        System.out.println(file.toString());
+        
         // 获得该文件夹内的所有文件   
         File[] array = file.listFiles();   
 
 		Map<String,Object> map = new HashMap<String,Object>();
 		
-		if(array.length==0){
+		if(array==null||array.length==0){
 			return  ResponseBean.success("无打印发票！");
 		}else{
 			for (int i=0; i<array.length; i++){
 			   if(array[i].isFile())//如果是文件
 	            {   
 				   String fileName = array[i].getName();   
-				   map.put("url", "/files/model/"+path+"/"+fileName);
+				   map.put("url", "/files/model/"+identityID+"/"+fileName);
 	            }
 				String date = "2018-0"+(i+1);
 				String accounts = "2"+i+"5.05";
@@ -187,31 +193,5 @@ public class PrinterForAppController {
 	}
 	
 	
-	/**
-	 * 返回需要打印的pdf
-	* @param request
-	* @History  v 1.0
-	 */
-	@RequestMapping("/model")
-	@ResponseBody
-	public ResponseBean getPrintModelURL(HttpServletRequest request) throws Exception{
-		String identityID=RequestUtil.getString(request, "identityID");
-		TIdentityInfoDO identityInfo = tIdentityInfoService.selectByIdentityID(identityID);
-		String path = identityInfo.getName();
-		
-		String fileName=RequestUtil.getString(request, "fileName");
-		return ResponseBean.success("/files/model/"+path+"/"+fileName);
-		//ftpUtil.connectServer(FTP_URL, FTP_PORT, FTP_USERNAME, FTP_PASSWORD, FTP_REMOTEADR);
-
-		//下载到本地后返回地址供机器人打印
-		//boolean down = ftpUtil.download(fileName, "d:" + File.separator + fileName);
-		/*
-		if(!down){
-			return  ResponseBean.success("文件不存在！");
-		}else{
-			return ResponseBean.success(RETURN_FTP_URL+fileName);
-		}
-		*/
-	}
 	
 }
