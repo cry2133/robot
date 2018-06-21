@@ -19,6 +19,8 @@ public class TTaxInfoDO implements Serializable {
 	private Integer id;
 	//电力业务类型
 	private String taxType;
+	//客户类型
+	private String customerType;
 	//业务所需资料
 	private String taxMaterials;
 	//
@@ -72,4 +74,14 @@ public class TTaxInfoDO implements Serializable {
 	public Date getCreatetime() {
 		return createtime;
 	}
+	public String getCustomerType() {
+		return customerType;
+	}
+	public void setCustomerType(String customerType) {
+		this.customerType = customerType;
+	}
+	public void setTaxMaterials(String taxMaterials) {
+		this.taxMaterials = taxMaterials;
+	}
+	
 }

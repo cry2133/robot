@@ -4,7 +4,35 @@ $(function() {
 	load();
 });
 
+function selectLoad() {
+	var html = "";
+	$.ajax({
+		url : '/common/sysDict/list/customer_type',
+		success : function(data) {
+			//加载数据
+			for (var i = 0; i < data.length; i++) {
+				html += '<option value="' + data[i].value + '">' + data[i].name + '</option>'
+			}
+			$(".chosen-select").append(html);
+			$(".chosen-select").chosen({
+				maxHeight : 200
+			});
+			//点击事件
+			$('.chosen-select').on('change', function(e, params) {
+				console.log(params.selected);
+				var opt = {
+					query : {
+						customertype : params.selected,
+					}
+				}
+				$('#exampleTable').bootstrapTable('refresh', opt);
+			});
+		}
+	});
+}
+
 function load() {
+	selectLoad();
 	$('#exampleTable')
 			.bootstrapTable(
 					{
@@ -32,9 +60,9 @@ function load() {
 							return {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
-								offset:params.offset
-					           // name:$('#searchName').val(),
-					           // username:$('#searchName').val()
+								offset:params.offset,
+								taxtype : $('#searchName').val(),
+								customertype : $('.chosen-select').val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果

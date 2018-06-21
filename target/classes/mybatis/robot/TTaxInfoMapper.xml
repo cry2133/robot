@@ -4,14 +4,15 @@
 <mapper namespace="com.robot.robot.dao.TTaxInfoDao">
 
 	<select id="get" resultType="com.robot.robot.domain.TTaxInfoDO">
-		select `id`,`taxType`,`taxMaterials`,`createtime` from t_tax_info where id = #{value}
+		select `id`,`taxType`,`customerType`,`taxMaterials`,`createtime` from t_tax_info where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.robot.robot.domain.TTaxInfoDO">
-		select `id`,`taxType`,`taxMaterials`,`createtime` from t_tax_info
+		select `id`,`taxType`,`customerType`,`taxMaterials`,`createtime` from t_tax_info
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="taxtype != null and taxtype != ''"> and taxType = #{taxtype} </if>
+		  		  <if test="taxtype != null and taxtype != ''"> and taxType LIKE "%"#{taxtype}"%" </if>
+		  		  <if test="customertype != null and customertype != ''"> and customerType = #{customertype} </if>
 		  		  <if test="taxmaterials != null and taxmaterials != ''"> and taxMaterials = #{taxmaterials} </if>
 		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
 		  		</where>
@@ -33,6 +34,7 @@
 		 <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="taxtype != null and taxtype != ''"> and taxType = #{taxtype} </if>
+		  		  <if test="customertype != null and customertype != ''"> and customerType = #{customertype} </if>
 		  		  <if test="taxmaterials != null and taxmaterials != ''"> and taxMaterials = #{taxmaterials} </if>
 		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
 		  		</where>
@@ -42,13 +44,15 @@
 		insert into t_tax_info
 		(
 			`taxType`, 
+			`customerType`, 
 			`taxMaterials`, 
 			`createtime`
 		)
 		values
 		(
-			#{taxtype}, 
-			#{taxmaterials}, 
+			#{taxType}, 
+			#{customerType}, 
+			#{taxMaterials}, 
 			#{createtime}
 		)
 	</insert>
@@ -56,8 +60,9 @@
 	<update id="update" parameterType="com.robot.robot.domain.TTaxInfoDO">
 		update t_tax_info 
 		<set>
-			<if test="taxtype != null">`taxType` = #{taxtype}, </if>
-			<if test="taxmaterials != null">`taxMaterials` = #{taxmaterials}, </if>
+			<if test="taxType != null">`taxType` = #{taxType}, </if>
+			<if test="customerType != null and customerType != ''"> customerType = #{customerType}, </if>
+			<if test="taxMaterials != null">`taxMaterials` = #{taxMaterials}, </if>
 			<if test="createtime != null">`createtime` = #{createtime}</if>
 		</set>
 		where id = #{id}
