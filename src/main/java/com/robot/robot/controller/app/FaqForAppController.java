@@ -1,11 +1,7 @@
 package com.robot.robot.controller.app;
 
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,9 +29,11 @@ import com.robot.robot.controller.app.common.AppConstants;
 import com.robot.robot.domain.TFaqDO;
 import com.robot.robot.domain.TKeywordDO;
 import com.robot.robot.domain.TKeywordMiddleDO;
+import com.robot.robot.domain.TKeywordReplaceDO;
 import com.robot.robot.domain.TNonexistentFaqDO;
 import com.robot.robot.service.TFaqService;
 import com.robot.robot.service.TKeywordMiddleService;
+import com.robot.robot.service.TKeywordReplaceService;
 import com.robot.robot.service.TKeywordService;
 import com.robot.robot.service.TNonexistentFaqService;
 import com.robot.robot.utils.SessionUtil;
@@ -54,6 +52,8 @@ public class FaqForAppController {
 	private TNonexistentFaqService tNonexistentFaqService;
 	@Autowired
 	private TKeywordMiddleService tKeywordMiddleService;
+	@Autowired
+	private TKeywordReplaceService tKeywordReplaceService;
 
 	/**
 	 * 智能查询问答
@@ -198,7 +198,7 @@ public class FaqForAppController {
 	
 	/**
 	 * 
-	* @Functionlity  公共问题查找答案（讯飞==>关键字==>图灵）
+	* @Functionlity  公共问题查找答案（关键字==>讯飞==>图灵）
 	* @Date  2018年6月14日
 	* @param content
 	* @return FaqRequestBean
@@ -222,50 +222,46 @@ public class FaqForAppController {
 			SessionUtil.setRequestAttribute(robotNo, String.valueOf(tFaq.getFaqId()));
 			return faqBean;
 		}else{
+			//全文检索找不到答案，按照用户意图给出问题提示
+			String jbAnswer = jieBaFenCi(content);
+			if(jbAnswer!=null){
+				faqBean.setQuestion(content);
+				faqBean.setAnswer(jbAnswer);
+				return faqBean;
+			}
+			
 			//本地知识库查询不到答案转<讯飞>记录问题
 			XFyunReturn xfReturn = XFyunUtils.runChat(content);
 			String result = xfReturn.getText();
-
 			if(result==null || result==""){
-				//讯飞找不到答案即，按照用户意图给出问题提示
-				String jbAnswer = jieBaFenCi(content);
-				if(jbAnswer!=null){
-					faqBean.setQuestion(content);
-					faqBean.setAnswer(jbAnswer);
-					return faqBean;
-				}
-				
-				
-				//<讯飞>+知识库不存在关键字，查询不到答案转<图灵>记录问题
-				TuLingReturn tuLingReturn = TuLingUtils.postTalk(content);
-				//System.out.println(tuLingReturn.getCode()+"===="+tuLingReturn.getText());
-				//String TLresult = tuLingReturn.getText();
-				String TLresult = tuLingReturn.getText();
-				log.info("==========未找到答案,通过<图灵>寻找 question:"+content+",result:"+TLresult);
+				log.info("==========未找到答案,通过<讯飞>寻找 question:"+content+",result:"+result);
 				faqBean.setQuestion(content);
-				faqBean.setAnswer(TLresult);
+				faqBean.setAnswer(result);
 				
-				//保存知识库没有的问答
 				if(tNonexistentFaqService.existQuestion(gc)){
 					tNonexistentFaq.setQuestion(gc);
-					tNonexistentFaq.setAnswer(TLresult);
+					tNonexistentFaq.setAnswer(result);
 					tNonexistentFaq.setCreatetime(new Date());
 					tNonexistentFaqService.save(tNonexistentFaq);
 				}
 				return faqBean;
 			}
-			
-			log.info("==========未找到答案,通过<讯飞>寻找 question:"+content+",result:"+result);
+			//<讯飞>+知识库不存在关键字，查询不到答案转<图灵>记录问题
+			TuLingReturn tuLingReturn = TuLingUtils.postTalk(content);
+			//System.out.println(tuLingReturn.getCode()+"===="+tuLingReturn.getText());
+			//String TLresult = tuLingReturn.getText();
+			String TLresult = tuLingReturn.getText();
+			log.info("==========未找到答案,通过<图灵>寻找 question:"+content+",result:"+TLresult);
 			faqBean.setQuestion(content);
-			faqBean.setAnswer(result);
+			faqBean.setAnswer(TLresult);
 			
+			//保存知识库没有的问答
 			if(tNonexistentFaqService.existQuestion(gc)){
 				tNonexistentFaq.setQuestion(gc);
-				tNonexistentFaq.setAnswer(result);
+				tNonexistentFaq.setAnswer(TLresult);
 				tNonexistentFaq.setCreatetime(new Date());
 				tNonexistentFaqService.save(tNonexistentFaq);
 			}
-			
 			return faqBean;
 		}
 	}
@@ -279,6 +275,7 @@ public class FaqForAppController {
 		//结巴分词提取关键字
 		JiebaSegmenter segmenter = new JiebaSegmenter();
 		List<SegToken> segToken = segmenter.process(content, SegMode.INDEX);
+		
 		Map<String,Object> map = new HashMap<String,Object>();
 		Map<String,Object> map2 = new HashMap<String,Object>();
 		Map<String,Integer> map3 = new HashMap<String,Integer>();
@@ -292,15 +289,31 @@ public class FaqForAppController {
 		double natchCount = 0;//关键字匹配个数
 		
 		for (int s=0; s<segToken.size(); s++ ){
+			Long kwID = null;
+			
 			String jieBaWord = segToken.get(s).word;
 			map.put("name", jieBaWord);
 			List<TKeywordDO> kwList = tKeywordService.list(map);
-			Long kwID = 0L;
-			//关键字存在则查看关联问题
-			if(kwList.size()>0){
+			//关键字替换查找
+			if(kwList.size() <= 0){
+				Map<String,Object> getReplaceByCharKey = new HashMap<String,Object>();
+				getReplaceByCharKey.put("charkey", jieBaWord);
+				List<TKeywordReplaceDO> kwRep = tKeywordReplaceService.list(getReplaceByCharKey);
+				//找到替换关键字
+				if(kwRep.size()>0){
+					for (TKeywordReplaceDO kwr : kwRep){
+						kwID = kwr.getKeywordId();
+					}
+				}
+				
+			}else if(kwList.size()>0){
 				for (TKeywordDO kw : kwList){
 					kwID = kw.getKeywordId();
 				}
+			}
+			
+			//关键字存在则查看关联问题
+			if(kwID != null){
 				
 				for(int k=0; k<kwM.size(); k++){
 					String []  kwmArray = kwM.get(k).getKeygroup().split(",");
@@ -318,6 +331,7 @@ public class FaqForAppController {
 					}
 				}
 			}
+			
 		}
 
 		Map<String,Double> map4 = new HashMap<String,Double>();
@@ -349,6 +363,9 @@ public class FaqForAppController {
 		}
 	}
 	
+	/**
+	 * 取double最大值
+	 */
 	public String getKeyByMaxValue(Map<String,Double> map){
 		List<Double> list = new ArrayList<Double>();
 	    String returnKey = "";

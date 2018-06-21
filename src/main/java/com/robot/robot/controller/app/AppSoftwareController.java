@@ -34,18 +34,14 @@ public class AppSoftwareController {
     @RequestMapping(value = "/upgrade",method= RequestMethod.GET)
     public ResponseBean upgrade(HttpServletRequest request) {
     	String robotNo=RequestUtil.getString(request, "robotNo");
-        TAppSoftwareDO appSoft = null;
         Map<String,Object> map =new HashMap<String,Object>();
         try {
-        	appSoft = tAppSoftwareService.getNewAPK(map);
-        	String ID = appSoft.getId().toString();
-        	String path = appSoft.getPath();
-            if (ID.isEmpty() && path.isEmpty()) {
+        	TAppSoftwareDO appSoft = tAppSoftwareService.getNewAPK(map);
+            if (appSoft==null || "".equals(appSoft)) {
             	/**
             	 * 没有升级版本时返回空
             	 */
-            	return ResponseBean.success();
-            	//return ResponseBean.success("没有升级信息！");
+            	return ResponseBean.success("没有升级信息！");
             }
             /*
             for (int i = 0; i < appSoftwareList.size(); i++) {
