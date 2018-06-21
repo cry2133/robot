@@ -60,9 +60,9 @@
 	<update id="update" parameterType="com.robot.robot.domain.TTaxInfoDO">
 		update t_tax_info 
 		<set>
-			<if test="taxtype != null">`taxType` = #{taxType}, </if>
-			<if test="customertype != null and customertype != ''"> and customerType = #{customerType} </if>
-			<if test="taxmaterials != null">`taxMaterials` = #{taxMaterials}, </if>
+			<if test="taxType != null">`taxType` = #{taxType}, </if>
+			<if test="customerType != null and customerType != ''"> customerType = #{customerType}, </if>
+			<if test="taxMaterials != null">`taxMaterials` = #{taxMaterials}, </if>
 			<if test="createtime != null">`createtime` = #{createtime}</if>
 		</set>
 		where id = #{id}

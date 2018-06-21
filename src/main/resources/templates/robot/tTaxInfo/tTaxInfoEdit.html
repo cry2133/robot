@@ -15,8 +15,8 @@
 									<div class="col-sm-8">
 										<select name="customerType" id="customerType" class='form-control'>
 											<option value="">请选择客户类型</option>
-											<option value="01" th:selected="${tTaxInfo.customerType eq 01}?true:false">居民住宅客户</option>
-											<option value="02" th:selected="${tTaxInfo.customerType eq 02}?true:false">工商政企客户</option>
+											<option value="01" th:selected="${tTaxInfo.customerType eq '01'}?true:false">居民住宅客户</option>
+											<option value="02" th:selected="${tTaxInfo.customerType eq '02'}?true:false">工商政企客户</option>
 										</select>
 									</div>
 								</div>
@@ -29,8 +29,8 @@
 							<div class="form-group">	
 								<label class="col-sm-3 control-label">业务所需资料：</label>
 								<div class="col-sm-8">
-									<!-- <input id="taxmaterials" name="taxmaterials" th:value="${tTaxInfo.taxmaterials}" class="form-control" type="text"> -->
-									<textarea rows="13" cols="" id="taxMaterials" name="taxMaterials"  class="form-control"  >${tTaxInfo.taxMaterials}</textarea>
+									<input id="taxMaterials" name="taxMaterials" th:value="${tTaxInfo.taxMaterials}" class="form-control" type="text">
+									<!-- <textarea rows="13" cols="" id="taxMaterials" name="taxMaterials"  class="form-control" th:value="${tTaxInfo.taxMaterials}" >[${tTaxInfo.taxMaterials}]</textarea> -->
 								</div>
 							</div>
 
