@@ -74,15 +74,20 @@ public class IdentityInfoForAppController {
 	}
 	
 
-	//实名认证信息查询
+	/**
+	 * 
+	* @Functionlity  实名认证信息查询
+	* @Date  2018年6月21日
+	* @param userModel
+	* @return ResponseBean
+	 */
     @RequestMapping(value = "/searchUserInfo", method = POST)
     @ResponseBody
     public ResponseBean searchUserInfo(@RequestBody UserModel userModel) {
         TIdentityInfoDO tIdentityInfo = null;
         try {
         	tIdentityInfo = tIdentityInfoService.selectByIdentityID(userModel.getIdentityID());
-        	String name = tIdentityInfo.getName();
-                if (name.isEmpty()) {
+                if (tIdentityInfo==null || "".equals(tIdentityInfo)) {
                     return ResponseBean.success("没有相关用户信息！");
                 }
                 return ResponseBean.success(tIdentityInfo);

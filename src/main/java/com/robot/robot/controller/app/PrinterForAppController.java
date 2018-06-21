@@ -181,8 +181,10 @@ public class PrinterForAppController {
 				   String fileName = array[i].getName();   
 				   map.put("url", "/files/model/"+identityID+"/"+fileName);
 	            }
-				String date = "2018-0"+(i+1);
-				String accounts = "2"+i+"5.05";
+			   int d = (int)(1+Math.random()*(6-1+1));
+			   int a = ((int)(1+Math.random()*(6666-1+1)));
+				String date = "2018-0"+d;
+				String accounts = a + ".00";
 				
 				map.put("date", date);
 				map.put("accounts", accounts);
