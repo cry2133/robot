@@ -54,7 +54,7 @@ function load(majorId,repositoryId) {
 								},
 																{
 									field : 'faqId', 
-									title : '问答编号' 
+									title : 'ID' 
 								},
 																{
 									field : 'repositoryName', 
@@ -66,7 +66,7 @@ function load(majorId,repositoryId) {
 								},
 																{
 									field : 'question', 
-									width:	'20%',
+									width:	'15%',
 									title : '问题' 
 								},
 																{
@@ -79,22 +79,31 @@ function load(majorId,repositoryId) {
 									title : '关键字组合' 
 								},
 																{
-									field : 'keygroupPriority', 
-									title : '关键字优先级' 
+									field : 'intentionEntity', 
+									title : '意图实体' 
 								},
 								{
-									field : 'flowIdentify', 
-									title : '流程标识' 
+									field : 'intentionText', 
+									title : '补全意图语料' 
 								},
 																{
-									field : 'isFlow', 
-									title : '是否流程' 
+									field : 'intentionEntity2', 
+									title : '意图实体2' 
 								},
 																{
-									field : 'flowLevel', 
-									title : '流程级别' 
+									field : 'intentionText2', 
+									title : '补全意图语料2' 
+								},
+								/*
+																{
+									field : 'intentionEntity3', 
+									title : '意图实体3' 
 								},
 																{
+									field : 'intentionText3', 
+									title : '补全意图语料3' 
+								},
+								{
 									field : 'createtime', 
 									width:	'6%',
 									title : '创建时间' 
@@ -103,6 +112,7 @@ function load(majorId,repositoryId) {
 									field : 'amount', 
 									title : '回答次数' 
 								},
+								*/
 																{
 									title : '操作',
 									width:	'15%',

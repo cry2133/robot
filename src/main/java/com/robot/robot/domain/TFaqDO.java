@@ -35,12 +35,18 @@ public class TFaqDO implements Serializable {
 	private Integer amount;
 	//
 	private Long parentId;
-	//流程标识
-	private String flowIdentify;
-	//是否流程 (0 不是，1 是)
-	private Integer isFlow;
-	//流程级别
-	private Integer flowLevel;
+	//意图实体
+	private String intentionEntity;
+	//补全意图语料
+	private String intentionText;
+	//意图实体2
+	private String intentionEntity2;
+	//补全意图语料2
+	private String intentionText2;	
+	//意图实体3
+	private String intentionEntity3;
+	//补全意图语料3
+	private String intentionText3;
 	
 	
 	
@@ -77,7 +83,8 @@ public class TFaqDO implements Serializable {
 
 	// Constructors
 	public TFaqDO(Long faqId,Long repositoryId,String question,String answer,Long majorId,
-					String creater,Date createtime,Integer amount,Long parentId,String flowIdentify,int isFlow,int flowLevel) {
+					String creater,Date createtime,Integer amount,Long parentId,
+					String intentionEntity, String intentionText,String intentionEntity2, String intentionText2, String intentionEntity3,  String intentionText3) {
 		super();
 		this.faqId = faqId;
 		this.repositoryId = repositoryId;
@@ -88,9 +95,12 @@ public class TFaqDO implements Serializable {
 		this.createtime = createtime;
 		this.amount = amount;
 		this.parentId = parentId;
-		this.flowIdentify = flowIdentify;
-		this.isFlow = isFlow;
-		this.flowLevel = flowLevel;
+		this.intentionEntity = intentionEntity;
+		this.intentionText = intentionText;
+		this.intentionEntity2 = intentionEntity2;
+		this.intentionText2 = intentionText2;
+		this.intentionEntity3 = intentionEntity3;
+		this.intentionText3 = intentionText3;
 	}
 
 	/** default constructor */
@@ -237,29 +247,56 @@ public class TFaqDO implements Serializable {
 		this.keygroupName = keygroupName;
 	}
 
-	public String getFlowIdentify() {
-		return flowIdentify;
+	public String getIntentionEntity() {
+		return intentionEntity;
 	}
 
-	public void setFlowIdentify(String flowIdentify) {
-		this.flowIdentify = flowIdentify;
+	public void setIntentionEntity(String intentionEntity) {
+		this.intentionEntity = intentionEntity;
 	}
 
-	public Integer getIsFlow() {
-		return isFlow;
+	public String getIntentionText() {
+		return intentionText;
 	}
 
-	public void setIsFlow(Integer isFlow) {
-		this.isFlow = isFlow;
+	public void setIntentionText(String intentionText) {
+		this.intentionText = intentionText;
 	}
 
-	public Integer getFlowLevel() {
-		return flowLevel;
+	public String getIntentionEntity2() {
+		return intentionEntity2;
 	}
 
-	public void setFlowLevel(Integer flowLevel) {
-		this.flowLevel = flowLevel;
+	public void setIntentionEntity2(String intentionEntity2) {
+		this.intentionEntity2 = intentionEntity2;
 	}
-	
-	
+
+	public String getIntentionText2() {
+		return intentionText2;
+	}
+
+	public void setIntentionText2(String intentionText2) {
+		this.intentionText2 = intentionText2;
+	}
+
+	public String getIntentionEntity3() {
+		return intentionEntity3;
+	}
+
+	public void setIntentionEntity3(String intentionEntity3) {
+		this.intentionEntity3 = intentionEntity3;
+	}
+
+	public String getIntentionText3() {
+		return intentionText3;
+	}
+
+	public void setIntentionText3(String intentionText3) {
+		this.intentionText3 = intentionText3;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

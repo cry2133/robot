@@ -14,6 +14,7 @@ function seachQuestion() {
 		data:{content:question,robotNo:"123456"},
 		success:function(result){
 			 document.getElementById("answer").innerHTML = result.data.answer;
+			 document.getElementById("questionList").innerHTML = result.data.questionList;
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 			layer.msg("查询失败");

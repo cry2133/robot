@@ -76,7 +76,7 @@ public class XFyunUtils {
 			if(getText!=null && getText!="" && question.equals(getText) && answer==null){   //讯飞返回success 但是没有答案
 				xf.setText(null);
 				String sid = jsonObject.getString("sid");
-				logger.info("----------讯飞查询不到答案  sid: "+sid+"----------有异常或疑问可以用 sid 找讯飞咨询----------");   
+				logger.info("---------- <讯飞> 未找到答案  sid: "+sid+"----------有异常或疑问可以用 sid 找讯飞咨询----------");   
 			}else{
 				/**
 				 * 找到答案

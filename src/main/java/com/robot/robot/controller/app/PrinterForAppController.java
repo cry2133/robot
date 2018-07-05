@@ -3,6 +3,7 @@ package com.robot.robot.controller.app;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,11 +153,13 @@ public class PrinterForAppController {
 	@RequestMapping("/getAllFileNames")
 	@ResponseBody
 	public ResponseBean getAllFileNames(HttpServletRequest request) throws Exception{
+		System.out.println(request.getRequestURL());
+		System.out.println(request.getRequestURI());
+		
 		String identityID=RequestUtil.getString(request, "identityID");
 		TIdentityInfoDO identityInfo = tIdentityInfoService.selectByIdentityID(identityID);
 		
-		String path = identityInfo.getName();
-		if(path==null || path==""){
+		if(identityInfo == null || "".equals(identityInfo)){
 			return  ResponseBean.success("找不到该用户信息！");
 		}
 		String filePath = robotConfig.getUploadPath()+"model/"+identityID;
@@ -171,6 +174,7 @@ public class PrinterForAppController {
         File[] array = file.listFiles();   
 
 		Map<String,Object> map = new HashMap<String,Object>();
+		List<Map> list = new ArrayList<Map>();
 		
 		if(array==null||array.length==0){
 			return  ResponseBean.success("无打印发票！");
@@ -180,16 +184,18 @@ public class PrinterForAppController {
 	            {   
 				   String fileName = array[i].getName();   
 				   map.put("url", "/files/model/"+identityID+"/"+fileName);
+	           
+				   int d = (int)(1+Math.random()*(6-1+1));
+				   int a = ((int)(1+Math.random()*(6666-1+1)));
+				   String date = "2018-0"+d;
+				   String accounts = a + ".00";
+					
+				   map.put("date", date);
+				   map.put("accounts", accounts);
+				   list.add(map);
 	            }
-			   int d = (int)(1+Math.random()*(6-1+1));
-			   int a = ((int)(1+Math.random()*(6666-1+1)));
-				String date = "2018-0"+d;
-				String accounts = a + ".00";
-				
-				map.put("date", date);
-				map.put("accounts", accounts);
 			}
-			return ResponseBean.success(map);
+			return ResponseBean.success(list);
 		}
 		
 	}

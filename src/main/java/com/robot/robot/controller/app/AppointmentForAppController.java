@@ -1,6 +1,5 @@
 package com.robot.robot.controller.app;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +21,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 
 /**
  * 
- * 预约办理业务接口
+ * 业务预受理接口
  *
  * @Author 	Laogf
  * @Version 	1.0 
@@ -40,7 +38,6 @@ public class AppointmentForAppController {
 
 	@Autowired
 	private TIdentityInfoService tIdentityInfoService;
-	
 	
 	@Autowired
 	private TAppointmentService tAppointmentService;
@@ -55,8 +52,6 @@ public class AppointmentForAppController {
 	  * 此接口给H5网页使用
 	 * @Functionlity  返回用户信息接口
 	 * @Date  2018年6月7日
-	 * @param identityID
-	 * @return ResponseBean
 	 * @History  v 1.0
 	  */
     @RequestMapping(value = "/verifyID",method= RequestMethod.GET)
@@ -65,8 +60,7 @@ public class AppointmentForAppController {
         TIdentityInfoDO user = null;
         try {
             user =  tIdentityInfoService.selectByIdentityID(identityID);
-            if(user.getName().isEmpty())
-            {
+            if(user == null){
                 return ResponseBean.success("请先进行实名认证！");
             }
         }catch (Exception e) {
@@ -76,13 +70,8 @@ public class AppointmentForAppController {
     }
 	 
     /**
-     * 
     * @Functionlity  预约线下业务接口
     * @Date  2018年6月7日
-    * @param identityID
-    * @param appointmentTime
-    * @param type
-    * @return ResponseBean
     * @History  v 1.0
      */
 	@RequestMapping(value = "/appointment",method= RequestMethod.GET)
@@ -128,14 +117,11 @@ public class AppointmentForAppController {
     }
 	
 	/**
-	 * 
-	* @Functionlity  查询预约信息接口
+	* @Functionlity  查询业务预受理接口
 	* @Date  2018年6月7日
-	* @param userModel
-	* @return ResponseBean
 	* @History  v 1.0
 	 */
-	 @RequestMapping(value = "/searchAppointmentInfo", method = POST)
+	 @RequestMapping(value = "/searchAppointmentInfo", method = RequestMethod.GET)
 	 @ResponseBody
 	    public ResponseBean searchAppointmentInfo(String identityID) {
 	        try {
@@ -143,7 +129,7 @@ public class AppointmentForAppController {
 	        	 List<TAppointmentDO> appointmentList = null;
 	        	map.put("identityID", identityID);
 	            appointmentList = tAppointmentService.list(map);
-	            if (appointmentList.isEmpty()) {
+	            if (appointmentList.size() == 0) {
 	                return ResponseBean.fail("没有相关用户预约信息！");
 	            }
 	            return ResponseBean.success(appointmentList.toArray());
@@ -154,13 +140,8 @@ public class AppointmentForAppController {
 	    }
 	 
 	 /**
-	  * 
-	 * @Functionlity  预约删除接口
+	 * @Functionlity  业务预受理删除接口
 	 * @Date  2018年6月7日
-	 * @param identityID
-	 * @param appointmentTime
-	 * @param type
-	 * @return ResponseBean
 	 * @History  v 1.0
 	  */
 	 @RequestMapping(value = "/appointmentDelete",method= RequestMethod.GET)

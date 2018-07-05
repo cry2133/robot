@@ -2,9 +2,6 @@ package com.robot.robot.controller.app;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,12 +40,6 @@ public class IdentityInfoForAppController {
 	@ResponseBody
 	public ResponseBean collect(@RequestBody TIdentityInfoDO tIdentityInfo) throws Exception{
 		try {
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("identityID", tIdentityInfo.getIdentityID());
-			List<TIdentityInfoDO> getIdentityIdByIdentityId = tIdentityInfoService.list(map);
-			if(!getIdentityIdByIdentityId.isEmpty()){
-				return ResponseBean.fail("该身份证号已被认证！不能重复采集！");				
-			}
 			/**
 			 * 身份证号码粗略验证
 			 */
@@ -58,19 +49,30 @@ public class IdentityInfoForAppController {
 			if(identityID.length()!=18 || matcher.matches()==false){
 				return ResponseBean.fail("该身份证号不存在！");
 			}
-			SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日");
+
 			String birth = tIdentityInfo.getBirth();
-			if(StringUtils.isNotEmpty(birth)){
-				long lt = new Long(tIdentityInfo.getBirth());
-				Date d = new Date(lt);
-				tIdentityInfo.setBirth(sf.format(d));
+			if(birth.length()==8){
+				String year = birth.substring(0, 4);
+				String month = birth.substring(4, 6);
+				String day = birth.substring(6, 8);
+				tIdentityInfo.setBirth(year+"年"+month+"月"+day+"日");
+			}else{
+				tIdentityInfo.setBirth("1990年01月01日");
 			}
-			tIdentityInfoService.save(tIdentityInfo);
+			
+			Long id = tIdentityInfoService.selectByIdentityID(identityID).getId();
+			if(id>0){
+				tIdentityInfo.setId(id);
+				tIdentityInfoService.update(tIdentityInfo);
+				//return ResponseBean.fail("该身份证号已被认证！不能重复采集！");				
+			}else{
+				tIdentityInfoService.save(tIdentityInfo);
+			}
+			return ResponseBean.success("实名采集成功！");
         }catch (Exception e) {
         	logger.error("collect异常", e);
+        	 return ResponseBean.fail("实名采集失败！");
         }
-        return ResponseBean.success();
-		
 	}
 	
 

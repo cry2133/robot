@@ -26,7 +26,7 @@ import java.io.*;
 
 /**
  * 
- * 发票上传下载获取地址
+ * 发票上传下载获取地址 (接口暂时废弃不用)
  *
  * @Author 	Laogf
  * @Version 	1.0 

@@ -84,7 +84,22 @@ function load() {
 									title : '电力业务类型' 
 								},
 																{
+									field : 'customerType', 
+									title : '客户类型' ,
+									formatter: function(value){
+										if(value==01){
+											return "居民住宅客户";
+										}
+										if(value==02){
+											return "工商政企客户";
+										}else{
+											return "未知客户";
+										}
+									}
+								},
+																{
 									field : 'taxMaterials', 
+									width : '45%',
 									title : '业务所需资料' 
 								},
 																{

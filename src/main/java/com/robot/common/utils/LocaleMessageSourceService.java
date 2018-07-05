@@ -1,8 +1,6 @@
 package com.robot.common.utils;
 import java.util.Locale;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

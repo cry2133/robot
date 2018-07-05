@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.robot.robot.domain.TRobotLogDO;
 import com.robot.robot.service.TRobotLogService;
-
+import com.alibaba.druid.util.StringUtils;
 import com.robot.common.utils.PageUtils;
 import com.robot.common.utils.Query;
 import com.robot.common.utils.R;
@@ -47,6 +47,12 @@ public class TRobotLogController {
 	@GetMapping("/list")
 	@RequiresPermissions("robot:tRobotLog:tRobotLog")
 	public PageUtils list(@RequestParam Map<String, Object> params){
+		if(StringUtils.isEmpty(params.get("beginTime").toString())){
+			params.put("beginTime", null);
+		}
+		if(StringUtils.isEmpty(params.get("endTime").toString())){
+			params.put("endTime", null);
+		}
 		//查询列表数据
         Query query = new Query(params);
 		List<TRobotLogDO> tRobotLogList = tRobotLogService.list(query);
