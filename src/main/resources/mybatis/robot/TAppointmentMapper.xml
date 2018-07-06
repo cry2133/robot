@@ -4,11 +4,16 @@
 <mapper namespace="com.robot.robot.dao.TAppointmentDao">
 
 	<select id="get" resultType="com.robot.robot.domain.TAppointmentDO">
-		select `id`,`identityID`,`appointmentTime`,`taxID` from t_appointment where id = #{value}
+		SELECT `id`,`identityID`,`appointmentTime`,taxID,
+		(SELECT taxType from t_tax_info where id=t_appointment.taxID) as taxType 
+		FROM t_appointment 
+		WHERE id = #{value}
 	</select>
 
 	<select id="list" resultType="com.robot.robot.domain.TAppointmentDO">
-		select `id`,`identityID`,`appointmentTime`,`taxID` from t_appointment
+		SELECT `id`,`identityID`,`appointmentTime`,taxID,
+		(SELECT taxType from t_tax_info where id=t_appointment.taxID) as taxType 
+		FROM t_appointment
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="identityID != null and identityID != ''"> and identityID = #{identityID} </if>

@@ -87,29 +87,32 @@ public class AppointmentForAppController {
             
             map.put("identityID", identityID);
             map.put("taxID", taxID);
-            //先查用户是否已经预约了
-            int getCount = tAppointmentService.list(map).size();
+            List<TAppointmentDO> appointmentList = tAppointmentService.list(map);
+            /**
+             * 如果用户已经预约了，覆盖之前的
+             */
+            int getCount = appointmentList.size();
             if(getCount>0){
-            	return ResponseBean.fail("对不起！你已预约了其他业务！");
+            	for(TAppointmentDO appointment: appointmentList){
+            		Long appointmentID = appointment.getId();
+            		data.setId(appointmentID);
+            		tAppointmentService.update(data);
+            	}
+            	return ResponseBean.success("恭喜您，预约成功！");
             }
-            
+            /**
+             * 查询是否有多人预约
+             */
             map.put("appointmentTime", appointmentTime);
             map.remove("identityID");
-            map.remove("taxID");
-            //再查询该时间是否有多人预约
-            int count = tAppointmentService.list(map).size();
-            switch(count){
-            case 0:
-            	tAppointmentService.save(data);
-                return ResponseBean.success("恭喜您，预约成功！");
-			case 1:
-				tAppointmentService.save(data);
-                return ResponseBean.success("恭喜您，预约成功！");
-            case 2:
-                return ResponseBean.success("预约失败！当前时段预约人数已满<br>请预约其它时段！");
-            default:
-                return ResponseBean.fail("对不起！预约失败！");
+            List<TAppointmentDO> appointmentList2 = tAppointmentService.list(map);
+            final int APPOINTMENT_MAX = 10;
+            if(appointmentList2.size() > APPOINTMENT_MAX){
+            	final String APPOINTMENT_FULL = "预约失败！当前时段预约人数已满\n请预约其它时段！";
+            	return ResponseBean.fail(APPOINTMENT_FULL);
             }
+            tAppointmentService.save(data);
+            return ResponseBean.success("恭喜您，预约成功！");
         }catch (Exception e) {
             logger.error("appointment异常", e);
         }

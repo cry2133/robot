@@ -23,6 +23,26 @@ public class TAppointmentDO implements Serializable {
 	//预约类型
 	private int taxID;
 
+	
+	//非持久化字段
+	
+	//业务类型名称
+	private String taxType;
+	
+	/**
+	 * 获取：业务类型名称
+	 */
+	public String getTaxType() {
+		return taxType;
+	}
+	/**
+	 * 设置：业务类型名称
+	 */
+	public void setTaxType(String taxType) {
+		this.taxType = taxType;
+	}
+	
+	
 	/**
 	 * 设置：
 	 */

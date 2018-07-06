@@ -4,11 +4,16 @@
 <mapper namespace="com.robot.robot.dao.TQueueDao">
 
 	<select id="get" resultType="com.robot.robot.domain.TQueueDO">
-		select `id`,`identityID`,`queueTime`,`taxID` from t_queue where id = #{value}
+		SELECT `id`,`identityID`,`queueTime`,taxID,
+		(SELECT taxType from t_tax_info where id=t_queue.taxID) as taxType 
+		FROM t_queue 
+		WHERE id = #{value}
 	</select>
 
 	<select id="list" resultType="com.robot.robot.domain.TQueueDO">
-		select `id`,`identityID`,`queueTime`,`taxID` from t_queue
+		SELECT `id`,`identityID`,`queueTime`,taxID,
+		(SELECT taxType from t_tax_info where id=t_queue.taxID) as taxType 
+		FROM t_queue
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="identityID != null and identityID != ''"> and identityID = #{identityID} </if>
