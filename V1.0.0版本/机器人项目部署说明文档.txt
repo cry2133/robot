@@ -1,0 +1,31 @@
+	机器人项目部署说明
+	
+		机器人项目测试环境访问路径：
+		http://47.97.21.35:8686/robot/
+
+		机器人项目生产环境访问路径：
+		http://47.97.21.35:8886/robot
+	
+		阿里云服务器登录：
+		地址:47.97.21.35
+		账号:root
+		密码:Zeen89668180
+
+		测试部署Tomcat路径:
+		/sincereinfo/dl_robot/test/apache-tomcat-8.5.29
+
+		生产部署Tomcat路径：
+		/sincereinfo/tomcat-demo
+		
+		数据库：
+		MySQL		
+		主数据库：非回流库数据
+		从数据库：回流库数据
+		
+		数据库配置切换：
+		阿里云数据库为 application-pro.yml ; 本地数据库为 application-dev.yml
+		如需切换只需修改application.yml配置文件中的 profiles 
+		
+
+  项目部署方式为打 war 包到 Tomcat 的 webapps 目录下改名为 ROOT.war 覆盖原来的包。
+  项目部署前先备份之前的 war 包，停Tomcat服务。
