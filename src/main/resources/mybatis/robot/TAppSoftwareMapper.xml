@@ -35,10 +35,9 @@
 	
 	<!-- 获取最新的apk下载包 -->
 	<select id="getNewAPK" resultType="com.robot.robot.domain.TAppSoftwareDO">
-		select `id`,`version`,`type`,`description`,`path`,`user_id`,`robotNo`,`submit_time` 
+		select max(`id`),`version`,`type`,`description`,`path`,`user_id`,`robotNo`,`submit_time` 
 		from t_app_software
         <where>
-       			 submit_time = (select max(submit_time) from t_app_software)
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="version != null and version != ''"> and version = #{version} </if>
 		  		  <if test="type != null and type != ''"> and type = #{type} </if>

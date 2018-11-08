@@ -17,7 +17,7 @@ public class IdWorker {
 		super();
 		if (workerId > this.maxWorkerId || workerId < 0) {
 			throw new IllegalArgumentException(
-					String.format("worker Id can't be greater than %d or less than 0", this.maxWorkerId));
+					String.format("worker Id can'DescartesUtil be greater than %d or less than 0", this.maxWorkerId));
 		}
 		this.workerId = workerId;
 	}

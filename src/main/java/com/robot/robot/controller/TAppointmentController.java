@@ -23,9 +23,6 @@ import com.robot.common.utils.R;
 /**
  * 预约表
  * 
- * @author yobi
- * @email ***
- * @date 2018-01-18 15:24:03
  */
  
 @Controller

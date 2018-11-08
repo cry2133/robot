@@ -80,16 +80,8 @@ function load() {
 									title : '电话号码' 
 								},
 																{
-									field : 'companyinfo', 
-									title : '公司信息' 
-								},
-																{
-									field : 'companyname', 
-									title : '公司名称' 
-								},
-																{
-									field : 'position', 
-									title : '职位' 
+									field : 'email',
+									title : '个人邮箱'
 								}
 //								,
 //																{

@@ -23,9 +23,6 @@ import com.robot.common.utils.R;
 /**
  * 机器人版本号表
  * 
- * @author yobi
- * @email ***
- * @date 2018-01-23 11:17:33
  */
  
 @Controller

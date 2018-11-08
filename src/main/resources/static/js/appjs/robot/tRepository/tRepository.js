@@ -76,7 +76,7 @@ function load() {
 									field : 'createtime', 
 									title : '创建时间' 
 								},
-								{
+																{
 									field : 'priority', 
 									title : '优先级' ,
 									formatter: function(value, row, index)	{
@@ -87,6 +87,10 @@ function load() {
 											return '<span class="badge badge-primary">'+value+'</span>'
 										}
 									}
+								},
+																			{
+									field : 'roleName',
+									title : '关联角色'
 								},
 																{
 									title : '操作',

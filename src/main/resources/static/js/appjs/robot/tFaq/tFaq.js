@@ -71,51 +71,39 @@ function load(majorId,repositoryId) {
 								},
 																{
 									field : 'answer', 
-									width:	'25%',
+									width:	'30%',
 									title : '答案' 
 								},
 																{
 									field : 'keygroupName', 
 									title : '关键字组合' 
 								},
-																{
-									field : 'intentionEntity', 
-									title : '意图实体' 
-								},
-								{
-									field : 'intentionText', 
-									title : '补全意图语料' 
-								},
-																{
-									field : 'intentionEntity2', 
-									title : '意图实体2' 
-								},
-																{
-									field : 'intentionText2', 
-									title : '补全意图语料2' 
-								},
-								/*
-																{
-									field : 'intentionEntity3', 
-									title : '意图实体3' 
-								},
-																{
-									field : 'intentionText3', 
-									title : '补全意图语料3' 
-								},
-								{
+								/*{
 									field : 'createtime', 
 									width:	'6%',
 									title : '创建时间' 
-								},
-								{
+								},*/
+																{
 									field : 'amount', 
 									title : '回答次数' 
 								},
-								*/
+																{
+									field : 'cache', 
+									title : '是否缓存' ,
+									formatter: function(value){
+										if(value==0){
+											return "是";
+										}
+										if(value==1){
+											return "否";
+										}else{
+											return "否";
+										}
+									}
+								},
 																{
 									title : '操作',
-									width:	'15%',
+									width:	'8%',
 									field : 'id',
 									align : 'center',
 									formatter : function(value, row, index) {
@@ -125,10 +113,7 @@ function load(majorId,repositoryId) {
 										var d = '<a class="btn btn-warning btn-sm '+s_remove_h+'" href="#" title="删除"  mce_href="#" onclick="remove(\''
 												+ row.faqId
 												+ '\')"><i class="fa fa-remove"></i></a> ';
-										var f = '<a class="btn btn-success btn-sm" href="#" title="子问题"  mce_href="#" onclick="openNext(\''
-												+ row.faqId
-												+ '\')"><i class="fa  fa-level-down"></i></a> ';
-										return e + f + d  ;
+										return e + d  ;
 									}
 								} ]
 					});
@@ -177,21 +162,6 @@ function remove(id) {
 			}
 		});
 	})
-}
-
-function openNext(id) {
-	layer.open({
-		type : 2,
-		title : '子问题',
-		maxmin : true,
-		shadeClose : false, // 点击遮罩关闭层
-		area : [ '800px', '90%' ],
-		content : prefix + '/tFaqnext?faqId=' + id, // iframe的url
-		cancel: function(){ 
-			reLoad();
-		  }
-	});
-	
 }
 
 function batchRemove() {

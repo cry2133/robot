@@ -2,16 +2,13 @@ package com.robot.robot.service;
 
 import com.robot.common.domain.NotfoundException;
 import com.robot.robot.domain.TFaqDO;
+import com.robot.robot.domain.TRepositoryDO;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * 问答表
- * 
- * @author yobi
- * @email ***
- * @date 2017-11-30 19:29:57
  */
 public interface TFaqService {
 	
@@ -39,9 +36,15 @@ public interface TFaqService {
 	 */
 	long searchFaqForApp(String gc)  throws NotfoundException ;
 	
-	TFaqDO getLikeByQuestion(String question);
+	TFaqDO getLikeByQuestion(Map<String,Object> map);
 	
-	TFaqDO getLikeByQuestionForParent(String question,String parentId);
-	
+
 	boolean importFaqsExcelSources(String content) throws Exception;
+
+
+	List<TRepositoryDO> getRepositoryIdByRobotNo(String robotNo);
+
+	List<TRepositoryDO> getRepositoryIdByUserId(Long userId);
+
+
 }

@@ -27,8 +27,6 @@ import com.robot.robot.service.TMajorService;
 import com.robot.robot.service.TRepositoryService;
 
 
-
-
 @Service
 public class TFaqServiceImpl implements TFaqService {
 	public static Logger log = Logger.getLogger(TFaqServiceImpl.class); 
@@ -193,29 +191,15 @@ public class TFaqServiceImpl implements TFaqService {
 	}
 
 	@Override
-	public TFaqDO getLikeByQuestion(String question) {
-		TFaqDO tfaq=new TFaqDO();
-		question="+"+question;
-		List<TFaqDO> tfaqs=tFaqDao.getLikeByQuestion(question);
+	public TFaqDO getLikeByQuestion(Map<String,Object> map) {
+		TFaqDO tfaq = new TFaqDO();
+		List<TFaqDO> tfaqs=tFaqDao.getLikeByQuestion(map);
 		if(tfaqs.size()>0){
 			tfaq=tfaqs.get(0);
 		}
 		return tfaq;
 	}
 	
-	@Override
-	public TFaqDO getLikeByQuestionForParent(String question,String parentId) {
-		Map<String, Object> query = new HashMap<>(0);
-        query.put("question", question);
-        query.put("parentId", parentId);
-		TFaqDO tfaq=new TFaqDO();
-		question="+"+question;
-		List<TFaqDO> tfaqs=tFaqDao.getLikeByQuestionForParent(query);
-		if(tfaqs.size()>0){
-			tfaq=tfaqs.get(0);
-		}
-		return tfaq;
-	}
 
 	@Override
 	public boolean importFaqsExcelSources(String content) throws Exception {
@@ -241,10 +225,6 @@ public class TFaqServiceImpl implements TFaqService {
 	}
 	
 	/**
-	 * @param tFaqDO
-	 * @param tKeywordDO
-	 * @param tMajorDO
-	 * @param tRepositoryDO
 	 * @return	“1”：关键字组合已存在 	2：问题已存在
 	 * @throws Exception
 	 */
@@ -316,5 +296,24 @@ public class TFaqServiceImpl implements TFaqService {
 		
 	}
 
-	
+
+	/**
+	 * 根据用户id获取知识库id
+ 	 * @param robotNo
+	 * @return
+	 */
+	public List<TRepositoryDO> getRepositoryIdByRobotNo(String robotNo){
+		return tFaqDao.getRepositoryIdByRobotNo(robotNo);
+	}
+
+	/**
+	 * 根据机器人编号获取知识库id
+	 * @param userId
+	 * @return
+	 */
+	public List<TRepositoryDO> getRepositoryIdByUserId(Long userId){
+		return tFaqDao.getRepositoryIdByUserId(userId);
+	}
+
+
 }

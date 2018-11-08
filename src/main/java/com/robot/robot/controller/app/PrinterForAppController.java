@@ -153,8 +153,8 @@ public class PrinterForAppController {
 	@RequestMapping("/getAllFileNames")
 	@ResponseBody
 	public ResponseBean getAllFileNames(HttpServletRequest request) throws Exception{
-		System.out.println(request.getRequestURL());
-		System.out.println(request.getRequestURI());
+		//System.out.println(request.getRequestURL());
+		//System.out.println(request.getRequestURI());
 		
 		String identityID=RequestUtil.getString(request, "identityID");
 		TIdentityInfoDO identityInfo = tIdentityInfoService.selectByIdentityID(identityID);
@@ -174,7 +174,7 @@ public class PrinterForAppController {
         File[] array = file.listFiles();   
 
 		Map<String,Object> map = new HashMap<String,Object>();
-		List<Map> list = new ArrayList<Map>();
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		
 		if(array==null||array.length==0){
 			return  ResponseBean.success("无打印发票！");

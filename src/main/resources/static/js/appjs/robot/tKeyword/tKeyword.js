@@ -53,8 +53,18 @@ function load() {
 //								},
 																{
 									field : 'name', 
-									width:  '50%',
+									width:  '25%',
 									title : '名称' 
+								},
+																{
+									field : 'priority', 
+									width:  '25%',
+									title : '优先级' 
+								},
+																{
+									field : 'value', 
+									width:  '25%',
+									title : '闸值' 
 								},
 //																{
 //									field : 'creater', 
@@ -85,6 +95,7 @@ function load() {
 }
 function reLoad() {
 	$('#exampleTable').bootstrapTable('refresh');
+	$('#exampleTable2').bootstrapTable('refresh');
 }
 function add() {
 	layer.open({

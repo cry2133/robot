@@ -5,7 +5,9 @@ package com.robot.robot.utils;
  */
 public class RuntimeCastException extends RuntimeException {
 
-    private Throwable cause;
+	private static final long serialVersionUID = 1L;
+	
+	private Throwable cause;
 
     public RuntimeCastException(Throwable throwable) {
         this.cause = throwable;

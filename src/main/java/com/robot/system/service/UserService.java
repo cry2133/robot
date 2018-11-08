@@ -28,7 +28,7 @@ public interface UserService {
 
 	boolean exit(Map<String, Object> params);
 
-	Set<String> listRoles(Long userId);
+	List<Long> listRoles(Long userId);
 
 	int resetPwd(UserDO user);
 

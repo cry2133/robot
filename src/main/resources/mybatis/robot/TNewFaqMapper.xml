@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.robot.robot.dao.TNewFaqDao">
+
+	<select id="get" resultType="com.robot.robot.domain.TNewFaqDO">
+		select faq.`id`,faq.`repository_id`,faq.`major_id`,`question`,`questions`,`answer`,
+		tm.`name` as majorName,
+		tr.`name` as repositoryName
+		from t_new_faq faq
+		LEFT JOIN t_major tm ON tm.major_id = faq.major_id
+		LEFT JOIN t_repository tr ON tr.repository_id = faq.repository_id
+		where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.robot.robot.domain.TNewFaqDO">
+		select faq.`id`,faq.`repository_id`,faq.`major_id`,`question`,`questions`,`answer`,
+		tm.`name` as majorName,
+		tr.`name` as repositoryName
+		from t_new_faq faq
+		LEFT JOIN t_major tm ON tm.major_id = faq.major_id
+		LEFT JOIN t_repository tr ON tr.repository_id = faq.repository_id
+        <where>  
+		  		  <if test="id != null and id != ''"> and faq.id = #{id} </if>
+		  		  <if test="repositoryId != null and repositoryId != ''"> and faq.repository_id = #{repositoryId} </if>
+				<if test="robotNo != null and robotNo != ''">
+					and faq.repository_id in
+					(select repository_id
+					from t_repository
+					where role_id
+					in
+					(select role_id
+					from sys_user_role
+					where user_id = (select user_id from t_robot_user where robotNo = #{robotNo})) or property = 0)
+				</if>
+				<if test="userId != null and userId != ''">
+					and faq.repository_id in
+					(select repository_id
+					from t_repository
+					where role_id
+					in
+					(select role_id
+					from sys_user_role
+					where user_id = #{userId}) or property = 0)
+				</if>
+		  		  <if test="majorId != null and majorId != ''"> and faq.major_id = #{majorId} </if>
+		  		  <if test="question != null and question != ''"> and question = #{question} </if>
+		  		  <if test="questions != null and questions != ''"> and questions = #{questions} </if>
+		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_new_faq
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="repositoryId != null and repositoryId != ''"> and repository_id = #{repositoryId} </if>
+				 <if test="robotNo != null and robotNo != ''">
+					 and repository_id in
+					 (select repository_id
+					 from t_repository
+					 where role_id
+					 in
+					 (select role_id
+					 from sys_user_role
+					 where user_id = (select user_id from t_robot_user where robotNo = #{robotNo})) or property = 0)
+				 </if>
+				 <if test="userId != null and userId != ''">
+					 and repository_id in
+					 (select repository_id
+					 from t_repository
+					 where role_id
+					 in
+					 (select role_id
+					 from sys_user_role
+					 where user_id = #{userId}) or property = 0)
+				 </if>
+		  		  <if test="majorId != null and majorId != ''"> and major_id = #{majorId} </if>
+		  		  <if test="question != null and question != ''"> and question = #{question} </if>
+		  		  <if test="questions != null and questions != ''"> and questions = #{questions} </if>
+		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.robot.robot.domain.TNewFaqDO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_new_faq
+		(
+			`repository_id`, 
+			`major_id`, 
+			`question`, 
+			`questions`, 
+			`answer`
+		)
+		values
+		(
+			#{repositoryId}, 
+			#{majorId}, 
+			#{question}, 
+			#{questions}, 
+			#{answer}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.robot.robot.domain.TNewFaqDO">
+		update t_new_faq 
+		<set>
+			<if test="repositoryId != null">`repository_id` = #{repositoryId}, </if>
+			<if test="majorId != null">`major_id` = #{majorId}, </if>
+			<if test="question != null">`question` = #{question}, </if>
+			<if test="questions != null">`questions` = #{questions}, </if>
+			<if test="answer != null">`answer` = #{answer} </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from t_new_faq where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_new_faq where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+
+	<select id="getLikeByQuestion" resultType="com.robot.robot.domain.TNewFaqDO">
+		SELECT `id`, `repository_id`, `question`, `answer`
+		FROM t_new_faq
+		where match(question) AGAINST ( #{question} IN BOOLEAN MODE)
+		<if test="robotNo != null and robotNo != ''">
+			and repository_id in
+			(select repository_id
+			from t_repository
+			where role_id
+			in
+			(select role_id
+			from sys_user_role
+			where user_id = (select user_id from t_robot_user where robotNo = #{robotNo})) or property = 0)
+		</if>
+	</select>
+
+
+
+
+</mapper>

@@ -4,18 +4,27 @@
 <mapper namespace="com.robot.robot.dao.TRepositoryDao">
 
 	<select id="get" resultType="com.robot.robot.domain.TRepositoryDO">
-		select `repository_id`,`name`,`property`,`units`,`creater`,`createtime`,`priority` from t_repository where repository_id = #{value}
+		select rst.`repository_id`,rst.`name`,rst.`property`,rst.`units`,rst.`creater`,rst.`createtime`,rst.`priority`,
+		rst.`role_id` as roleId,sr.role_name as roleName
+		from t_repository rst
+		left join sys_role sr
+		on rst.role_id = sr.role_id
+		where rst.repository_id = #{value}
 	</select>
 
 	<select id="list" resultType="com.robot.robot.domain.TRepositoryDO">
-		select `repository_id`,`name`,`property`,`units`,`creater`,`createtime`,`priority` from t_repository
+		select rst.`repository_id`,rst.`name`,rst.`property`,rst.`units`,rst.`creater`,rst.`createtime`,rst.`priority`,
+		rst.`role_id` as roleId,sr.role_name as roleName
+		from t_repository rst
+		left join sys_role sr
+		on rst.role_id = sr.role_id
         <where>  
-		  		  <if test="repositoryId != null and repositoryId != ''"> and repository_id = #{repositoryId} </if>
-		  		  <if test="name != null and name != ''"> and name like #{name} </if>
-		  		  <if test="property != null and property != ''"> and property = #{property} </if>
-		  		  <if test="units != null and units != ''"> and units like #{units} </if>
-		  		  <if test="creater != null and creater != ''"> and creater = #{creater} </if>
-		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+		  		  <if test="repositoryId != null and repositoryId != ''"> and rst.repository_id = #{repositoryId} </if>
+		  		  <if test="name != null and name != ''"> and rst.name like #{name} </if>
+		  		  <if test="property != null and property != ''"> and rst.property = #{property} </if>
+		  		  <if test="units != null and units != ''"> and rst.units like #{units} </if>
+		  		  <if test="creater != null and creater != ''"> and rst.creater = #{creater} </if>
+		  		  <if test="createtime != null and createtime != ''"> and rst.createtime = #{createtime} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -33,13 +42,14 @@
  	<select id="count" resultType="int">
 		select count(*) from t_repository
 		 <where>  
-		  		  <if test="repositoryId != null and repositoryId != ''"> and repository_id = #{repositoryId} </if>
-		  		  <if test="name != null and name != ''"> and name like #{name} </if>
-		  		  <if test="property != null and property != ''"> and property = #{property} </if>
-		  		  <if test="units != null and units != ''"> and units = #{units} </if>
-		  		  <if test="creater != null and creater != ''"> and creater = #{creater} </if>
-		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
-		  		</where>
+		 	<if test="repositoryId != null and repositoryId != ''"> and repository_id = #{repositoryId} </if>
+		  	<if test="name != null and name != ''"> and name like #{name} </if>
+		  	<if test="property != null and property != ''"> and property = #{property} </if>
+		 	<if test="units != null and units != ''"> and units = #{units} </if>
+		 	<if test="creater != null and creater != ''"> and creater = #{creater} </if>
+		 	<if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+			<if test="roleId != null and roleId != ''"> and role_id = #{roleId} </if>
+		  </where>
 	</select>
 	 
 	<insert id="save" parameterType="com.robot.robot.domain.TRepositoryDO" useGeneratedKeys="true" keyProperty="repositoryId">
@@ -50,7 +60,8 @@
 			`units`, 
 			`creater`, 
 			`createtime`,
-			`priority`
+			`priority`,
+			`role_id`
 		)
 		values
 		(
@@ -59,7 +70,8 @@
 			#{units}, 
 			#{creater}, 
 			#{createtime},
-			#{priority}
+			#{priority},
+			#{roleId}
 		)
 	</insert>
 	 
@@ -70,8 +82,9 @@
 			<if test="property != null">`property` = #{property}, </if>
 			<if test="units != null">`units` = #{units}, </if>
 			<if test="creater != null">`creater` = #{creater}, </if>
-			<if test="createtime != null">`createtime` = #{createtime}</if>
-			<if test="priority != null">`priority` = #{priority}</if>
+			<if test="createtime != null">`createtime` = #{createtime},</if>
+			<if test="priority != null">`priority` = #{priority},</if>
+			<if test="roleId != null">`role_id` = #{roleId},</if>
 		</set>
 		where repository_id = #{repositoryId}
 	</update>
@@ -88,6 +101,8 @@
 	</delete>
 
 	<select id="getByName" resultType="com.robot.robot.domain.TRepositoryDO">
-		select `repository_id`,`name`,`property`,`units`,`creater`,`createtime`,`priority` from t_repository where name = #{value}
+		select `repository_id`,`name`,`property`,`units`,`creater`,`createtime`,`priority`,`role_id` as roleId
+		from t_repository
+		where name = #{value}
 	</select>
 </mapper>

@@ -8,18 +8,21 @@
 	</select>
 
 	<select id="list" resultType="com.robot.robot.domain.TKeywordReplaceDO">
-			select `replace_id`,tkr.`keyword_id`,`charKey`,tk.`name` as keyword from t_keyword_replace tkr left JOIN t_keyword  tk on tk.keyword_id=tkr.keyword_id
+			select `replace_id`,tkr.`keyword_id`,`charKey`,tk.`name` as keyword 
+			from t_keyword_replace tkr 
+			left JOIN t_keyword  tk 
+			on tk.keyword_id=tkr.keyword_id
         <where>  
-		  		  <if test="replaceId != null and replaceId != ''"> and replace_id = #{replaceId} </if>
-		  		  <if test="keywordId != null and keywordId != ''"> and keyword_id = #{keywordId} </if>
-		  		  <if test="charkey != null and charkey != ''"> and charKey like #{charkey} </if>
+		  		  <if test="replaceId != null and replaceId != ''"> and tkr.replace_id = #{replaceId} </if>
+		  		  <if test="keywordId != null and keywordId != ''"> and tk.keyword_id = #{keywordId} </if>
+		  		  <if test="charkey != null and charkey != ''"> and tkr.charKey like #{charkey} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
                 order by ${sort} ${order}
             </when>
 			<otherwise>
-                order by replace_id desc
+                order by tkr.replace_id desc
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">

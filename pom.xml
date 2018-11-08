@@ -129,7 +129,7 @@
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>1.1.1</version>
+			<version>1.3.2</version>
 		</dependency>
 		<!--druid -->
 		<dependency>
@@ -231,11 +231,21 @@
 		</dependency>
 		
 		<!-- 结巴分词依赖包 -->
+		<!--
 		<dependency>
 		  <groupId>com.huaban</groupId>
 		  <artifactId>jieba-analysis</artifactId>
 		  <version>1.0.2</version>
 		</dependency>
+		-->
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.2</version>
+			<scope>provided</scope>
+		</dependency>
+
 
 		<!-- FTPServer依赖包 -->
 		<dependency>
@@ -250,6 +260,53 @@
 		    <artifactId>commons-net</artifactId>
 		    <version>3.6</version>
 		</dependency>
+		
+		<!-- 整合redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        
+        <!-- HanLP -->
+		<!--
+		<dependency>
+		    <groupId>com.hankcs</groupId>
+		    <artifactId>hanlp</artifactId>
+		    <version>portable-1.6.6</version>
+		</dependency>
+		-->
+		
+		<!-- 
+		deeplearning4j
+        <dependency>  
+		    <groupId>org.nd4j</groupId>  
+		    <artifactId>nd4j-native</artifactId>   
+		    <version>0.7.1</version>  
+		</dependency>  
+		<dependency>  
+		    <groupId>org.deeplearning4j</groupId>  
+		    <artifactId>dl4j-spark_2.11</artifactId>  
+		    <version>0.7.1</version>  
+		</dependency>  
+		     <dependency>  
+		          <groupId>org.datavec</groupId>  
+		          <artifactId>datavec-spark_2.10</artifactId>  
+		          <version>0.7.1</version>  
+		    </dependency>  
+		      <dependency>  
+		   <groupId>org.deeplearning4j</groupId>  
+		   <artifactId>deeplearning4j-core</artifactId>  
+		   <version>0.7.1</version>  
+		</dependency> 
+	 -->
+	 
+	 <!-- 高性能Java科学与技术运算库Colt -->
+	 <dependency>
+	    <groupId>colt</groupId>
+	    <artifactId>colt</artifactId>
+	    <version>1.2.0</version>
+	</dependency>
+	 
 		
 	</dependencies>
 	<build>

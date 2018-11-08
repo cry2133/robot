@@ -1,7 +1,5 @@
 package com.robot.robot.controller.app;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.robot.common.utils.StringUtils;
 import com.robot.robot.bean.UserModel;
 import com.robot.robot.controller.app.bean.ResponseBean;
 import com.robot.robot.domain.TIdentityInfoDO;
@@ -59,10 +56,9 @@ public class IdentityInfoForAppController {
 			}else{
 				tIdentityInfo.setBirth("1990年01月01日");
 			}
-			
-			Long id = tIdentityInfoService.selectByIdentityID(identityID).getId();
-			if(id>0){
-				tIdentityInfo.setId(id);
+			TIdentityInfoDO selectIdentityInfo = tIdentityInfoService.selectByIdentityID(identityID);
+			if(selectIdentityInfo != null){
+				tIdentityInfo.setId(selectIdentityInfo.getId());
 				tIdentityInfoService.update(tIdentityInfo);
 				//return ResponseBean.fail("该身份证号已被认证！不能重复采集！");				
 			}else{

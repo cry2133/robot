@@ -79,7 +79,7 @@ var openRepository = function(){
 		area : [ '300px', '70%' ],
 		content:"/robot/tRepository/treeView"
 	})
-}
+};
 function loadRepository( repositoryId,repositoryName){
 	$("#repositoryId").val(repositoryId);
 	$("#repositoryName").val(repositoryName);
@@ -92,7 +92,7 @@ var openMajor = function(){
 		area : [ '300px', '70%' ],
 		content:"/robot/tMajor/treeView"
 	})
-}
+};
 function loadMajor( majorId, majorName){
 	$("#majorId").val(majorId);
 	$("#majorName").val(majorName);

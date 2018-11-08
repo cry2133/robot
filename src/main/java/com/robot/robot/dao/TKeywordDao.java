@@ -9,9 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 关键字表
- * @author yobi
- * @email ***
- * @date 2017-11-30 19:29:57
  */
 @Mapper
 public interface TKeywordDao {
@@ -26,7 +23,7 @@ public interface TKeywordDao {
 	
 	int update(TKeywordDO tKeyword);
 	
-	int remove(Long keyword_id);
+	int remove(Long keywordId);
 	
 	int batchRemove(Long[] keywordIds);
 

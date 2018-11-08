@@ -38,11 +38,23 @@ function validateRule() {
 		rules : {
 			name : {
 				required : true
+			},
+			priority : {
+				required : true
+			},
+			value : {
+				required : true
 			}
 		},
 		messages : {
 			name : {
-				required : icon + "请输入关键字"
+				required : icon + "请输入关键字！"
+			},
+			priority : {
+				required : icon + "请输入优先级！"
+			},
+			value : {
+				required : icon + "请输入闸值！"
 			}
 		}
 	})

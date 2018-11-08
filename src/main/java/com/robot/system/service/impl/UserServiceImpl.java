@@ -106,8 +106,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Set<String> listRoles(Long userId) {
-		return null;
+	public List<Long> listRoles(Long userId) {
+		return userRoleMapper.listRoleId(userId);
 	}
 
 	@Override

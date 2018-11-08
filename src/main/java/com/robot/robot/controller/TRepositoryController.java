@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.robot.system.domain.RoleDO;
+import com.robot.system.service.RoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -36,6 +38,8 @@ import com.robot.common.utils.ShiroUtils;
 public class TRepositoryController {
 	@Autowired
 	private TRepositoryService tRepositoryService;
+	@Autowired
+	RoleService roleService;
 	
 	@GetMapping()
 	@RequiresPermissions("robot:tRepository:tRepository")
@@ -51,13 +55,14 @@ public class TRepositoryController {
         Query query = new Query(params);
 		List<TRepositoryDO> tRepositoryList = tRepositoryService.list(query);
 		int total = tRepositoryService.count(query);
-		PageUtils pageUtils = new PageUtils(tRepositoryList, total);
-		return pageUtils;
+		return new PageUtils(tRepositoryList, total);
 	}
 	
 	@GetMapping("/add")
 	@RequiresPermissions("robot:tRepository:add")
-	String add(){
+	String add(Model model){
+		List<RoleDO> roles = roleService.list();
+		model.addAttribute("roles", roles);
 	    return "robot/tRepository/tRepositoryAdd";
 	}
 
@@ -66,6 +71,8 @@ public class TRepositoryController {
 	String edit(@PathVariable("repositoryId") Long repositoryId,Model model){
 		TRepositoryDO tRepository = tRepositoryService.get(repositoryId);
 		model.addAttribute("tRepository", tRepository);
+		List<RoleDO> roles = roleService.list(repositoryId);
+		model.addAttribute("roles", roles);
 	    return "robot/tRepository/tRepositoryEdit";
 	}
 	
@@ -79,7 +86,7 @@ public class TRepositoryController {
 		Long userId= ShiroUtils.getUser().getUserId();		//当前系统管理员
 		tRepository.setCreater(String.valueOf(userId));		//发布人
 		tRepository.setCreatetime(new Date());
-		
+		System.out.println(tRepository.getRoleId());
 		if(tRepositoryService.save(tRepository)>0){
 			return R.ok();
 		}

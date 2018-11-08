@@ -1,6 +1,5 @@
 package com.robot.robot.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,11 +9,12 @@ import com.robot.robot.dao.TNonexistentFaqDao;
 import com.robot.robot.domain.TNonexistentFaqDO;
 import com.robot.robot.service.TNonexistentFaqService;
 
+import javax.annotation.Resource;
 
 
 @Service
 public class TNonexistentFaqServiceImpl implements TNonexistentFaqService {
-	@Autowired
+	@Resource
 	private TNonexistentFaqDao tNonexistentFaqDao;
 	
 	@Override

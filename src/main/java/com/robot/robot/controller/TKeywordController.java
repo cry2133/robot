@@ -24,12 +24,7 @@ import com.robot.common.utils.ShiroUtils;
 
 /**
  * 关键字表
- * 
- * @author yobi
- * @email ***
- * @date 2017-11-30 19:29:57
  */
- 
 @Controller
 @RequestMapping("/robot/tKeyword")
 public class TKeywordController {

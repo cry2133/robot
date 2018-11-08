@@ -46,8 +46,7 @@ public class UserController extends BaseController {
 		Query query = new Query(params);
 		List<UserDO> sysUserList = userService.list(query);
 		int total = userService.count(query);
-		PageUtils pageUtil = new PageUtils(sysUserList, total);
-		return pageUtil;
+		return new PageUtils(sysUserList, total);
 	}
 
 	@RequiresPermissions("sys:user:add")

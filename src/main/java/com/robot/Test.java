@@ -1,59 +1,102 @@
 package com.robot;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
+import java.io.IOException;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
+import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLSentence;
+import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLWord;
+import com.hankcs.hanlp.seg.common.Term;
+import com.robot.common.utils.*;
+import com.robot.robot.controller.app.FaqForGZBureauController;
+import com.robot.robot.domain.TFaqDO;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.huaban.analysis.jieba.JiebaSegmenter;
-import com.huaban.analysis.jieba.SegToken;
-import com.huaban.analysis.jieba.JiebaSegmenter.SegMode;
-import com.robot.common.utils.MapUtils;
-import com.robot.common.utils.StringUtils;
-import com.robot.common.utils.TuLingUtils;
-import com.robot.common.utils.XFyunUtils;
+import com.hankcs.hanlp.dictionary.CoreSynonymDictionary;
+import com.robot.robot.controller.app.bean.ResponseBean;
 
 public class Test {
 
+
+	public static void hehe()  {
+		System.out.println(HanLPUtils.similarity("头痛","头疼"));
+		String doc1 = "我觉得阵发性的头疼";
+		String doc2 = "我觉得阵发性的头痛";
+		System.out.println(Doc2Vec.getDocVectorModel("C:/Users/lenovo/Desktop/HanLP/data/model/word_vector_model.txt").docSimilarity(doc1,doc2));
+	}
+
+
+
 	public static void main(String[] args) throws Exception {
+
+
+
+		hehe();
+
+		System.out.println(
+				" _____   ____  ____   ____ _______  \n"+
+				"|  __ \\ / __ \\|  _ \\ / __ \\__   __| \n"+
+				"| |__) | |  | | |_) | |  | | | |    \n"+
+				"|  _  /| |  | |  _ <| |  | | | |    \n"+
+				"| | \\ \\| |__| | |_) | |__| | | |    \n"+
+				"|_|  \\_\\\\____/|____/ \\____/  |_| \n"
+				);
+
+		/*
+		//String s = "我觉得头晕，持续性，前额后枕部痛，睡眠好";
+		//String s2 = "我觉得有点头晕，持续性的，前额后枕部有点痛，睡眠也很好好";
+		String s = "我觉得有点头晕呀，持续性的,不是啊";
+		String [] replace = {"的","啊","呀","哦"};
+
+		for(String rp : replace){
+			s = s.replace(rp,"");
+			System.out.println(s);
+		}
+		//String s = "不是啊";
+		String s2 = "不是的";
+		System.out.println(HanLPUtils.getKeyword("是啊",1));
+		//System.out.println(HanLPUtils.getKeywordByNLPsegment(s));
+		//System.out.println(HanLPUtils.getKeywordByNLPsegment(s2));
+		System.out.println(HanLPUtils.semanticDistance(s,s2));
+		System.out.println(HanLPUtils.similarity(s,s2));
+		//System.out.println(Doc2Vec.getDocVectorModel(null).docSimilarity(s,s2));
+*/
+
+
+
+
+		//List<String> list = HanLPUtils.getKeyword(s,10);
+//		List<String> list = HanLP.extractKeyword(s,3);
+		/*List<Term> cs= HanLP.segment(s);
+		Iterator<Term> it=  cs.iterator();
+		while (it.hasNext()){
+			Term t=it.next();
+
+			System.out.println(t.word);
+			System.out.println(t.nature);
+		}*/
+//		for(String ss : list){
+//			System.out.println(ss);
+//		}
+
+
+
+/*
+		//创建文本语义理解对象
+		TextUnderstander mTextUnderstander = new TextUnderstander( ); 
+		//开始语义理解
+		mTextUnderstander.understandText("今天的天气", searchListener);
+		//初始化监听器
+		TextUnderstanderListener searchListener = new TextUnderstanderListener(){
+		    //语义结果回调
+		    public void onResult(UnderstanderResult result){}
+		    //语义错误回调
+		    public void onError(SpeechError error) {}
+		};
+		*/
 		
 		
-		
-//		System.out.println(
-//				" _____   ____  ____   ____ _______  \n"+
-//				"|  __ \\ / __ \\|  _ \\ / __ \\__   __| \n"+
-//				"| |__) | |  | | |_) | |  | | | |    \n"+
-//				"|  _  /| |  | |  _ <| |  | | | |    \n"+
-//				"| | \\ \\| |__| | |_) | |__| | | |    \n"+
-//				"|_|  \\_\\\\____/|____/ \\____/  |_| \n"
-//				
-//				);
-//		
-//		String s ="1";
-//		if("1".equals(s)){
-//			System.out.println(1);
-//		}
-//		if("1".equals(s)){
-//			System.out.println(2);
-//		}
-//		if("1".equals(s)){
-//			System.out.println(3);
-//		}
 		
 		/*
 		
@@ -66,26 +109,10 @@ public class Test {
 		//xf.runChat(question).getText();
 		System.out.println(xf.runChat(question).getText());
 		*/
-		
-		
-		JiebaSegmenter segmenter = new JiebaSegmenter();
-	    /*
-		String[] sentences =
-	        new String[] {"这是一个伸手不见五指的黑夜。我叫孙悟空，我爱北京，我爱Python和C++。", "我不喜欢日本和服。", "雷猴回归人间。",
-	                      "工信处女干事每月经过下属科室都要亲口交代24口交换机等技术性器件的安装工作", "结果婚的和尚未结过婚的"};
-	    for (String sentence : sentences) {
-	        //System.out.println(segmenter.process(sentence, SegMode.INDEX).toString());
-	    }
-	    */
 
-		
-		String s = "电工进网";
-	    //System.out.println(segmenter.process(s, SegMode.INDEX).toString());
-		List<SegToken> segToken = segmenter.process(s, SegMode.INDEX);
-		for (SegToken st : segToken ){
-			System.out.println(st.word);
-		}
-		
+
+
+
 	
 		//System.out.println(new SimpleDateFormat("yyyy年MM月dd日").format(new Date(Long.valueOf("19931212"))));
 		//System.out.println(Long.valueOf("1530677843978"));
@@ -156,18 +183,17 @@ public class Test {
 		String content = "非居民";
 		Pattern p=Pattern.compile(content);  
         Matcher m=p.matcher("请问非居民用户");    //正则表达式匹配
-        boolean mm = m.find();
-        System.out.println(mm);
-        System.out.println(m.find());
+        Matcher m3=p.matcher("请问非居民用户44");    //正则表达式匹配
+        if(m3.find()){
+        	System.out.println("-----");
+        }
         if(m.find()){
         	System.out.println("=====");
         }
-        if(m.find()){
-        	System.out.println("---------");
-        }
-        System.out.println(m.find());
         */
         
+		
+		
 	    /*
 		Map<String,Double> map4 = new HashMap<String,Double>();
 		map4.put("a", 4.8);
@@ -191,5 +217,9 @@ public class Test {
         }		
 		System.out.println(returnKey);
 		*/
+		
+	
 	}
+	
+
 }

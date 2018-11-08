@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.robot.robot.domain.TKeywordExcludeDO;
 import com.robot.robot.service.TKeywordExcludeService;
-import com.robot.robot.service.TKeywordService;
 import com.robot.common.utils.PageUtils;
 import com.robot.common.utils.R;
 
@@ -33,8 +32,6 @@ import com.robot.common.utils.R;
 public class TKeywordExcludeController {
 	@Autowired
 	private TKeywordExcludeService tKeywordExcludeService;
-	@Autowired
-	private TKeywordService tKeywordService;
 	
 	
 	@GetMapping()

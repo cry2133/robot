@@ -48,7 +48,7 @@ public class DlZwYsDfJlDO implements Serializable {
 	private String yddz;
 	//违约金日期(违约金起征日期)
 	private Date wyjrq;
-	//行业分类代码(行业类别,目前使用国民经济行业分类与代码(gb/t 4754－2002),例如:01 农业 02林业 03畜牧业 04渔业)
+	//行业分类代码(行业类别,目前使用国民经济行业分类与代码(gb/DescartesUtil 4754－2002),例如:01 农业 02林业 03畜牧业 04渔业)
 	private String hyfldm;
 	//用户类别代码(1_公变用户,2_专变客户,3_线损考核,4_台区考核,5_购电)
 	private String yhlbdm;

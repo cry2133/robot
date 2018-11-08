@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.robot.robot.dao.TEntityDao">
+
+	<select id="get" resultType="com.robot.robot.domain.TEntityDO">
+		select `id`,`name`,`description`,`clarification`,`type`,`yes`,`no`,role_id as roleId from t_entity where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.robot.robot.domain.TEntityDO">
+		select `id`,`name`,`description`,`clarification`,`type`,`yes`,`no`,role_id as roleId from t_entity
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="description != null and description != ''"> and description = #{description} </if>
+		  		  <if test="clarification != null and clarification != ''"> and clarification = #{clarification} </if>
+				<if test="userId != null and userId != ''">
+					and role_id in
+					(select role_id
+					from sys_user_role
+					where user_id = #{userId})
+				</if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from t_entity
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="description != null and description != ''"> and description = #{description} </if>
+		  		  <if test="clarification != null and clarification != ''"> and clarification = #{clarification} </if>
+				 <if test="userId != null and userId != ''">
+					 and role_id in
+					 (select role_id
+					 from sys_user_role
+					 where user_id = #{userId})
+				 </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.robot.robot.domain.TEntityDO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_entity
+		(
+			`name`, 
+			`description`, 
+			`clarification`,
+			`type`,
+			`yes`,
+			`no`,
+			role_id
+		)
+		values
+		(
+			#{name}, 
+			#{description}, 
+			#{clarification},
+			#{type},
+			#{yes},
+			#{no},
+			#{roleId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.robot.robot.domain.TEntityDO">
+		update t_entity 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="description != null">`description` = #{description}, </if>
+			<if test="clarification != null">`clarification` = #{clarification}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="yes != null">`yes` = #{yes}, </if>
+			<if test="no != null">`no` = #{no}, </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from t_entity where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_entity where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

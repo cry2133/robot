@@ -9,10 +9,6 @@ import com.robot.common.utils.ShiroUtils;
 
 /**
  * 问答表
- * 
- * @author yobi
- * @email ***
- * @date 2017-11-30 19:29:57
  */
 public class TFaqDO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -33,34 +29,14 @@ public class TFaqDO implements Serializable {
 	private Date createtime;
 	//回答次数
 	private Integer amount;
-	//
-	private Long parentId;
-	//意图实体
-	private String intentionEntity;
-	//补全意图语料
-	private String intentionText;
-	//意图实体2
-	private String intentionEntity2;
-	//补全意图语料2
-	private String intentionText2;	
-	//意图实体3
-	private String intentionEntity3;
-	//补全意图语料3
-	private String intentionText3;
-	
-	
-	
+	//是否缓存问题
+	private Integer cache;
+
+
 	
 
 	//非持久化字段
 	
-	public Long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
 	//知识库名称
 	private String repositoryName;
 	//专业名称
@@ -70,21 +46,11 @@ public class TFaqDO implements Serializable {
 	private String keygroup;
 	//关键字组合名称
 	private String keygroupName;
-	//关键字优先级
-	private String keygroupPriority;
 	
-	public String getKeygroupPriority() {
-		return keygroupPriority;
-	}
-
-	public void setKeygroupPriority(String keygroupPriority) {
-		this.keygroupPriority = keygroupPriority;
-	}
 
 	// Constructors
 	public TFaqDO(Long faqId,Long repositoryId,String question,String answer,Long majorId,
-					String creater,Date createtime,Integer amount,Long parentId,
-					String intentionEntity, String intentionText,String intentionEntity2, String intentionText2, String intentionEntity3,  String intentionText3) {
+					String creater,Date createtime,Integer amount,Integer cache) {
 		super();
 		this.faqId = faqId;
 		this.repositoryId = repositoryId;
@@ -94,13 +60,7 @@ public class TFaqDO implements Serializable {
 		this.creater = creater;
 		this.createtime = createtime;
 		this.amount = amount;
-		this.parentId = parentId;
-		this.intentionEntity = intentionEntity;
-		this.intentionText = intentionText;
-		this.intentionEntity2 = intentionEntity2;
-		this.intentionText2 = intentionText2;
-		this.intentionEntity3 = intentionEntity3;
-		this.intentionText3 = intentionText3;
+		this.cache = cache;
 	}
 
 	/** default constructor */
@@ -116,7 +76,6 @@ public class TFaqDO implements Serializable {
         creater=String.valueOf(userId);	//发布人
         createtime=new Date();
         amount=0;
-        parentId=0l;
 	}
 	
 	
@@ -217,6 +176,21 @@ public class TFaqDO implements Serializable {
 		this.amount = amount;
 	}
 	/**
+	 * 获取：是否缓存问题
+	 */
+	public Integer getCache() {
+		return cache;
+	}
+	/**
+	 * 设置：是否缓存问题
+	 */
+	public void setCache(Integer cache) {
+		this.cache = cache;
+	}
+	
+
+
+	/**
 	 * 获取：知识库名称
 	 */
 	public String getRepositoryName() {
@@ -247,53 +221,6 @@ public class TFaqDO implements Serializable {
 		this.keygroupName = keygroupName;
 	}
 
-	public String getIntentionEntity() {
-		return intentionEntity;
-	}
-
-	public void setIntentionEntity(String intentionEntity) {
-		this.intentionEntity = intentionEntity;
-	}
-
-	public String getIntentionText() {
-		return intentionText;
-	}
-
-	public void setIntentionText(String intentionText) {
-		this.intentionText = intentionText;
-	}
-
-	public String getIntentionEntity2() {
-		return intentionEntity2;
-	}
-
-	public void setIntentionEntity2(String intentionEntity2) {
-		this.intentionEntity2 = intentionEntity2;
-	}
-
-	public String getIntentionText2() {
-		return intentionText2;
-	}
-
-	public void setIntentionText2(String intentionText2) {
-		this.intentionText2 = intentionText2;
-	}
-
-	public String getIntentionEntity3() {
-		return intentionEntity3;
-	}
-
-	public void setIntentionEntity3(String intentionEntity3) {
-		this.intentionEntity3 = intentionEntity3;
-	}
-
-	public String getIntentionText3() {
-		return intentionText3;
-	}
-
-	public void setIntentionText3(String intentionText3) {
-		this.intentionText3 = intentionText3;
-	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

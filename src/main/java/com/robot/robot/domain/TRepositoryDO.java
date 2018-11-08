@@ -9,10 +9,6 @@ import com.robot.common.utils.ShiroUtils;
 
 /**
  * 知识词库表
- * 
- * @author yobi
- * @email ***
- * @date 2017-11-30 19:29:58
  */
 public class TRepositoryDO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +27,10 @@ public class TRepositoryDO implements Serializable {
 	private Date createtime;
 	//优先级
 	private Integer priority;
+	//所属角色ID
+	private Long roleId;
+	//所属角色名称
+	private String roleName;
 
 	
 	/** default constructor */
@@ -133,4 +133,34 @@ public class TRepositoryDO implements Serializable {
 	public Integer getPriority() {
 		return priority;
 	}
+
+
+	/**
+	 * 设置：所属角色ID
+	 */
+	public void setRoleId(Long roleId){
+		this.roleId = roleId;
+	}
+
+	/**
+	 * 获取：所属角色ID
+	 */
+	public Long getRoleId(){
+		return roleId;
+	}
+
+	/**
+	 * 设置：所属角色名称
+	 */
+	public void setRoleName(String roleName){
+		this.roleName = roleName;
+	}
+	/**
+	 * 获取：所属角色名称
+	 */
+	public String getRoleName(){
+		return roleName;
+	}
+
+
 }

@@ -40,6 +40,7 @@
 									</select>
 								</div>
 							</div>
+
 							<div class="form-group">
 								<label class="col-sm-3 control-label">词库性质：</label>
 								<div class="col-sm-8">
@@ -50,6 +51,17 @@
 									</select>
 								</div>
 							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">所属角色:</label>
+								<div class="col-sm-8">
+									<select name="roleId"  class='form-control'>
+										<option th:each="role:${roles}" th:value="${role.roleId}" th:selected="${role.roleId eq tRepository.roleId}?true:false"><title th:text="${role.roleName}"></title></option>
+									</select>
+								</div>
+							</div>
+
+
 							<div class="form-group">
 								<div class="col-sm-8 col-sm-offset-3">
 									<button type="submit" class="btn btn-primary">提交</button>

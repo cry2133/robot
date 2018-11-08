@@ -14,7 +14,9 @@ import com.robot.robot.controller.app.bean.ResponseBean;
 import com.robot.robot.domain.TAppSoftwareDO;
 import com.robot.robot.service.TAppSoftwareService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,20 +39,11 @@ public class AppSoftwareController {
         Map<String,Object> map =new HashMap<String,Object>();
         try {
         	TAppSoftwareDO appSoft = tAppSoftwareService.getNewAPK(map);
-            if (appSoft==null || "".equals(appSoft)) {
-            	/**
-            	 * 没有升级版本时返回空
-            	 */
-            	return ResponseBean.success("没有升级信息！");
-            }
-            /*
-            for (int i = 0; i < appSoftwareList.size(); i++) {
-                String path = UrlManagement.updatePath;
-                path += appSoftwareList.get(i).getPath();
-                appSoftwareList.get(i).setPath(path);
-            }
-            */
-            return ResponseBean.success(appSoft.toString());
+        	List<TAppSoftwareDO> appSoftList = new ArrayList<>();
+        	if(appSoft != null){
+        		appSoftList.add(appSoft);
+        	}
+            return ResponseBean.success(appSoftList);
         }catch (Exception e) {
             logger.error("robot："+robotNo+ " upgrade error", e);
         }

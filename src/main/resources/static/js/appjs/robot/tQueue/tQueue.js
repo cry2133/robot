@@ -52,15 +52,15 @@ function load() {
 									title : '智能排队id' 
 								},
 																{
-									field : 'identityid', 
+									field : 'identityID', 
 									title : '身份证ID' 
 								},
 																{
-									field : 'queuetime', 
+									field : 'queueTime', 
 									title : '智能排队时间' 
 								},
 																{
-									field : 'taxid', 
+									field : 'taxID', 
 									title : '排队业务ID' 
 								},
 																{

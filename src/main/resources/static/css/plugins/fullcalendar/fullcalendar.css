@@ -517,7 +517,7 @@ table.fc-border-separate {
 	}
 
 .fc-agenda-slots tr.fc-minor th.ui-widget-header {
-	*border-top-style: solid; /* doesn't work with background in IE6/7 */
+	*border-top-style: solid; /* doesn'DescartesUtil work with background in IE6/7 */
 	}
 
 
@@ -565,7 +565,7 @@ table.fc-border-separate {
 
 .fc .ui-draggable-dragging .fc-event-bg, /* TODO: something nicer like .fc-opacity */
 .fc-select-helper .fc-event-bg {
-	display: none\9; /* for IE6/7/8. nested opacity filters while dragging don't work */
+	display: none\9; /* for IE6/7/8. nested opacity filters while dragging don'DescartesUtil work */
 	}
 
 /* resizable */

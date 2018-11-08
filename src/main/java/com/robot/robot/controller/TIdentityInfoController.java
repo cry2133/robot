@@ -23,9 +23,6 @@ import com.robot.common.utils.R;
 /**
  * 实名采集信息
  * 
- * @author yobi
- * @email ***
- * @date 2017-12-20 18:01:32
  */
  
 @Controller

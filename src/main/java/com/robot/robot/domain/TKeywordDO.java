@@ -5,14 +5,8 @@ import java.util.Date;
 
 import com.robot.common.utils.ShiroUtils;
 
-
-
 /**
  * 关键字表
- * 
- * @author yobi
- * @email ***
- * @date 2017-11-30 19:29:57
  */
 public class TKeywordDO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -21,6 +15,10 @@ public class TKeywordDO implements Serializable {
 	private Long keywordId;
 	//关键字名称
 	private String name;
+	//优先级
+	private int priority;
+	//闸值（默认1，正值为业务关键字，负值为闲聊关键字）
+	private int value;
 	//查询次数
 	private int amount;
 	//
@@ -36,6 +34,8 @@ public class TKeywordDO implements Serializable {
 	public TKeywordDO(String name) throws Exception {
 		super();
         this.name=name;
+        this.priority=0;
+        this.value=1;
         this.amount=0;
         this.createtime=new Date();
         Long userId= ShiroUtils.getUser().getUserId();		//当前系统管理员
@@ -67,6 +67,31 @@ public class TKeywordDO implements Serializable {
 	public String getName() {
 		return name;
 	}
+	/**
+	 * 获取：优先级
+	 */
+	public int getPriority() {
+		return priority;
+	}
+	/**
+	 * 设置：优先级
+	 */
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+	/**
+	 * 获取：闸值（默认1，正值为业务关键字，负值为闲聊关键字）
+	 */
+	public int getValue() {
+		return value;
+	}
+	/**
+	 * 设置：闸值（默认1，正值为业务关键字，负值为闲聊关键字）
+	 */
+	public void setValue(int value) {
+		this.value = value;
+	}
+
 	/**
 	 * 设置：查询次数
 	 */

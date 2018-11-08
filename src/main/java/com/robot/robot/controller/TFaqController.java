@@ -49,12 +49,7 @@ import com.robot.common.utils.ShiroUtils;
 
 /**
  * 问答表
- * 
- * @author yobi
- * @email ***
- * @date 2017-11-30 19:29:57
  */
- 
 @Controller
 @RequestMapping("/robot/tFaq")
 @Transactional
@@ -86,13 +81,14 @@ public class TFaqController {
 	@GetMapping("/list")
 	@RequiresPermissions("robot:tFaq:tFaq")
 	public PageUtils list(@RequestParam Map<String, Object> params){
+		Long userId = ShiroUtils.getUserId();   //获取当前用户
 		//查询列表数据
         Query query = new Query(params);
-        queryFilterList=query;
+        query.put("userId",userId);
+        queryFilterList = query;
 		List<TFaqDO> tFaqList = tFaqService.list(query);
 		int total = tFaqService.count(query);
-		PageUtils pageUtils = new PageUtils(tFaqList, total);
-		return pageUtils;
+		return new PageUtils(tFaqList, total);
 	}
 	
 	@GetMapping("/add")
@@ -110,80 +106,6 @@ public class TFaqController {
 	    return "robot/tFaq/tFaqEdit";
 	}
 	
-	@GetMapping("/tFaqnext")
-	@RequiresPermissions("robot:tFaq:next")
-	String next(Long faqId,Model model){
-		model.addAttribute("parentId", faqId);
-	    return "robot/tFaq/tFaqNext";
-	}
-	
-	@GetMapping("/addNext/{parentId}")
-	String addNext(@PathVariable("parentId") Long parentId,Model model){
-		model.addAttribute("parentId", parentId);
-		return "robot/tFaq/tFaqAddNext";
-	}
-	
-	@GetMapping("/editNext/{faqId}")
-	String editNext(@PathVariable("faqId") Long faqId,Model model){
-		TFaqDO tFaq = tFaqService.get(faqId);
-		model.addAttribute("tFaq", tFaq); 
-		return "robot/tFaq/tFaqEditNext";
-	}
-	
-	/**
-	 * 保存
-	 */
-	@ResponseBody
-	@PostMapping("/saveNext")
-	public R saveNext( TFaqDO tFaq){
-		TFaqDO tFaq_p = tFaqService.get(tFaq.getParentId());
-		
-		Long userId= ShiroUtils.getUser().getUserId();		//当前系统管理员
-		tFaq.setCreater(String.valueOf(userId));		//发布人
-		tFaq.setCreatetime(new Date());
-		tFaq.setAmount(0);
-		tFaq.setMajorId(tFaq_p.getMajorId());
-		tFaq.setRepositoryId(tFaq_p.getRepositoryId());
-		
-		boolean flag=tKeywordMiddleService.existKeygroup(tFaq.getKeygroup(),0L);
-		if(flag){
-			return R.error("关键字组合已存在");
-		}
-		
-		if(tFaqService.save(tFaq)>0){
-			TKeywordMiddleDO keywordMiddle=new TKeywordMiddleDO();
-			keywordMiddle.setFaqId(tFaq.getFaqId());
-			keywordMiddle.setKeygroup(tFaq.getKeygroup());
-			keywordMiddle.setKeygroupName(tFaq.getKeygroupName());
-			if(tKeywordMiddleService.save(keywordMiddle)>0){
-				return R.ok();
-			}else{
-				return R.error();
-			}
-		}
-		return R.error();
-	}
-	
-	/**
-	 * 修改
-	 */
-	@ResponseBody
-	@RequestMapping("/updateNext")
-	public R updateNext( TFaqDO tFaq){
-		boolean flag=tKeywordMiddleService.existKeygroup(tFaq.getKeygroup(),tFaq.getFaqId());
-		if(flag){
-			return R.error("关键字组合已存在");
-		}
-		
-		
-		TKeywordMiddleDO keywordMiddle=tKeywordMiddleService.getByFaqId(tFaq.getFaqId());
-		keywordMiddle.setKeygroup(tFaq.getKeygroup());
-		keywordMiddle.setKeygroupName(tFaq.getKeygroupName());
-		tKeywordMiddleService.update(keywordMiddle);
-		
-		tFaqService.update(tFaq);
-		return R.ok();
-	}
 	
 	/**
 	 * 保存
@@ -196,7 +118,6 @@ public class TFaqController {
 		tFaq.setCreater(String.valueOf(userId));		//发布人
 		tFaq.setCreatetime(new Date());
 		tFaq.setAmount(0);
-		tFaq.setParentId(0l);
 		
 		boolean flag=tKeywordMiddleService.existKeygroup(tFaq.getKeygroup(),0L);
 		if(flag){
