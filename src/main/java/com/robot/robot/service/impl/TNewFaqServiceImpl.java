@@ -207,6 +207,9 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 		return questionList;
 	}
 
+	/**
+	 * 获取多轮问答知识库的答案
+	 */
 	public String getAnswerByEntrance(String question,String robotNo){
 		/*//全文检索
 		String answer = getLikeByEntranceFaq(question,robotNo);
@@ -254,28 +257,38 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 	}
 
 
-
+	/**
+	 * 根据问题找到场景ID返回澄清语句
+	 */
 	public String getClarificationByEntranceId(String question,String robotNo){
+		//初始化场景
+		initEntranceMap(robotNo);
+
 		//全文检索
 		Long entranceId = getEntranceIdByQuestion(question,robotNo);
 		if(entranceId > 0){
+			saveQuestion(robotNo,entranceId);
 			return existEntity(question, robotNo, entranceId);
 		}
 		//特征提取匹配
-		initEntranceMap(robotNo);
 		entranceId = keywordCompare(question,stringMap);
 		if(entranceId > 0){
+			saveQuestion(robotNo,entranceId);
 			return existEntity(question, robotNo, entranceId);
 		}
 		//相似度匹配
 		entranceId = nearestDocument(question,stringMap,MODEL_FILE_NAME);
 		if(entranceId > 0){
+			saveQuestion(robotNo,entranceId);
 			return existEntity(question, robotNo, entranceId);
 		}
 		return null;
 	}
 
 
+	/**
+	 * 一问一答库匹配答案
+	 */
 	public String getAnswerByQuestion(String question,String robotNo){
 		//全文检索
 		String answer = getLikeByQuestion(question,robotNo);
@@ -658,10 +671,37 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 
 
 	/**
+	 * 根据场景ID获取场景代表问题
+	 * @param id
+	 * @return
+	 */
+	public String getQuestionByEntranceId(Long id){
+		for(TEntranceDO tEntranceDO : entranceList){
+			if(id.equals(tEntranceDO.getId())){
+				return tEntranceDO.getEntrance();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 保存场景代表问题缓存
+	 * @param robotNo
+	 * @param entranceId
+	 */
+	public void saveQuestion(String robotNo,Long entranceId){
+		String ques = getQuestionByEntranceId(entranceId);
+		if(StringUtils.isNotEmpty(ques)){
+			RedisUtil.setExpire(robotNo + "robot_next_question", CACHE_TIME, ques);
+		}
+	}
+
+
+
+	/**
 	 * 判断问题是否存在词槽
 	 */
 	private String existEntity(String question,String robotNo, Long id){
-		RedisUtil.setExpire(robotNo + "robot_next_question", CACHE_TIME, question);
 
 		String idString = id.toString();
 
@@ -746,7 +786,7 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 					String[] words = stringReplace.split("，");
 					for(String word : words) {
 						Double sim = Doc2Vec.getDocVectorModel(MODEL_FILE_NAME).docSimilarity(word, question);
-						if(sim > SIM) {
+						if(sim > SIM || word.equals(question)) {
 							matchString = word;
 							break;
 						}

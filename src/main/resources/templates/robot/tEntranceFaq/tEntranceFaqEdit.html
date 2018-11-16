@@ -45,7 +45,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">答案：</label>
 								<div class="col-sm-8">
-									<input id="answer" name="answer" th:value="${tEntranceFaq.answer}" class="form-control" type="text">
+									<textarea  rows="10" cols="70" id="answer" name="answer"  th:inline="text">[[${tEntranceFaq.answer}]]</textarea>
 								</div>
 							</div>
 							<div class="form-group">

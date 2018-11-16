@@ -18,6 +18,7 @@ function seachQuestion() {
 	$.ajax({
 		type:"post",
 		url:prefix+"/searchAnswer",
+        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
 		data:{content:question,robotNo:robotNo},
 		success:function(result){
 			 document.getElementById("answer").innerHTML = result.data.answer;
@@ -52,7 +53,7 @@ document.onkeyup = function (e) {//按键信息对象以函数参数的形式传
 		$.ajax({
 			type:"post",
 			url:prefix+"/searchAnswer",
-			data:{content:question},
+			data:{content:question,robotNo:robotNo},
 			success:function(result){
 				 document.getElementById("answer").innerHTML = result.data.answer;
                  document.getElementById("questionList").innerHTML = result.data.questionList;

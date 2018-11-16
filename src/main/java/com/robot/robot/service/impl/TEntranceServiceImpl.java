@@ -62,7 +62,7 @@ public class TEntranceServiceImpl implements TEntranceService {
 	public int update(TEntranceDO tEntrance){
 		tEntranceEntityDao.removeByEntranceId(tEntrance.getId());
 		List<Long> entityIds = tEntrance.getEntityIds();
-		if(entityIds.size() > 0){
+		if(entityIds != null){
 			List<TEntranceEntityDO> list = new ArrayList<>();
 			for (Long entityId : entityIds) {
 				TEntranceEntityDO ee = new TEntranceEntityDO();

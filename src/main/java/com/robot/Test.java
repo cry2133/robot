@@ -21,8 +21,8 @@ public class Test {
 
 	public static void hehe()  {
 		System.out.println(HanLPUtils.similarity("头痛","头疼"));
-		String doc1 = "我觉得阵发性的头疼";
-		String doc2 = "我觉得阵发性的头痛";
+		String doc1 = "低压客户是什么？";
+		String doc2 = "低压客户是指什么？";
 		System.out.println(Doc2Vec.getDocVectorModel("C:/Users/lenovo/Desktop/HanLP/data/model/word_vector_model.txt").docSimilarity(doc1,doc2));
 	}
 

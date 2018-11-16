@@ -9,7 +9,9 @@ import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.robot.robot.controller.app.bean.FaqRequestBean;
@@ -42,7 +44,6 @@ public class FaqForAppController {
     /**
      * 智能查询问答
      *
-     * @param request 问题+机器人编号
      */
     @RequestMapping("/searchAnswer")
     @ResponseBody
@@ -50,6 +51,7 @@ public class FaqForAppController {
 
         String content = RequestUtil.getString(request, "content");
         String robotNo = RequestUtil.getString(request, "robotNo");
+
 
         //退出即清空session缓存
         if (content.equals(AppConstants.OUT)) {
@@ -65,6 +67,16 @@ public class FaqForAppController {
 
         String answer = tNewFaqService.searchAnswer(content,robotNo);
         faqBean.setAnswer(answer);
+
+        //场景问答只重复澄清一次
+        String upAnswer = RedisUtil.getValue(robotNo + "robot_up_answer");
+        if(answer.equals(upAnswer)){
+            RedisUtil.del(robotNo + "robot_up_answer");
+            RedisUtil.del(robotNo + "robot_entrance_entity_cache");
+            RedisUtil.del(robotNo + "robot_up_entity_id");
+            RedisUtil.del(robotNo + "robot_next_question");
+        }
+        RedisUtil.setExpire(robotNo + "robot_up_answer", 50, answer);
 
         TFaqLogDO tFaqLogDO = new TFaqLogDO();
         tFaqLogDO.setQuestion(content);

@@ -29,7 +29,8 @@ public class HanLPtest {
 		
 		HanLPtest hlp = new HanLPtest();
 		//hlp.yyjl();
-		//hlp.zntj();
+		hlp.wordsim();
+		hlp.zntj();
 		//hlp.gjz();
 		//hlp.zd();
 		//hlp.dx();
@@ -42,9 +43,9 @@ public class HanLPtest {
 		//hlp.ycjf();
 		//hlp.vectors();
 		
-		System.out.println(HanLPUtils.getKeyword("只记得恍惚中跟你相恋", 2));
+		//System.out.println(HanLPUtils.getKeyword("只记得恍惚中跟你相恋", 2));
 		
-		System.out.println(HanLPUtils.getKeywordByNLPsegment("只记得恍惚中跟你相恋"));
+		//System.out.println(HanLPUtils.getKeywordByNLPsegment("只记得恍惚中跟你相恋"));
 	}
 	
 	
@@ -81,9 +82,9 @@ public class HanLPtest {
 		        };
 		String[] wordArray2 = new String[]
 		        {
-		                "用电",
-		                "报装",
-		           
+		                "表为",
+		                "表位",
+
 		        };
 		for (String a : wordArray2){
 		    for (String b : wordArray2){
@@ -92,7 +93,14 @@ public class HanLPtest {
 		}
 	}
 	
-	
+
+	public void wordsim(){
+		String a = "仪表";
+		String b = "移表";
+		String c = "仪器";
+		System.out.println(HanLPUtils.similarity(a,b));
+	}
+
 	
 	public void zntj(){
 		/**
