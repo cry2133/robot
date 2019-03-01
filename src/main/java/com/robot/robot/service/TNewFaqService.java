@@ -30,9 +30,7 @@ public interface TNewFaqService {
 	
 	int batchRemove(Long[] ids);
 
-	String searchAnswer(String question,String robotNo);
-
-	List<String> getQuestionList();
+	FaqRequestBean searchAnswer(String question,String robotNo);
 
 	String getLikeByQuestion(String question,String robotNo);
 
@@ -42,8 +40,10 @@ public interface TNewFaqService {
 
 	List<String> intelligentSearch(String question, Map<String, String> stringMap);
 
-	Long keywordCompare(String question, Map<String, String> stringMap);
+	Long keywordCompare(String question, Map<String, String> stringMap, double matchValue);
 
 	Long nearestDocument(String question, Map<String, String> stringMap, String model_file_name) throws IOException;
+
+	List<String> verify(TNewFaqDO tNewFaq);
 
 }

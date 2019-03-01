@@ -1,7 +1,6 @@
 package com.robot.robot.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 
@@ -9,7 +8,6 @@ import java.util.Date;
  * 机器人编号管理表
  * 
  * @author laoGF
- * @email ***
  * @date 2018-08-27 18:19:08
  */
 public class TRobotUserDO implements Serializable {
@@ -19,6 +17,18 @@ public class TRobotUserDO implements Serializable {
 	private Long id;
 	//机器人编号
 	private String robotNo;
+	//机器人名称
+	private String robotName;
+	//机器人使用状态
+	private int state;
+	//闲聊（0 开启，1 关闭）
+	private int chat;
+	//默认回答
+	private String defaultAnswer;
+	//所属地市
+	private String city;
+	//负责人
+	private String principal;
 	//所属用户ID
 	private Long userId;
 
@@ -46,6 +56,39 @@ public class TRobotUserDO implements Serializable {
 	public String getRobotNo() {
 		return robotNo;
 	}
+
+	public String getRobotName() {
+		return robotName;
+	}
+
+	public void setRobotName(String robotName) {
+		this.robotName = robotName;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getPrincipal() {
+		return principal;
+	}
+
+	public void setPrincipal(String principal) {
+		this.principal = principal;
+	}
+
 	/**
 	 * 设置：所属用户ID
 	 */
@@ -57,5 +100,21 @@ public class TRobotUserDO implements Serializable {
 	 */
 	public Long getUserId() {
 		return userId;
+	}
+
+	public int getChat() {
+		return chat;
+	}
+
+	public void setChat(int chat) {
+		this.chat = chat;
+	}
+
+	public String getDefaultAnswer() {
+		return defaultAnswer;
+	}
+
+	public void setDefaultAnswer(String defaultAnswer) {
+		this.defaultAnswer = defaultAnswer;
 	}
 }

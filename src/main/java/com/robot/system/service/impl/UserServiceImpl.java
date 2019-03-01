@@ -23,14 +23,16 @@ import com.robot.system.domain.UserDO;
 import com.robot.system.domain.UserRoleDO;
 import com.robot.system.service.UserService;
 
+import javax.annotation.Resource;
+
 @Transactional
 @Service
 public class UserServiceImpl implements UserService {
-	@Autowired
+	@Resource
 	UserDao userMapper;
-	@Autowired
+	@Resource
 	UserRoleDao userRoleMapper;
-	@Autowired
+	@Resource
 	DeptDao deptMapper;
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 

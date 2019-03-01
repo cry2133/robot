@@ -32,8 +32,8 @@ function load() {
 							return {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
-								offset:params.offset
-					           // name:$('#searchName').val(),
+								offset:params.offset,
+                                robotNo:$('#robotNo').val()
 					           // username:$('#searchName').val()
 							};
 						},
@@ -49,11 +49,55 @@ function load() {
 								},
 																{
 									field : 'id', 
-									title : '' 
+									title : '序号'
 								},
 																{
 									field : 'robotNo',
 									title : '机器人编号' 
+								},
+								{
+									field : 'robotName',
+									title : '机器人名称'
+								},
+								{
+									field : 'state',
+									title : '使用状态',
+                                    formatter: function(value){
+                                        if(value==0){
+                                            return "在用";
+                                        }
+                                        if(value==1){
+                                            return "停用";
+                                        }else{
+                                            return "在用";
+                                        }
+                                    }
+								},
+								{
+									field : 'chat',
+									title : '闲聊',
+									formatter: function(value){
+										if(value==0){
+											return "开启";
+										}
+										if(value==1){
+											return "关闭";
+										}else{
+											return "开启";
+										}
+									}
+								},
+								{
+									field : 'defaultAnswer',
+									title : '默认回答'
+								},
+								{
+									field : 'city',
+									title : '所属地市'
+								},
+								{
+									field : 'principal',
+									title : '负责人'
 								},
 								/*								{
 									field : 'userId',
@@ -79,6 +123,7 @@ function load() {
 					});
 }
 function reLoad() {
+
 	$('#exampleTable').bootstrapTable('refresh');
 }
 function add() {

@@ -4,16 +4,18 @@
 <mapper namespace="com.robot.robot.dao.TFaqLogDao">
 
 	<select id="get" resultType="com.robot.robot.domain.TFaqLogDO">
-		select `id`,`question`,`answer`,`robotNo`,`createtime` from t_faq_log where id = #{value}
+		select `id`,`question`,`answer`,way,`robotNo`,`createtime` from t_faq_log where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.robot.robot.domain.TFaqLogDO">
-		select `id`,`question`,`answer`,`robotNo`,`createtime` from t_faq_log
+		select `id`,`question`,`answer`,way,`robotNo`,`createtime` from t_faq_log
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="question != null and question != ''"> and question = #{question} </if>
+		  		  <if test="question != null and question != ''"> and question like #{question} </if>
 		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
-		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+			      <if test="way != null and way != ''"> and way = #{way} </if>
+				  <if test="robotNo != null and robotNo != ''"> and robotNo = #{robotNo} </if>
+			      <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -31,25 +33,29 @@
  	<select id="count" resultType="int">
 		select count(*) from t_faq_log
 		 <where>  
-		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="question != null and question != ''"> and question = #{question} </if>
-		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
-		  		  <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
-		  		</where>
+			 <if test="id != null and id != ''"> and id = #{id} </if>
+			 <if test="question != null and question != ''"> and question = #{question} </if>
+			 <if test="answer != null and answer != ''"> and answer = #{answer} </if>
+			 <if test="way != null and way != ''"> and way = #{way} </if>
+			 <if test="robotNo != null and robotNo != ''"> and robotNo = #{robotNo} </if>
+			 <if test="createtime != null and createtime != ''"> and createtime = #{createtime} </if>
+		  </where>
 	</select>
 	 
 	<insert id="save" parameterType="com.robot.robot.domain.TFaqLogDO" useGeneratedKeys="true" keyProperty="id">
 		insert into t_faq_log
 		(
 			`question`, 
-			`answer`, 
+			`answer`,
+			 way,
 			`robotNo`,
 			`createtime`
 		)
 		values
 		(
 			#{question}, 
-			#{answer}, 
+			#{answer},
+			#{way},
 			#{robotNo},
 			#{createtime}
 		)
@@ -59,6 +65,7 @@
 		update t_faq_log 
 		<set>
 			<if test="question != null">`question` = #{question}, </if>
+			<if test="way != null">`way` = #{way}, </if>
 			<if test="answer != null">`answer` = #{answer}, </if>
 			<if test="robotNo != null">`robotNo` = #{robotNo}, </if>
 			<if test="createtime != null">`createtime` = #{createtime}</if>
@@ -76,5 +83,36 @@
 			#{id}
 		</foreach>
 	</delete>
+
+
+	<select id="statistics" resultType="com.robot.robot.domain.TFaqLogDO">
+		select count(id) as id,way,`robotNo` from t_faq_log
+		<where>
+			<if test="question != null and question != ''"> and question = #{question} </if>
+			<if test="robotNo != null and robotNo != ''"> and robotNo = #{robotNo} </if>
+			<if test="beginTime!=null and beginTime!=''">
+				<![CDATA[   and DATE_FORMAT(createtime, '%Y-%m-%d')>=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')   ]]>
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				<![CDATA[  and DATE_FORMAT(createtime, '%Y-%m-%d') <= DATE_FORMAT(#{endTime}, '%Y-%m-%d')    ]]>
+			</if>
+		</where>
+		GROUP BY way,robotNo
+	</select>
+
+	<select id="all" resultType="com.robot.robot.domain.TFaqLogDO">
+		select count(id) as id,way from t_faq_log
+		<where>
+			<if test="question != null and question != ''"> and question = #{question} </if>
+			<if test="robotNo != null and robotNo != ''"> and robotNo = #{robotNo} </if>
+			<if test="beginTime!=null and beginTime!=''">
+				<![CDATA[   and DATE_FORMAT(createtime, '%Y-%m-%d')>=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')   ]]>
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				<![CDATA[  and DATE_FORMAT(createtime, '%Y-%m-%d') <= DATE_FORMAT(#{endTime}, '%Y-%m-%d')    ]]>
+			</if>
+		</where>
+		GROUP BY way
+	</select>
 
 </mapper>

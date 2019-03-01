@@ -17,9 +17,9 @@ public class TNewFaqDO implements Serializable {
 	//序号
 	private Long id;
 	//知识库主键id
-	private Integer repositoryId;
+	private Long repositoryId;
 	//专业表id
-	private Integer majorId;
+	private Long majorId;
 	//代表问题
 	private String question;
 	//问题集
@@ -52,25 +52,25 @@ public class TNewFaqDO implements Serializable {
 	/**
 	 * 设置：知识库主键id
 	 */
-	public void setRepositoryId(Integer repositoryId) {
+	public void setRepositoryId(Long repositoryId) {
 		this.repositoryId = repositoryId;
 	}
 	/**
 	 * 获取：知识库主键id
 	 */
-	public Integer getRepositoryId() {
+	public Long getRepositoryId() {
 		return repositoryId;
 	}
 	/**
 	 * 设置：专业表id
 	 */
-	public void setMajorId(Integer majorId) {
+	public void setMajorId(Long majorId) {
 		this.majorId = majorId;
 	}
 	/**
 	 * 获取：专业表id
 	 */
-	public Integer getMajorId() {
+	public Long getMajorId() {
 		return majorId;
 	}
 	/**

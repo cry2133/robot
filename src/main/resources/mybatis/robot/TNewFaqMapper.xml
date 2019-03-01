@@ -31,7 +31,8 @@
 					in
 					(select role_id
 					from sys_user_role
-					where user_id = (select user_id from t_robot_user where robotNo = #{robotNo})) or property = 0)
+					where user_id = (select user_id from t_robot_user where robotNo = #{robotNo}))
+					or property = 0)
 				</if>
 				<if test="userId != null and userId != ''">
 					and faq.repository_id in
@@ -44,8 +45,8 @@
 					where user_id = #{userId}) or property = 0)
 				</if>
 		  		  <if test="majorId != null and majorId != ''"> and faq.major_id = #{majorId} </if>
-		  		  <if test="question != null and question != ''"> and question = #{question} </if>
-		  		  <if test="questions != null and questions != ''"> and questions = #{questions} </if>
+		  		  <if test="question != null and question != ''"> and (question like #{question} or questions like #{questions} )</if>
+		  		 <!-- <if test="questions != null and questions != ''"> or questions like #{questions} </if>-->
 		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
 		  		</where>
         <choose>
@@ -64,8 +65,8 @@
  	<select id="count" resultType="int">
 		select count(*) from t_new_faq
 		 <where>  
-		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="repositoryId != null and repositoryId != ''"> and repository_id = #{repositoryId} </if>
+		  		 <if test="id != null and id != ''"> and id = #{id} </if>
+		  		 <if test="repositoryId != null and repositoryId != ''"> and repository_id = #{repositoryId} </if>
 				 <if test="robotNo != null and robotNo != ''">
 					 and repository_id in
 					 (select repository_id
@@ -74,7 +75,8 @@
 					 in
 					 (select role_id
 					 from sys_user_role
-					 where user_id = (select user_id from t_robot_user where robotNo = #{robotNo})) or property = 0)
+					 where user_id = (select user_id from t_robot_user where robotNo = #{robotNo}))
+					 or property = 0)
 				 </if>
 				 <if test="userId != null and userId != ''">
 					 and repository_id in
@@ -87,8 +89,8 @@
 					 where user_id = #{userId}) or property = 0)
 				 </if>
 		  		  <if test="majorId != null and majorId != ''"> and major_id = #{majorId} </if>
-		  		  <if test="question != null and question != ''"> and question = #{question} </if>
-		  		  <if test="questions != null and questions != ''"> and questions = #{questions} </if>
+			 <if test="question != null and question != ''"> and (question like #{question} or questions like #{questions} )</if>
+			 <!-- <if test="questions != null and questions != ''"> or questions like #{questions} </if>-->
 		  		  <if test="answer != null and answer != ''"> and answer = #{answer} </if>
 		  		</where>
 	</select>
@@ -148,7 +150,8 @@
 			in
 			(select role_id
 			from sys_user_role
-			where user_id = (select user_id from t_robot_user where robotNo = #{robotNo})) or property = 0)
+			where user_id = (select user_id from t_robot_user where robotNo = #{robotNo}))
+			or property = 0)
 		</if>
 	</select>
 

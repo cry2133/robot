@@ -9,8 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 问答记录表
+ *
  * @author laoGF
- * @email ***
  * @date 2018-08-09 19:03:39
  */
 @Mapper
@@ -29,4 +29,8 @@ public interface TFaqLogDao {
 	int remove(Long id);
 	
 	int batchRemove(Long[] ids);
+
+	List<TFaqLogDO> statistics(Map<String,Object> map);
+
+	List<TFaqLogDO> all(Map<String,Object> map);
 }

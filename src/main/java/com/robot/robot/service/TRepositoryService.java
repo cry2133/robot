@@ -10,7 +10,6 @@ import java.util.Map;
  * 知识词库表
  * 
  * @author yobi
- * @email ***
  * @date 2017-11-30 19:29:58
  */
 public interface TRepositoryService {
@@ -32,4 +31,6 @@ public interface TRepositoryService {
 	Tree<TRepositoryDO> getTree();
 	
 	TRepositoryDO getByName(String name);
+
+	Long getIdByUserId(Long userId);
 }

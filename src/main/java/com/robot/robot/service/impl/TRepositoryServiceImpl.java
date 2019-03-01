@@ -1,6 +1,5 @@
 package com.robot.robot.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,9 +13,11 @@ import com.robot.robot.dao.TRepositoryDao;
 import com.robot.robot.domain.TRepositoryDO;
 import com.robot.robot.service.TRepositoryService;
 
+import javax.annotation.Resource;
+
 @Service
 public class TRepositoryServiceImpl implements TRepositoryService {
-	@Autowired
+	@Resource
 	private TRepositoryDao tRepositoryDao;
 	
 	@Override
@@ -75,6 +76,11 @@ public class TRepositoryServiceImpl implements TRepositoryService {
 	@Override
 	public TRepositoryDO getByName(String name) {
 		return tRepositoryDao.getByName(name);
+	}
+
+	@Override
+	public Long getIdByUserId(Long userId){
+		return tRepositoryDao.getIdByUserId(userId);
 	}
 	
 }

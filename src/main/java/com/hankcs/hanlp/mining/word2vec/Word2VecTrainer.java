@@ -12,15 +12,15 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
  */
 public class Word2VecTrainer
 {
-    private Integer layerSize = 200;
-    private Integer windowSize = 5;
-    private Integer numThreads = Runtime.getRuntime().availableProcessors();
-    private int negativeSamples = 25;
-    private boolean useHierarchicalSoftmax;
-    private Integer minFrequency = 5;
-    private Float initialLearningRate;
-    private float downSampleRate = 0.0001f;
-    private Integer iterations = 15;
+    private Integer layerSize = 200;  //词向量的维度（等同于神经网络模型隐藏层的大小）
+    private Integer windowSize = 5;  //窗口大小
+    private Integer numThreads = Runtime.getRuntime().availableProcessors();   //并行化训练线程数
+    private int negativeSamples = 25;    //负采样样本数启用
+    private boolean useHierarchicalSoftmax;    // 启用hierarchical softmax
+    private Integer minFrequency = 5;    //最低词频，低于此数值将被过滤掉
+    private Float initialLearningRate;    //设置初始学习率
+    private float downSampleRate = 0.0001f;    //设置高频词的下采样频率（高频词频率一旦高于此频率，训练时将被随机忽略），在不使用停用词词典的情况下，停用词就符合高频词的标准
+    private Integer iterations = 15;    //设置迭代次数
     private NeuralNetworkType type = NeuralNetworkType.CBOW;
     private TrainingCallback callback;
 

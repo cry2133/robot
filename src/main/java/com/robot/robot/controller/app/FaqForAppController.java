@@ -3,15 +3,14 @@ package com.robot.robot.controller.app;
 import java.util.*;
 
 import com.robot.common.utils.*;
-import com.robot.robot.domain.TFaqLogDO;
+import com.robot.robot.controller.app.baidu.UnitService;
+import com.robot.robot.domain.TNewFaqDO;
 import com.robot.robot.service.*;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.robot.robot.controller.app.bean.FaqRequestBean;
@@ -35,10 +34,6 @@ public class FaqForAppController {
 
     @Resource
     private TNewFaqService tNewFaqService;
-    @Resource
-    private TFaqLogService tFaqLogService;
-
-    private FaqRequestBean faqBean = new FaqRequestBean();
 
 
     /**
@@ -62,13 +57,10 @@ public class FaqForAppController {
             return ResponseBean.fail("参数格式不对");
         }
 
-        //查找答案（知识库==>讯飞==>图灵）
-        faqBean.setQuestion(content);
-
-        String answer = tNewFaqService.searchAnswer(content,robotNo);
-        faqBean.setAnswer(answer);
+        FaqRequestBean faqBean = tNewFaqService.searchAnswer(content,robotNo);
 
         //场景问答只重复澄清一次
+        String answer = faqBean.getAnswer();
         String upAnswer = RedisUtil.getValue(robotNo + "robot_up_answer");
         if(answer.equals(upAnswer)){
             RedisUtil.del(robotNo + "robot_up_answer");
@@ -78,20 +70,19 @@ public class FaqForAppController {
         }
         RedisUtil.setExpire(robotNo + "robot_up_answer", 50, answer);
 
-        TFaqLogDO tFaqLogDO = new TFaqLogDO();
-        tFaqLogDO.setQuestion(content);
-        tFaqLogDO.setAnswer(answer);
-        tFaqLogDO.setRobotNo(robotNo);
-        tFaqLogDO.setCreatetime(new Date());
-        int save = tFaqLogService.save(tFaqLogDO);
-        if(save > 0){
-            log.info("------问答记录成功！------");
-        }
-
-        List<String> questionList = tNewFaqService.getQuestionList();
-        faqBean.setQuestionList(questionList);
-
         return ResponseBean.success(faqBean);
+    }
+
+
+    /**
+     * 百度UNIT
+     */
+    @RequestMapping("/unit")
+    @ResponseBody
+    public String unit(){
+        UnitService u = new UnitService();
+        System.out.println(u.unit("居民用户掌上营业厅办理过户"));
+        return "UNIT";
     }
 
 

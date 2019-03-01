@@ -26,4 +26,9 @@ public interface TFaqLogService {
 	int remove(Long id);
 	
 	int batchRemove(Long[] ids);
+
+	List<TFaqLogDO> statistics(Map<String,Object> map);
+
+	List<TFaqLogDO> all(Map<String,Object> map);
+
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+	<div class="col-sm-12">
+		<div class="ibox">
+			<div class="ibox-body">
+				<div class="fixed-table-toolbar">
+					<div class="columns pull-right">
+						<button class="btn btn-success" onclick="reLoad()">查询统计</button>
+					</div>
+					<!--<div class="columns pull-right col-md-2 nopadding">
+						<input id="robotName" type="text" class="form-control"
+							   placeholder="机器人编号">
+					</div>-->
+
+					<div class="pull-right search col-md-2" >
+						<input class="form-control" id="endTime" placeholder="结束时间     格式：2018-01-01" type="date" />
+					</div>
+					<div class="pull-right search col-md-2 nopadding">
+						<input class="form-control" id="beginTime" placeholder="开始时间     格式：2018-01-01" type="date" />
+					</div>
+
+				</div>
+
+
+			</div>
+		</div>
+		<div id="containerLine" style="height: 700%;"></div>
+	</div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/appjs/robot/tFaqLog/statistics.js"></script>
+<script type="text/javascript" src="/js/echarts.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+</body>
+</html>

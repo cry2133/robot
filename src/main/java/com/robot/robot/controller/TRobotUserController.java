@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.robot.common.utils.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +21,8 @@ import com.robot.common.utils.PageUtils;
 import com.robot.common.utils.Query;
 import com.robot.common.utils.R;
 
+import javax.annotation.Resource;
+
 /**
  * 机器人编号管理表
  * 
@@ -32,7 +33,7 @@ import com.robot.common.utils.R;
 @Controller
 @RequestMapping("/robot/tRobotUser")
 public class TRobotUserController {
-	@Autowired
+	@Resource
 	private TRobotUserService tRobotUserService;
 	
 	@GetMapping()
@@ -95,8 +96,18 @@ public class TRobotUserController {
 		map.put("robotNo",tRobotUser.getRobotNo());
 		List<TRobotUserDO> list = tRobotUserService.list(map);
 		if(list.size() > 0){
-			return R.error("机器人编号已存在！");
+			int yes = 0;
+			for(TRobotUserDO tRobotUserDO : list){
+				Long id = tRobotUserDO.getId();
+				if(id.equals(tRobotUser.getId())){
+					yes++;
+				}
+			}
+			if(yes == 0){
+				return R.error("机器人编号已存在！");
+			}
 		}
+
 		Long userId = ShiroUtils.getUserId();
 		tRobotUser.setUserId(userId);
 		tRobotUserService.update(tRobotUser);

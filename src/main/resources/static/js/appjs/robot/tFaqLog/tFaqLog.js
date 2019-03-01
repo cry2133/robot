@@ -1,5 +1,6 @@
 
-var prefix = "/robot/tFaqLog"
+var prefix = "/robot/tFaqLog";
+
 $(function() {
 	load();
 });
@@ -32,8 +33,8 @@ function load() {
 							return {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
-								offset:params.offset
-					           // name:$('#searchName').val(),
+								offset:params.offset,
+					           	question: '%' + $('#searchName').val() + '%'
 					           // username:$('#searchName').val()
 							};
 						},
@@ -58,6 +59,31 @@ function load() {
 																{
 									field : 'answer', 
 									title : '答案' 
+								},
+								{
+									field : 'way',
+									title : '应答方式',
+                                    formatter: function(value){
+                                        if(value==0){
+                                            return "默认";
+                                        }
+                                        if(value==1){
+                                            return "单轮应答";
+                                        }
+                                        if(value==2){
+                                            return "多轮应答";
+                                        }
+                                        if(value==3){
+                                            return "闲聊";
+                                        }
+                                        else{
+                                            return "默认";
+                                        }
+                                    }
+								},
+								{
+									field : 'robotNo',
+									title : '机器人编号'
 								},
 																{
 									field : 'createtime', 

@@ -1,10 +1,16 @@
 
 var prefix = "/robot/tNewFaq";
+var repositoryId = $("#s_RepositoryId").val();
+var majorId = $("#s_MajorId").val();
+
+
 $(function() {
-	load();
+    getTreeData();
+	load(majorId,repositoryId);
 });
 
-function load() {
+
+function load(majorId,repositoryId) {
 	$('#exampleTable')
 			.bootstrapTable(
 					{
@@ -32,9 +38,12 @@ function load() {
 							return {
 								//说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
 								limit: params.limit,
-								offset:params.offset
+								offset:params.offset,
 					           // name:$('#searchName').val(),
 					           // username:$('#searchName').val()
+                                majorId:majorId,
+                                repositoryId:repositoryId,
+                                question: $("#searchQuestion").val()
 							};
 						},
 						// //请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
@@ -47,32 +56,31 @@ function load() {
 								{
 									checkbox : true
 								},
-																{
+																/*{
 									field : 'id', 
 									title : '序号' 
-								},
-																{
+								},*/
+									/*							{
 									field : 'repositoryName',
                                     width:	'5%',
 									title : '知识库'
-								},
+								},*/
 																{
 									field : 'majorName',
+                                    width:	'10%',
 									title : '专业'
 								},
 																{
 									field : 'question',
-                                    width:	'20%',
-									title : '代表问题' 
+									title : '代表问题'
 								},
 																{
 									field : 'questions',
-                                    width:	'20%',
-									title : '问题集' 
+									title : '问题集'
 								},
 																{
-									field : 'answer', 
-									title : '答案' 
+									field : 'answer',
+									title : '答案'
 								},
 																{
 									title : '操作',
@@ -92,6 +100,7 @@ function load() {
 					});
 }
 function reLoad() {
+    //load(majorId,repositoryId);
 	$('#exampleTable').bootstrapTable('refresh');
 }
 function add() {
@@ -203,3 +212,76 @@ function trainOrLoadModel() {
 
     });
 }
+
+
+
+function reLoadTree() {
+    $('#jstree').data('jstree', false).empty();
+    $.ajax({
+        type : "GET",
+//		url : "/robot/tRepository/tree",
+        url : "/robot/tMajor/tree",
+        success : function(tree) {
+            $('#jstree').jstree({
+                'core' : {
+                    'data' : tree
+                },
+                "plugins" : [ "search" ]
+            });
+            $('#jstree').jstree().open_all();
+        }
+    });
+
+}
+
+function getTreeData() {
+    $.ajax({
+        type : "GET",
+//		url : "/robot/tRepository/tree",
+        url : "/robot/tMajor/tree",
+        success : function(tree) {
+            loadTree(tree);
+        }
+    });
+}
+function loadTree(tree) {
+    $('#jstree').jstree({
+        'core' : {
+            'data' : tree
+        },
+        "plugins" : [ "search" ]
+    }).on('select_node.jstree', function (e, data) {
+    }).on("loaded.jstree", function (event, data) {
+        //这两句化是在loaded所有的树节点后，然后做的选中操作，这点是需要注意的，loaded.jstree 这个函数
+        //取消选中，然后选中某一个节点
+        $("#jstree").jstree("deselect_all",true);
+//        $('#jstree').jstree('select_node',repositoryId,true);
+        $('#jstree').jstree('select_node',majorId,true);
+    });
+    $('#jstree').jstree().open_all();
+}
+
+$('#jstree').on("changed.jstree", function(e, data) {
+    if (data.selected == -1) {
+        var opt = {
+            query : {
+                repositoryId : '',
+                majorId : ''
+            }
+        };
+        $('#exampleTable').bootstrapTable('refresh', opt);
+    } else {
+        var opt = {
+            query : {
+//				repositoryId : data.selected[0],
+                repositoryId : repositoryId,
+                majorId : data.selected[0]
+            }
+        };
+//		$("#s_RepositoryId").val(data.selected[0]);
+        $("#s_MajorId").val(data.selected[0]);
+        majorId =data.selected[0];
+        $('#exampleTable').bootstrapTable('refresh',opt);
+    }
+
+});

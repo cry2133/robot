@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.robot.common.utils.*;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -41,11 +42,6 @@ import net.sf.json.JSONArray;
 
 import com.robot.common.annotation.Log;
 import com.robot.common.exception.ImportFailException;
-import com.robot.common.utils.ExcelReader;
-import com.robot.common.utils.PageUtils;
-import com.robot.common.utils.Query;
-import com.robot.common.utils.R;
-import com.robot.common.utils.ShiroUtils;
 
 /**
  * 问答表
@@ -85,6 +81,10 @@ public class TFaqController {
 		//查询列表数据
         Query query = new Query(params);
         query.put("userId",userId);
+		String question = (String)query.get("question");
+		if(StringUtils.isNotEmpty(question)){
+			query.put("question", "%" + question + "%");
+		}
         queryFilterList = query;
 		List<TFaqDO> tFaqList = tFaqService.list(query);
 		int total = tFaqService.count(query);

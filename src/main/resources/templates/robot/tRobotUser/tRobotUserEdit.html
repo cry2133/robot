@@ -16,6 +16,55 @@
 									<input id="robotNo" name="robotNo" th:value="${tRobotUser.robotNo}" class="form-control" type="text" />
 								</div>
 							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">机器人名称：</label>
+								<div class="col-sm-8">
+									<input id="robotName" name="robotName" th:value="${tRobotUser.robotName}" class="form-control" type="text" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">机器人使用状态：</label>
+								<div class="col-sm-8">
+									<select id="state" name="state" class='form-control'>
+										<option value="0" th:selected="${tRobotUser.state eq 0}?true:false">在用</option>
+										<option value="1" th:selected="${tRobotUser.state eq 1}?true:false">停用</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">闲聊：</label>
+								<div class="col-sm-8">
+									<select id="chat" name="chat" class='form-control'>
+										<option value="0" th:selected="${tRobotUser.chat eq 0}?true:false">开启</option>
+										<option value="1" th:selected="${tRobotUser.chat eq 1}?true:false">关闭</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">默认回答：</label>
+								<div class="col-sm-8">
+									<textarea  rows="10" cols="70" id="defaultAnswer" name="defaultAnswer"  th:inline="text">[[${tRobotUser.defaultAnswer}]]</textarea>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">所属地市：</label>
+								<div class="col-sm-8">
+									<input id="city" name="city" th:value="${tRobotUser.city}" class="form-control" type="text" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">负责人：</label>
+								<div class="col-sm-8">
+									<input id="principal" name="principal" th:value="${tRobotUser.principal}" class="form-control" type="text" />
+								</div>
+							</div>
+
 							<!--
 							<div class="form-group">
 								<label class="col-sm-3 control-label">所属角色ID：</label>

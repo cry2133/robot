@@ -2,36 +2,73 @@
 <html>
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
+
+<style>
+	#jstree a{
+		width: 90%;
+		overflow: hidden;
+		/*文本不换行*/
+		white-space: nowrap;
+		/*文字超出用省略号*/
+		text-overflow:ellipsis;
+	}
+
+	#exampleTable tbody tr td{
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
+	}
+</style>
+
 <body class="gray-bg">
 	<div class="wrapper wrapper-content ">
-		<div class="col-sm-12">
+		<div class="col-sm-3" id="showTree" style="width: 14%;">
+			<div class="ibox ibox-body">
+				<div class="ibox-title">
+					<h5>选择专业</h5>
+				</div>
+				<div class="ibox-content">
+					<div id="jstree"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-9" id="tb-tb-toolbar" style="width: 86%;">
 			<div class="ibox">
 				<div class="ibox-body">
 					<div class="fixed-table-toolbar">
 						<div class="columns pull-left">
+							<input type="hidden" th:value="${repositoryId}" id="s_RepositoryId">
+							<input type="hidden" th:value="${majorId}" id="s_MajorId">
+
 							<button type="button" class="btn  btn-primary" onclick="add()">
 								<i class="fa fa-plus" aria-hidden="true"></i>添加
 							</button>
 							<button type="button" class="btn  btn-danger"
-								onclick="batchRemove()">
+									onclick="batchRemove()">
 								<i class="fa fa-trash" aria-hidden="true"></i>删除
 							</button>
-
-							<button type="button" class="btn  btn-danger"
-								onclick="trainOrLoadModel()">
-								<i class="fa fa-trash" aria-hidden="true"></i>词向量训练
+							<button type="button" class="btn btn-success " onclick="window.location.href='/robot/tNewFaq/expFaqList'">
+								<i class="fa fa-download" aria-hidden="true"></i>导出
 							</button>
 
+							<!--<button type="button" class="btn btn-info " onclick="importExcelSource()">
+								<i class="fa fa-upload" aria-hidden="true"></i>导入
+							</button>-->
+
+							<button type="button" class="btn btn-warning " onclick="window.location.href='/excel/知识库问题信息.xls'">
+								<i class="fa fa-file-excel-o" aria-hidden="true"></i>模板
+							</button>
 						</div>
 						<div class="columns pull-right">
 							<button class="btn btn-success" onclick="reLoad()">查询</button>
 						</div>
 						<div class="columns pull-right col-md-2 nopadding">
-							<input id="searchName" type="text" class="form-control"
-								placeholder="">
+							<input id="searchQuestion" type="text" class="form-control"
+								   placeholder="问题">
 						</div>
 					</div>
-					<table id="exampleTable" data-mobile-responsive="true">
+					<table id="exampleTable" data-mobile-responsive="true" style="table-layout:fixed;">
 					</table>
 				</div>
 			</div>

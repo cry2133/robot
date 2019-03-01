@@ -20,6 +20,8 @@ public class TFaqLogDO implements Serializable {
 	private String question;
 	//答案
 	private String answer;
+	//应答方式（0 默认 , 1 单轮应答 ,2 场景应答 3 闲聊）
+	private int way;
 	//机器人编号
 	private String robotNo;
 	//问答时间
@@ -80,5 +82,13 @@ public class TFaqLogDO implements Serializable {
 
 	public void setRobotNo(String robotNo) {
 		this.robotNo = robotNo;
+	}
+
+	public int getWay() {
+		return way;
+	}
+
+	public void setWay(int way) {
+		this.way = way;
 	}
 }

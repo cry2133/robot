@@ -24,7 +24,7 @@
 			LEFT JOIN t_keyword_middle tkm ON tkm.faq_id=faq.faq_id      
 			 	<where>  
 		  		  <if test="faqId != null and faqId != ''"> and faq_id = #{faqId} </if>
-				  <if test="repositoryId != null and repositoryId != ''"> and repository_id = #{repositoryId} </if>
+				  <if test="repositoryId != null and repositoryId != ''"> and faq.repository_id = #{repositoryId} </if>
 		  		  <if test="userId != null and userId != ''">
 					  and faq.repository_id in
 					  (select repository_id

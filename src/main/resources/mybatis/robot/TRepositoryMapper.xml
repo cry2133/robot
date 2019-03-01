@@ -105,4 +105,15 @@
 		from t_repository
 		where name = #{value}
 	</select>
+
+	<select id="getIdByUserId" resultType="java.lang.Long" parameterType="java.lang.Long">
+		select max(repository_id) as repositoryId
+					from t_repository
+					where role_id
+					in
+					(select role_id
+					from sys_user_role
+					where user_id = #{userId})
+	</select>
+
 </mapper>

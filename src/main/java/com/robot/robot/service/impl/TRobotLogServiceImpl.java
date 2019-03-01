@@ -1,6 +1,5 @@
 package com.robot.robot.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,11 +9,12 @@ import com.robot.robot.dao.TRobotLogDao;
 import com.robot.robot.domain.TRobotLogDO;
 import com.robot.robot.service.TRobotLogService;
 
+import javax.annotation.Resource;
 
 
 @Service
 public class TRobotLogServiceImpl implements TRobotLogService {
-	@Autowired
+	@Resource
 	private TRobotLogDao tRobotLogDao;
 	
 	@Override

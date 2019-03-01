@@ -1,47 +1,31 @@
 package com.robot;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLSentence;
-import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLWord;
-import com.hankcs.hanlp.seg.common.Term;
 import com.robot.common.utils.*;
-import com.robot.robot.controller.app.FaqForGZBureauController;
-import com.robot.robot.domain.TFaqDO;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.hankcs.hanlp.dictionary.CoreSynonymDictionary;
-import com.robot.robot.controller.app.bean.ResponseBean;
 
 public class Test {
 
 
-	public static void hehe()  {
-		System.out.println(HanLPUtils.similarity("头痛","头疼"));
-		String doc1 = "低压客户是什么？";
-		String doc2 = "低压客户是指什么？";
-		System.out.println(Doc2Vec.getDocVectorModel("C:/Users/lenovo/Desktop/HanLP/data/model/word_vector_model.txt").docSimilarity(doc1,doc2));
-	}
+    public static void hehe() {
+        System.out.println(HanLPUtils.similarity("头痛", "头疼"));
+        String doc1 = "低压客户是什么？";
+        String doc2 = "低压客户是指什么？";
+        System.out.println(Doc2Vec.getDocVectorModel("C:/Users/lenovo/Desktop/HanLP/data/model/word_vector_model.txt").docSimilarity(doc1, doc2));
+    }
 
 
-
-	public static void main(String[] args) throws Exception {
-
+    public static void main(String[] args) throws Exception {
 
 
-		hehe();
+        //hehe();
 
-		System.out.println(
-				" _____   ____  ____   ____ _______  \n"+
-				"|  __ \\ / __ \\|  _ \\ / __ \\__   __| \n"+
-				"| |__) | |  | | |_) | |  | | | |    \n"+
-				"|  _  /| |  | |  _ <| |  | | | |    \n"+
-				"| | \\ \\| |__| | |_) | |__| | | |    \n"+
-				"|_|  \\_\\\\____/|____/ \\____/  |_| \n"
-				);
+        System.out.println(
+                " _____   ____  ____   ____ _______  \n" +
+                        "|  __ \\ / __ \\|  _ \\ / __ \\__   __| \n" +
+                        "| |__) | |  | | |_) | |  | | | |    \n" +
+                        "|  _  /| |  | |  _ <| |  | | | |    \n" +
+                        "| | \\ \\| |__| | |_) | |__| | | |    \n" +
+                        "|_|  \\_\\\\____/|____/ \\____/  |_| \n"
+        );
 
 		/*
 		//String s = "我觉得头晕，持续性，前额后枕部痛，睡眠好";
@@ -64,9 +48,7 @@ public class Test {
 */
 
 
-
-
-		//List<String> list = HanLPUtils.getKeyword(s,10);
+        //List<String> list = HanLPUtils.getKeyword(s,10);
 //		List<String> list = HanLP.extractKeyword(s,3);
 		/*List<Term> cs= HanLP.segment(s);
 		Iterator<Term> it=  cs.iterator();
@@ -111,11 +93,8 @@ public class Test {
 		*/
 
 
-
-
-	
-		//System.out.println(new SimpleDateFormat("yyyy年MM月dd日").format(new Date(Long.valueOf("19931212"))));
-		//System.out.println(Long.valueOf("1530677843978"));
+        //System.out.println(new SimpleDateFormat("yyyy年MM月dd日").format(new Date(Long.valueOf("19931212"))));
+        //System.out.println(Long.valueOf("1530677843978"));
 
 		/*
         Map<String, String> map = new TreeMap<String, String>();
@@ -217,9 +196,9 @@ public class Test {
         }		
 		System.out.println(returnKey);
 		*/
-		
-	
-	}
-	
+
+
+    }
+
 
 }

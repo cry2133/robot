@@ -1,5 +1,5 @@
 
-var prefix = "/robot/tFaq"
+var prefix = "/robot/tFaq";
 var repositoryId = $("#s_RepositoryId").val();
 var majorId = $("#s_MajorId").val();
 $(function() {
@@ -38,7 +38,7 @@ function load(majorId,repositoryId) {
 								offset:params.offset,
 								majorId:majorId,
 								repositoryId:repositoryId,
-								question:"%"+$('#searchQuestion').val()+"%"
+								question:$('#searchQuestion').val()
 					           // username:$('#searchName').val()
 							};
 						},

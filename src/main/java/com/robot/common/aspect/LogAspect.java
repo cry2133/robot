@@ -3,6 +3,7 @@ package com.robot.common.aspect;
 import java.lang.reflect.Method;
 import java.util.Date;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,7 +11,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.robot.common.annotation.Log;
@@ -25,7 +25,7 @@ import com.robot.system.domain.UserDO;
 @Aspect
 @Component
 public class LogAspect {
-	@Autowired
+	@Resource
 	LogDao logMapper;
 
 	@Pointcut("@annotation(com.robot.common.annotation.Log)")

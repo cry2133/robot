@@ -175,12 +175,12 @@ public class TRobotLogController {
 
 		List legendData = new ArrayList();
 		List xData = new ArrayList();
-		List<Map<String,Object>> seriesData = new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> seriesData = new ArrayList<>();
 		
 		List<TRobotLogDO> robotNameList = tRobotLogService.statisticsList(params);    //获取前十机器人名称
 		
 		//获取所有日志标签
-		Map<String, Object> param = new HashMap<String, Object>();
+		Map<String, Object> param = new HashMap<>();
 		param.put("groupByValue", "tag");
 		List<TRobotLogDO> tagList = tRobotLogService.statisticsList(param);
 		int dataCount = tagList.size();   //设置纵向data个数

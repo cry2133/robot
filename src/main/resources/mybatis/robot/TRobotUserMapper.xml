@@ -4,16 +4,22 @@
 <mapper namespace="com.robot.robot.dao.TRobotUserDao">
 
 	<select id="get" resultType="com.robot.robot.domain.TRobotUserDO">
-		select `id`,`robotNo`,`user_id` from t_robot_user where id = #{value}
+		select `id`,`robotNo`,robotName,state,chat,defaultAnswer,city,principal,`user_id`
+		from t_robot_user where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.robot.robot.domain.TRobotUserDO">
-		select `id`,`robotNo`,`user_id` from t_robot_user
-        <where>  
-		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="robotNo != null and robotNo != ''"> and robotNo = #{robotNo} </if>
-		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
-		  		</where>
+		select `id`,`robotNo`,robotName,state,chat,defaultAnswer,city,principal,`user_id`
+		from t_robot_user
+        <where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="robotNo != null and robotNo != ''"> and robotNo = #{robotNo} </if>
+			<if test="robotName != null and robotName != ''"> and robotName = #{robotName} </if>
+			<if test="state != null and state != ''"> and state = #{state} </if>
+			<if test="city != null and city != ''"> and city = #{city} </if>
+			<if test="principal != null and principal != ''"> and principal = #{principal} </if>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
                 order by ${sort} ${order}
@@ -29,22 +35,38 @@
 	
  	<select id="count" resultType="int">
 		select count(*) from t_robot_user
-		 <where>  
-		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="robotNo != null and robotNo != ''"> and robotNo = #{robotNo} </if>
-		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
-		  		</where>
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="robotNo != null and robotNo != ''"> and robotNo = #{robotNo} </if>
+			<if test="robotName != null and robotName != ''"> and robotName = #{robotName} </if>
+			<if test="state != null and state != ''"> and state = #{state} </if>
+			<if test="city != null and city != ''"> and city = #{city} </if>
+			<if test="principal != null and principal != ''"> and principal = #{principal} </if>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		</where>
 	</select>
 	 
 	<insert id="save" parameterType="com.robot.robot.domain.TRobotUserDO">
 		insert into t_robot_user
 		(
 			`robotNo`,
+			robotName,
+			state,
+			chat,
+			defaultAnswer,
+			city,
+			principal,
 			`user_id`
 		)
 		values
 		(
 			#{robotNo},
+			#{robotName},
+			#{state},
+			#{chat},
+			#{defaultAnswer},
+			#{city},
+			#{principal},
 			#{userId}
 		)
 	</insert>
@@ -53,6 +75,12 @@
 		update t_robot_user 
 		<set>
 			<if test="robotNo != null">`robotNo` = #{robotNo}, </if>
+			<if test="robotName != null">`robotName` = #{robotName},</if>
+			<if test="state != null">`state` = #{state},</if>
+			<if test="chat != null">`chat` = #{chat},</if>
+			<if test="defaultAnswer != null">`defaultAnswer` = #{defaultAnswer},</if>
+			<if test="city != null">`city` = #{city},</if>
+			<if test="principal != null">`principal` = #{principal},</if>
 			<if test="userId != null">`user_id` = #{userId}</if>
 		</set>
 		where id = #{id}

@@ -47,7 +47,7 @@ function load() {
 								{
 									checkbox : true
 								},
-																{
+																/*{
 									field : 'id', 
 									title : '序号' 
 								},
@@ -55,7 +55,7 @@ function load() {
 									field : 'repositoryName',
 									width:	'5%',
 									title : '知识库'
-								},
+								},*/
 																{
 									field : 'majorName',
 									title : '专业'

@@ -4,6 +4,7 @@ import com.robot.common.domain.TuLingReturn;
 import com.robot.common.domain.XFyunReturn;
 import com.robot.common.utils.*;
 import com.robot.robot.common.HanLPUrl;
+import com.robot.robot.controller.app.bean.FaqRequestBean;
 import com.robot.robot.dao.*;
 import com.robot.robot.domain.*;
 import org.apache.commons.lang3.StringUtils;
@@ -35,23 +36,32 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 	private TEntranceFaqDao tEntranceFaqDao;
 	@Resource
 	private TNonexistentFaqDao tNonexistentFaqDao;
+	@Resource
+	private TRepositoryDao tRepositoryDao;
+	@Resource
+	private TFaqLogDao tFaqLogDao;
+	@Resource
+	private TRobotUserDao tRobotUserDao;
 
 	public static Logger log = Logger.getLogger(TNewFaqService.class);
 
 	private final static String DEFAULT_NO_ANSWER = "对不起！本宝宝回答不了这个问题。";    //问答没有找到答案时提示
+	private final static String DEFAULT_ANSWER = "本宝宝回答不了您的问题，您可拨打24小时报障电话0750-3438266；日间业务咨询电话18138001831或18138001832，我们将尽快安排专业人员处理，江海供电局将竭诚为您服务，感谢您的理解与支持。";
+	private final static String DL_WORD = "电,一户一表,一口受理,用电报装,报装容量,功率因数,城乡结合部,竣工检验,隐蔽工程,峰谷分时,计量装置,阶梯分时,最大需量,事业单位,社会团体,暂拆恢复,暂换恢复,复核单,国土所,国土局,总容量,两部制,大工业,大客户,单车房,通知单,烂尾楼,变压器,抄错表,非居民,表位,报装,合表,拆表,验表,抄表,改压,移表,改类,新装,装表,催费,业扩,增容,减容,分表,暂拆,暂换,暂缓,异议,峰谷,复核,专变,计量,租户,竣工,统建,征收,总段,整流,分户,居民,过户,低压,中压,光伏,高压,功率";
+
 
 	private final static float NEAR_DOC_SIM = 0.9f;    //文档相似度--闸值
 	private final static double SIM = 0.95;    //相似度--闸值
 	private final static double DIS = 0.01;    //语义距离--闸值
 
-	private final static int CACHE_TIME = 50;   //缓存时间
+	private final static int CACHE_TIME = 50;   //缓存时间 秒
 
 	//private final static String MODEL_FILE_NAME = "C:/Users/lenovo/Desktop/HanLP/data/model/word_vector_model.txt";  //模型文件路径
 	private final static String MODEL_FILE_NAME = HanLPUrl.getHanLPUrl() + "data/model/word_vector_model.txt";  //模型文件路径
 
 	private final static String[] YES = {"是", "恩", "对", "行", "好", "有"};
 	private final static String[] NO = {"不是", "不", "不对", "没", "没有", "不好", "不行"};
-	private final static String[] REPLACE = {"的", "啊", "呀", "哦", "呢",",","，","?","？",".","。","请","咦","哎"};
+	private final static String[] REPLACE = {"的", "啊", "呀", "哦", "呢",",","，","?","？",".","。","请","咦","哎","是","是的","呵呵","哪里","那里","那个"};
 
 	private List<TEntityDO> entityList = null;
 	private List<TEntranceDO> entranceList = null;
@@ -60,49 +70,40 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 	private List<TNewFaqDO> faqList = null;
 	private List<TEntranceFaqDO> entranceFaqList = null;
 
-	private List<String> questionList = null;
+    private String questionMatch = "";
 
 	private Map<String, String> entranceEntityMap = new HashMap<>();
 	private Map<String,String> stringMap = new HashMap<>();
 
 	private void getEntityList(String robotNo) {
-		if(entityList == null){
-			Map<String,Object> map = new HashMap<>();
-			map.put("robotNo",robotNo);
-			entityList = tEntityDao.list(map);
-		}
+		Map<String,Object> map = new HashMap<>();
+		map.put("robotNo",robotNo);
+		entityList = tEntityDao.list(map);
 	}
 
 	private void getEntranceList(String robotNo) {
-		if(entranceList == null){
-			Map<String,Object> map = new HashMap<>();
-			map.put("robotNo",robotNo);
-			entranceList =tEntranceDao.list(map);
-		}
+		Map<String,Object> map = new HashMap<>();
+		map.put("robotNo",robotNo);
+		entranceList =tEntranceDao.list(map);
 	}
 
 	private void getEntranceEntityList(String robotNo) {
-		if(tEntranceEntityList == null){
-			Map<String,Object> map = new HashMap<>();
-			map.put("robotNo",robotNo);
-			tEntranceEntityList = tEntranceEntityDao.list(map);
-		}
+		Map<String,Object> map = new HashMap<>();
+		map.put("robotNo",robotNo);
+		tEntranceEntityList = tEntranceEntityDao.list(map);
 	}
 
-	private void getFaqList(String robotNo) {
-		if(faqList == null){
-			Map<String,Object> map = new HashMap<>();
-			map.put("robotNo",robotNo);
-			faqList = tNewFaqDao.list(map);
-		}
+	private void getFaqList(String robotNo,Long userId) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("robotNo",robotNo);
+		map.put("userId",userId);
+		faqList = tNewFaqDao.list(map);
 	}
 
 	private void getEntranceFaqList(String robotNo) {
-		if(entranceFaqList == null){
-			Map<String,Object> map = new HashMap<>();
-			map.put("robotNo",robotNo);
-			entranceFaqList = tEntranceFaqDao.list(map);
-		}
+		Map<String,Object> map = new HashMap<>();
+		map.put("robotNo",robotNo);
+		entranceFaqList = tEntranceFaqDao.list(map);
 	}
 
 	@Override
@@ -122,6 +123,9 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 	
 	@Override
 	public int save(TNewFaqDO tNewFaq){
+		Long userId = ShiroUtils.getUserId();
+		Long repositoryId = tRepositoryDao.getIdByUserId(userId);
+		tNewFaq.setRepositoryId(repositoryId);
 		return tNewFaqDao.save(tNewFaq);
 	}
 	
@@ -141,7 +145,10 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 	}
 
 	@Override
-	public String searchAnswer(String question,String robotNo){
+	public FaqRequestBean searchAnswer(String question,String robotNo){
+        FaqRequestBean faqBean = new FaqRequestBean();
+        List<String> questionList = new ArrayList<>();
+
 		entranceEntityMap = RedisUtil.getMap(robotNo + "robot_entrance_entity_cache");
 		String entityId = RedisUtil.getValue(robotNo + "robot_up_entity_id");
 		if(StringUtils.isNotEmpty(entityId)){
@@ -152,57 +159,69 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 				if(StringUtils.isNotEmpty(cacheAnswer)){
 					answer = cacheAnswer;
 					questionList = recommendQuestion(question,robotNo);
+                    faqBean.setQuestionList(questionList);
 					removeCache(robotNo);
-				}else{
-					questionList = null;
 				}
 			}
 			if(StringUtils.isNotEmpty(answer)){
-				return answer;
+                faqBean.setAnswer(answer);
+				saveFaq(question,answer,2,robotNo);
+				return faqBean;
 			}
 		}
 		//没有缓存则认为第一轮对话
 		String answer = getClarificationByEntranceId(question,robotNo);
 		if(StringUtils.isEmpty(answer)) {
 			answer = getAnswerByQuestion(question, robotNo);
+			saveFaq(question,answer,1,robotNo);
 			if (StringUtils.isEmpty(answer)) {
-				answer = getAnswerByNonexistentFaq(question);
+				answer = getNoAnswer(question,robotNo);
+				saveFaq(question,answer,0,robotNo);
 				if (StringUtils.isEmpty(answer)) {
-					answer = getAnswerByXunFei(question);
+					answer = getAnswerByNonexistentFaq(question);
 					if (StringUtils.isEmpty(answer)) {
-						answer = getAnswerByTuLing(question);
+						answer = getAnswerByXunFei(question);
 						if (StringUtils.isEmpty(answer)) {
-							answer = DEFAULT_NO_ANSWER;
+							answer = getAnswerByTuLing(question);
+							if (StringUtils.isEmpty(answer)) {
+								answer = DEFAULT_NO_ANSWER;
+							}
 						}
 					}
+					saveFaq(question,answer,3,robotNo);
 				}
 			}
 		}
 		questionList = recommendQuestion(question,robotNo);
-		return answer;
+        faqBean.setQuestionList(questionList);
+        faqBean.setAnswer(answer);
+        faqBean.setQuestion(questionMatch);
+		return faqBean;
 	}
 
 
-	@Override
-	public List<String> getQuestionList(){
-		return questionList;
-	}
-
+    /**
+     * 问题推荐
+     */
 	private List<String> recommendQuestion(String question,String robotNo){
-		getFaqList(robotNo);
-		List<String> stringList = new ArrayList<>();
-		List<String> questionList = new ArrayList<>();
-		if(faqList.size() > 0){
-			for (TNewFaqDO list : faqList) {
-				String string = list.getQuestion();
-				stringList.add(string);
-			}
-		}
-		Map<String, Float> nearMap = Doc2Vec.getDocVectorModel(MODEL_FILE_NAME).nearestDocument(question, stringList);
-		for(String key : nearMap.keySet()){
-			if(nearMap.get(key) > 0.5 && questionList.size() < 5){
-				questionList.add(key);
-			}
+        List<String> questionList = new ArrayList<>();
+	    initQuestionMap(robotNo,null);
+        double matchValue = 0.11;
+		Map<Long,Map<String, Double>> mapMap = compare(question, stringMap,matchValue);
+		Map<String, Double> map = compareMatch(mapMap);
+		Map<String,Double> mapSort = MapUtils.doubleMapSort(map);
+		Iterator<Map.Entry<String,Double>> it = mapSort.entrySet().iterator();
+		int count = 0;
+		while (it.hasNext()){
+			Map.Entry<String,Double> entry = it.next();
+			String ques = entry.getKey();
+            if(StringUtils.isNotEmpty(ques)){
+				count++;
+                questionList.add(ques);
+                if(count == 5){
+                	break;
+				}
+            }
 		}
 		return questionList;
 	}
@@ -218,7 +237,8 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 		}*/
 		//特征提取匹配
 		initEntranceFaqMap(robotNo);
-		Long entranceFaqId = keywordCompare(question,stringMap);
+        double matchValue = 0.9;
+		Long entranceFaqId = keywordCompare(question,stringMap,matchValue);
 		if(entranceFaqId > 0){
 			return tEntranceFaqDao.get(entranceFaqId).getAnswer();
 		}
@@ -235,6 +255,30 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 		*/
 		return null;
 	}
+
+	/**
+	 * 是否开启闲聊
+	 */
+	private String getNoAnswer(String question,String robotNo){
+		Map<String,Object> map = new HashMap<>();
+		map.put("robotNo",robotNo);
+		Iterator<TRobotUserDO> it = tRobotUserDao.list(map).iterator();
+		while (it.hasNext()){
+			TRobotUserDO tRobotUserDO = it.next();
+			if(1 == tRobotUserDO.getChat()){
+				return tRobotUserDO.getDefaultAnswer();
+			}
+		}
+/*
+		//判断是否是专业问题
+		boolean no = match(question,DL_WORD.split(","));
+		if(no){
+			return DEFAULT_ANSWER;
+		}*/
+		return null;
+	}
+
+
 
 	/**
 	 * 多轮问答问题-全文检索
@@ -271,7 +315,8 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 			return existEntity(question, robotNo, entranceId);
 		}
 		//特征提取匹配
-		entranceId = keywordCompare(question,stringMap);
+        double matchValue = 0.9;
+		entranceId = keywordCompareByEntrance(question,stringMap,matchValue);
 		if(entranceId > 0){
 			saveQuestion(robotNo,entranceId);
 			return existEntity(question, robotNo, entranceId);
@@ -289,15 +334,16 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 	/**
 	 * 一问一答库匹配答案
 	 */
-	public String getAnswerByQuestion(String question,String robotNo){
+	private String getAnswerByQuestion(String question,String robotNo){
 		//全文检索
-		String answer = getLikeByQuestion(question,robotNo);
+		/*String answer = getLikeByQuestion(question,robotNo);
 		if(StringUtils.isNotEmpty(answer)){
 			return answer;
-		}
+		}*/
 		//特征提取匹配
-		initQuestionMap(robotNo);
-		Long faqId = keywordCompare(question,stringMap);
+		initQuestionMap(robotNo,null);
+        double matchValue = 0.65;
+		Long faqId = keywordCompare(question,stringMap,matchValue);
 		if(faqId > 0){
 			return getAnswerById(faqId);
 		}
@@ -325,6 +371,19 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 
 
 	/**
+	 * 根据ID获取问题
+	 */
+	private String getQuestionById(Long id){
+		for(TNewFaqDO faqDO : faqList){
+			if(id.equals(faqDO.getId())){
+				return faqDO.getQuestion();
+			}
+		}
+		return null;
+	}
+
+
+	/**
 	 * QA问题-全文检索
 	 */
 	@Override
@@ -336,6 +395,7 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 		List<TNewFaqDO> tNewFaqDo = tNewFaqDao.getLikeByQuestion(map);
 		if(tNewFaqDo.size() > 0){
 			for(TNewFaqDO tNewFaq: tNewFaqDo){
+                questionMatch = tNewFaq.getQuestion() + " ## 置信度：99.9% ##";
 				answer = tNewFaq.getAnswer();
 				if(StringUtils.isNotEmpty(answer)){
 					break;
@@ -426,8 +486,10 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 		}
 	}
 
-	//遗漏问题库获取问答
-	String getAnswerByNonexistentFaq(String question){
+	/**
+	 * 遗漏问题库获取问答
+	 */
+	private String getAnswerByNonexistentFaq(String question){
 		String answer = null;
 		Map<String, Object> map = new HashMap<>();
 		map.put("question", question);
@@ -439,6 +501,21 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 			answer = it.next().getAnswer();
 		}
 		return answer;
+	}
+
+	/**
+	 * 保存问答记录
+	 */
+	private void saveFaq(String question,String answer,int way,String robotNo){
+		if(com.robot.common.utils.StringUtils.isNotEmpty(answer)){
+			TFaqLogDO tFaqLogDO = new TFaqLogDO();
+			tFaqLogDO.setQuestion(question);
+			tFaqLogDO.setAnswer(answer);
+			tFaqLogDO.setWay(way);
+			tFaqLogDO.setRobotNo(robotNo);
+			tFaqLogDO.setCreatetime(new Date());
+			tFaqLogDao.save(tFaqLogDO);
+		}
 	}
 
 
@@ -464,9 +541,9 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 	/**
 	 * 初始化问题数据
 	 */
-	private void initQuestionMap(String robotNo) {
+	private void initQuestionMap(String robotNo,Long userId) {
 		stringMap.clear();
-		getFaqList(robotNo);
+		getFaqList(robotNo,userId);
 		if(faqList.size() > 0){
 			for (TNewFaqDO list : faqList) {
 				String id = list.getId().toString();
@@ -505,7 +582,7 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 		if (com.robot.common.utils.StringUtils.isNotEmpty(string2)) {
 			String[] strings = string2.split("\\r\\n");
 			for (String s : strings) {
-				if (s != null) {
+				if (StringUtils.isNotEmpty(s)) {
 					stringMap.put(s, id);
 				}
 			}
@@ -534,40 +611,124 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 	}
 
 
-	/**
-	 * 特征提取匹配
-	 *
-	 * @param question 问题
-	 * @param stringMap 匹配集
-	 * @return 匹配ID
-	 */
-	@Override
-	public Long keywordCompare(String question, Map<String, String> stringMap) {
-		Map<String, Integer> map = new HashMap<>();
-		Set<String> list = HanLPUtils.getKeywordByHanLP(replace(question));
-		if(stringMap.size() > 0 && list.size() > 0){
-			for (String key : stringMap.keySet()) {
-				Set<String> list2 = HanLPUtils.getKeywordByHanLP(replace(key));
-				int count = 0;
-				for (String word : list) {
-					for (String feature : list2) {
-						if (word.equals(feature)) {
-							count++;
-						}
-					}
-				}
-				if(count == list2.size()){
-					String id = stringMap.get(key);
-					map.put(id,count);
-				}
-			}
-			String maxId = MapUtils.getKeyByMaxIntValue(map);
-			if(StringUtils.isNotEmpty(maxId)){
-				return Long.parseLong(maxId);
+
+    /**
+     * 特征提取匹配
+     *
+     * @param question 问题
+     * @param stringMap 匹配集
+     */
+    @Override
+	public Long keywordCompare(String question, Map<String, String> stringMap,double matchValue){
+		Map<Long,Map<String, Double>> mapMap = compare(question, stringMap,matchValue);
+		Map<String,Double> map = new HashMap<>();
+		for(Long key : mapMap.keySet()){
+			Map<String,Double> map2 = mapMap.get(key);
+			for(String key2 : map2.keySet()){
+				map.put(key.toString(),map2.get(key2));
 			}
 		}
-		return 0L;
+
+        Long id = getIdByKeyword(map);
+        String ques = getQuestionById(id);
+		double match = 0.00;
+		if(id > 0){
+			match = map.get(id.toString());
+		}
+		questionMatch = ques + " ## 置信度：" + match * 100 + "% ##";
+        return id;
+    }
+
+
+	/**
+	 * 多轮问答匹配
+	 */
+	public Long keywordCompareByEntrance(String question, Map<String, String> stringMap,double matchValue){
+		Map<Long,Map<String, Double>> map = compare(question, stringMap,matchValue);
+		Map<String, Double> returnMap = new HashMap<>();
+		for(Long key : map.keySet()){
+			if(key > 0){
+				Map<String, Double> map2 = map.get(key);
+				for(String key2 : map2.keySet()){
+					returnMap.put(key.toString(),map2.get(key2));
+				}
+			}
+		}
+		return getIdByKeyword(returnMap);
 	}
+
+
+	/**
+	 * 过滤返回问题和置信度
+	 */
+	public Map<String,Double> compareMatch(Map<Long,Map<String, Double>> mapMap){
+		Map<String,Double> map = new HashMap<>();
+		for(Long key : mapMap.keySet()){
+			map.putAll(mapMap.get(key));
+		}
+		return map;
+	}
+
+
+    /**
+     * 特征处理
+     */
+    public Map<Long,Map<String, Double>> compare(String question, Map<String, String> stringMap,double matchValue) {
+        Map<Long,Map<String, Double>> mapMap = new HashMap<>();
+
+        Set<String> list = HanLPUtils.getKeywordByHanLP(replace(question));
+        if(stringMap.size() > 0 && list.size() > 0){
+            for (String key : stringMap.keySet()) {
+				Map<String, Double> map = new HashMap<>();
+                Set<String> list2 = HanLPUtils.getKeywordByHanLP(replace(key));
+                int count = 0;
+                for (String word : list) {
+                    for (String feature : list2) {
+                        if (word.equals(feature)) {
+                            count++;
+                        }
+                    }
+                }
+				double match2 = (double)count / list.size();
+                double match22 = (double)count / list2.size();
+				double match = match2 * match22;
+                if(match > matchValue){
+                    String id = stringMap.get(key);
+
+                    if(mapMap.size() <= 0){
+						map.put(key,match);
+					}
+                    for(Map.Entry<Long,Map<String, Double>> entry : mapMap.entrySet()){
+                    	if(entry.getKey().toString().equals(id)){
+							Map<String,Double> map2 = entry.getValue();
+							for(String key3 : map2.keySet()){
+								double value = map2.get(key3);
+								if(match > value){
+									map.put(key,match);
+								}
+							}
+						}else {
+							map.put(key,match);
+						}
+					}
+					mapMap.put(Long.parseLong(id),map);
+				}
+            }
+        }
+        return mapMap;
+    }
+
+    /**
+     * 获取集合中最大值的keyId
+     */
+	private Long getIdByKeyword(Map<String, Double> map){
+        Long id = 0L;
+	    String maxId = MapUtils.getKeyByMaxDoubleValue(map);
+        if(StringUtils.isNotEmpty(maxId)){
+            id = Long.parseLong(maxId);
+        }
+        return id;
+    }
 
 
 	/**
@@ -621,6 +782,7 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 			if(maxId.equals(id)){
 				float value = returnMap.get(id);
 				if(value > NEAR_DOC_SIM){
+                    questionMatch = tNewFaqDao.get(Long.parseLong(maxId)).getQuestion() + " ## 置信度：" + value*100 + "% ##";
 					return Long.parseLong(maxId);
 				}
 			}
@@ -763,7 +925,7 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 			if (entityId.equals(tEntityDO.getId().toString())) {
 				if (tEntityDO.getType() == 0) {
 					if (question.length() > 4) {
-						match = findNo(question);
+						match = match(question,NO);
 						if(match) {
 							matchString = tEntityDO.getNo();
 							break;
@@ -793,7 +955,7 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 					}
 				} else if (tEntityDO.getType() == 2){
 					if (question.length() > 4) {
-						match = findNo(question);
+						match = match(question,NO);
 						if(match) {
 							matchString = tEntityDO.getNo();
 							break;
@@ -845,19 +1007,6 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 		return null;
 	}
 
-	/**
-	 * 正则匹配
-	 */
-	private boolean findNo(String question) {
-		for (String no : NO) {
-			Pattern p = Pattern.compile(no);
-			Matcher m = p.matcher(question);
-			if (m.find()) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * 否定语义计算
@@ -895,6 +1044,21 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 		return question;
 	}
 
+
+	/**
+	 * 正则匹配
+	 */
+	private boolean match(String doc,String[] words){
+		for(String word : words){
+			Pattern p = Pattern.compile(word);
+			Matcher m = p.matcher(doc);
+			if(m.find()){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * 匹配后处理
 	 */
@@ -916,9 +1080,71 @@ public class TNewFaqServiceImpl implements TNewFaqService {
 	}
 
 
+	/**
+	 * 校验是否有类似问答
+	 */
+	@Override
+	public List<String> verify(TNewFaqDO tNewFaq){
+		List<String> repetitionList = new ArrayList<>();
 
+		Long userId = ShiroUtils.getUserId();
 
+		initQuestionMap(null,userId);
+		//修改时不对所修改的校验
+		Long faqId = tNewFaq.getId();
+		String id = null;
+		if(faqId != null){
+			id = faqId.toString();
+		}
+		if(StringUtils.isNotEmpty(id)){
+			List<String> keyList = new ArrayList<>();
+			for(Map.Entry<String,String> entry : stringMap.entrySet()){
 
+				if(id.equals(entry.getValue())){
+					keyList.add(entry.getKey());
+				}
+			}
+			if(keyList.size() > 0){
+				for(String key : keyList){
+					stringMap.remove(key);
+				}
+			}
+		}
+
+		double matchValue = 0.74;
+		repetitionList.add(tNewFaq.getQuestion());
+		String[] strings = tNewFaq.getQuestions().split("\\r\\n");
+		for (String s : strings) {
+			if (StringUtils.isNotEmpty(s)) {
+				repetitionList.add(s);
+			}
+		}
+		Map<Long,Map<String, Double>> mapMap = new HashMap<>();
+		if(repetitionList.size() > 0){
+			for(String repetitionQuestion : repetitionList){
+				Map<Long,Map<String, Double>> mapMap2 = compare(repetitionQuestion, stringMap,matchValue);
+				mapMap.putAll(mapMap2);
+			}
+		}
+		Map<String, Double> map = compareMatch(mapMap);
+		Map<String,Double> mapSort = MapUtils.doubleMapSort(map);
+		Iterator<Map.Entry<String,Double>> it = mapSort.entrySet().iterator();
+
+		repetitionList.clear();
+		int count = 0;
+		while (it.hasNext()){
+			Map.Entry<String,Double> entry = it.next();
+			String ques = entry.getKey();
+			if(StringUtils.isNotEmpty(ques)){
+				count++;
+				repetitionList.add(ques + " ## 相识度："+ entry.getValue() * 100 +"% ##");
+				if(count == 5){
+					break;
+				}
+			}
+		}
+		return repetitionList;
+	}
 
 
 

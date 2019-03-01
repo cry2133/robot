@@ -31,4 +31,7 @@ public interface TRepositoryDao {
 	int batchRemove(Long[] repositoryIds);
 
 	TRepositoryDO getByName(String name);
+
+	Long getIdByUserId(Long userId);
+
 }

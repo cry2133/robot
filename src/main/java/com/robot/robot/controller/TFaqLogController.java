@@ -1,8 +1,8 @@
 package com.robot.robot.controller;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.robot.common.utils.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,11 @@ import javax.annotation.Resource;
 public class TFaqLogController {
 	@Resource
 	private TFaqLogService tFaqLogService;
-	
+
+	List legendData = null;
+	Set<String> xData = null;
+	List<Map<String,Object>> seriesData = null;
+
 	@GetMapping()
 	@RequiresPermissions("robot:tFaqLog:tFaqLog")
 	String TFaqLog(){
@@ -110,6 +114,117 @@ public class TFaqLogController {
 	}
 
 
+	@GetMapping("/statistics")
+	String statistics(){
+		return "robot/tFaqLog/statistics";
+	}
 
-	
+	@GetMapping("/all")
+	String all(){
+		return "robot/tFaqLog/all";
+	}
+
+
+	/**
+	 * 统计
+	 */
+	@GetMapping("/statisticsList")
+	@ResponseBody
+	public Map<String, Object> statisticsList(@RequestParam Map<String, Object> params){
+		legendData = new ArrayList();
+		xData = new HashSet();
+		seriesData = new ArrayList();
+
+		List<TFaqLogDO> list = tFaqLogService.statistics(params);
+
+		Iterator<TFaqLogDO> iterator = list.iterator();
+		while(iterator.hasNext()){
+			//加入纵向下标
+			String tag = iterator.next().getRobotNo();
+			xData.add(tag);
+		}
+
+		setData(xData,list,0);
+		setData(xData,list,1);
+		setData(xData,list,2);
+		setData(xData,list,3);
+
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("legendData", legendData);
+		returnMap.put("xData", xData);
+		returnMap.put("seriesData", seriesData);
+
+		return returnMap;
+	}
+
+
+	/**
+	 * 总表
+	 */
+	@GetMapping("/allList")
+	@ResponseBody
+	public Map<String, Object> all(@RequestParam Map<String, Object> params){
+		legendData = new ArrayList();
+		xData = new HashSet();
+		seriesData = new ArrayList();
+
+		List<TFaqLogDO> list = tFaqLogService.all(params);
+
+		Iterator<TFaqLogDO> iterator = list.iterator();
+		while(iterator.hasNext()){
+			//加入纵向下标
+			xData.add("总表");
+			iterator.next().setRobotNo("总表");
+		}
+
+		setData(xData,list,0);
+		setData(xData,list,1);
+		setData(xData,list,2);
+		setData(xData,list,3);
+
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("legendData", legendData);
+		returnMap.put("xData", xData);
+		returnMap.put("seriesData", seriesData);
+
+		return returnMap;
+	}
+
+
+
+	public void setData(Set<String> xData,List<TFaqLogDO> list,int way){
+
+		String lData;
+		if(way == 1){
+			lData = "单轮应答";
+		}else if(way == 2){
+			lData = "多轮应答";
+		}else if(way == 3){
+			lData = "闲聊";
+		}else{
+			lData = "默认";
+		}
+
+		legendData.add(lData);
+		List tagCountList = new ArrayList();
+		for (String x : xData){
+			Long count = 0L;
+			for(TFaqLogDO faqLogDO : list){
+				if(faqLogDO.getWay() == way && x.equals(faqLogDO.getRobotNo())){
+					count = faqLogDO.getId();
+				}
+			}
+			tagCountList.add(count);
+		}
+		Map<String,Object> data = new HashMap<>();
+		data.put("name", lData);
+		data.put("type", "bar");
+		if(way == 0){
+			data.put("barGap", 0);
+		}
+		data.put("data", tagCountList);
+		seriesData.add(data);
+	}
+
+
 }
